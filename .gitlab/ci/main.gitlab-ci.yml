@@ -1,0 +1,20 @@
+# =========== 生产环境 ===========
+
+main-compile:
+  stage: compile
+  script:
+    - echo "Running compile"
+    - yum install -y zip
+    - yarn install
+    - yarn run build:app-plus:prod
+    # 压缩 & cp & 上传
+    - cd dist/build/app-plus
+    - zip -r app.wgt *
+    - rm -rf /tmp/app.wgt
+    - cp app.wgt /tmp
+    # 上传文件到后台路径
+#    - curl -F "file=@/tmp/app.wgt" -F "key=" https://remember5.top/xxx
+  only:
+    - main
+  tags:
+    - gl-61

@@ -1,0 +1,108 @@
+{
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+	 	"list": [{
+	 		"name": "test", //模式名称
+	 		"path": "pages/login/login", //启动页面，必选
+	 		"query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d095e&__id__=1" //启动参数，在页面的onLoad函数里面得到
+	 	}]
+	},
+	"pages": [
+	    {
+            "path" : "pages/index/index",
+            "style" :
+            {
+                "navigationBarTitleText": "首页",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+            "path" : "pages/home/home",
+            "style" :
+            {
+                "navigationBarTitleText": "我的",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+			"path": "pages/user/bindPhone",
+			"style": {
+				"navigationBarTitleText": "绑定手机号",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user/forget",
+			"style": {
+				"navigationBarTitleText": "忘记密码",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user/protocol",
+			"style": {
+				"navigationBarTitleText": "协议",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user/register",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录1",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/forgetPassword",
+			"style": {
+				"navigationBarTitleText": "登录1",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"subPackages": [],
+	"preloadRule": {},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uView",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
+	},
+	"tabBar": {
+		"color": "#909399",
+		"selectedColor": "#303133",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [
+          {
+				"pagePath": "pages/index/index",
+				"iconPath": "static/icon/tab/component.png",
+				"selectedIconPath": "static/icon/tab/component_select.png",
+				"text": "组件"
+			},
+			{
+				"pagePath": "pages/home/home",
+				"iconPath": "static/icon/tab/js.png",
+				"selectedIconPath": "static/icon/tab/js_select.png",
+				"text": "home"
+			}
+		]
+	}
+}
