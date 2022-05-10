@@ -14,7 +14,7 @@ let modules = {
 // 需要永久存储，且下次APP启动需要取出的，在state中的变量名
 let saveStateKeys = [
 	'vuex_user_info', 'vuex_access_token', 'vuex_refresh_token',
-	'vuex_wang',
+	'vuex_wang','vuex_platform', 'vuex_version_code', 'vuex_version'
 ];
 
 // 保存变量到本地存储中

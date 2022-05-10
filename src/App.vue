@@ -10,6 +10,29 @@
 			// import httpInterceptor from '@/common/http.interceptor.js'
 			// Vue.use(httpInterceptor, app)
 			// process.env.VUE_APP_PLATFORM 为通过js判断平台名称的方法，结果分别如下：
+			//#ifdef APP-PLUS
+			if (!this.vuex_version||!this.vuex_version_code){
+				plus.runtime.getProperty(plus.runtime.appid, (wgtinfo) => {
+					// console.log(wgtinfo)
+					//todo 需要在版本或版本号更改时进行重新获取
+					this.$u.vuex('vuex_version', wgtinfo.version)
+					this.$u.vuex('vuex_version_code', wgtinfo.versionCode)
+					// this.getVersion()
+				})
+			}else{
+				// this.getVersion()
+			}
+			//#endif
+			//#ifdef APP-PLUS || H5
+			if (!this.vuex_platform ){
+
+				uni.getSystemInfo({
+					success: (info) => {
+						this.$u.vuex('vuex_platform', info.platform)
+					},
+				})
+			}
+			//#endif
 			/**
 			 * h5，app-plus(nvue下也为app-plus)，mp-weixin，mp-alipay......
 			 */

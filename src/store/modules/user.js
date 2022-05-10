@@ -6,9 +6,11 @@ export const state = {
 	vuex_user_info: lifeData.vuex_user_info ? lifeData.vuex_user_info : {},
 	vuex_access_token: lifeData.vuex_access_token ? lifeData.vuex_access_token : '',
 	vuex_refresh_token: lifeData.vuex_refresh_token ? lifeData.vuex_refresh_token : '',
+
 	// 如果vuex_version无需保存到本地永久存储，无需lifeData.vuex_version方式
-	vuex_version: '',
-	vuex_version_code: '',
+	vuex_version: lifeData.vuex_version ? lifeData.vuex_version : '',
+	vuex_version_code: lifeData.vuex_version_code ? lifeData.vuex_version_code : '',
+	vuex_platform: lifeData.vuex_platform ? lifeData.vuex_platform : '',
 	// 自定义tabbar数据
 	vuex_tabbar: [],
 };

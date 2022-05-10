@@ -28,6 +28,11 @@ const install = (Vue, vm) => {
 		// const token = uni.getStorageSync('token');
 		// config.header.token = token;
 		// TODO 增加version_code 和 access_token
+		//#ifdef APP-PLUS
+		config.header.version = vm.vuex_version
+		config.header.versionCode = vm.vuex_version_code
+		config.header.platform = vm.vuex_platform
+		//#endif
 		config.header.Authorization = 'Bearer ' + vm.vuex_access_token
 		return config;
 	}
