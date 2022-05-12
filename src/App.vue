@@ -1,4 +1,6 @@
 <script>
+	import {getVersion} from "@/common/api/version";
+
 	export default {
 		// 此处globalData为了演示其作用，不是uView框架的一部分
 		globalData: {
@@ -17,10 +19,10 @@
 					//todo 需要在版本或版本号更改时进行重新获取
 					this.$u.vuex('vuex_version', wgtinfo.version)
 					this.$u.vuex('vuex_version_code', wgtinfo.versionCode)
-					// this.getVersion()
+					this.getVersion()
 				})
 			}else{
-				// this.getVersion()
+				this.getVersion()
 			}
 			//#endif
 			//#ifdef APP-PLUS || H5
@@ -68,6 +70,48 @@
 			});
 			//#endif
 		},
+		methods: {
+			getVersion() {
+				getVersion(this).then(res => {
+					res = res.data
+					var that = this
+					uni.downloadFile({
+						url: res[0].url,
+						success: (res1) => {
+							//更新即把缓存删除 这样缓存里的版本号才会更新后更新
+							that.$u.vuex('vuex_version', "")
+							that.$u.vuex('vuex_version_code', "")
+							that.$u.vuex('vuex_platform', "")
+							console.log("清除")
+							if (res1.statusCode === 200) {
+								plus.nativeUI.showWaiting("安装更新文件...");
+								plus.runtime.install(res1.tempFilePath, {
+									force: true
+								}, function () {
+									plus.nativeUI.closeWaiting();
+									plus.nativeUI.alert("应用资源更新完成！", function () {
+										plus.runtime.restart();
+									});
+								}, function (e) {
+									plus.nativeUI.closeWaiting();
+									plus.nativeUI.alert("安装更新文件失败[" + e.code + "]：" + e
+										.message);
+									if (e.code == 10) {
+										alert('请清除临时目录');
+									}
+								})
+							}
+						},
+						fail: (res1) => {
+							console.log(res1)
+							plus.nativeUI.alert("下载失败！");
+						}
+					})
+				}).catch(e => {
+					console.log(e);
+				})
+			}
+		}
 	}
 </script>
 
