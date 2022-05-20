@@ -1,5 +1,5 @@
 <script>
-	import {getVersion} from "@/common/api/version";
+	import {getVersion} from "@/api/version";
 
 	export default {
 		// 此处globalData为了演示其作用，不是uView框架的一部分
