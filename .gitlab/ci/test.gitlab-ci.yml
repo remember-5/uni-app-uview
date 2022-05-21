@@ -4,9 +4,11 @@ test-compile:
   stage: compile
   script:
     - echo "Running compile"
+    # 安装zip 和 pnpm
     - yum install -y zip
-    - yarn install
-    - yarn run build:app-plus:test
+    - npm install pnpm --registry=https://registry.npm.taobao.org
+    - pnpm install
+    - pnpm run build:app-plus:test
     # 压缩 & cp & 上传
     - cd dist/build/app-plus
     - zip -r app.wgt *
