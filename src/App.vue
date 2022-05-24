@@ -103,7 +103,6 @@
 							}
 						},
 						fail: (res1) => {
-							console.log(res1)
 							plus.nativeUI.alert("下载失败！");
 						}
 					})
@@ -116,6 +115,6 @@
 </script>
 
 <style lang="scss">
-	@import "uview-ui/index";
+	@import "uview-ui/index.scss";
 	@import './style/common.scss';
 </style>
