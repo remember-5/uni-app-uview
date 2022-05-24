@@ -1,6 +1,10 @@
 # uview模版项目
+本项目基于uniapp-cli方式运行， `uview: 1.8.6`
 
-目前版本是基于 `uview` 1.8.5版本
+## hbuliderx中运行
+1. 拖入hbuliderx中后，需要右键选择"重新识别项目类型"
+2. 安装依赖`npm install --registry=https://registry.npm.taobao.org`,必须使用`npm`
+4. 测试发现`yarn` 和 `pnpm`可能会有编译问题，详见[https://juejin.cn/post/7077918263954374670#heading-7]()
 
 # 新特性
 - [x] rsa加解密
