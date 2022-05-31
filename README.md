@@ -2,13 +2,68 @@
 
 本项目基于uniapp-cli方式运行， `uview: 1.8.6`
 
+## pnpm使用
+
+
+如果出现以下代码
+```text
+├─┬ @dcloudio/uni-automator
+│ ├── ✕ missing peer adbkit@^2.11.1
+│ ├── ✕ missing peer jimp@^0.10.1
+│ ├── ✕ missing peer node-simctl@^6.1.0
+│ └── ✕ missing peer puppeteer@^3.0.1
+├─┬ @dcloudio/vue-cli-plugin-uni
+│ └─┬ copy-webpack-plugin
+│   └── ✕ missing peer webpack@"^4.0.0 || ^5.0.0"
+├─┬ sass-loader
+│ └── ✕ missing peer webpack@"^4.36.0 || ^5.0.0"
+├─┬ @dcloudio/uni-quickapp-native
+│ └─┬ @hap-toolkit/dsl-vue
+│   ├─┬ css-loader
+│   │ └── ✕ missing peer webpack@^4.0.0
+│   ├─┬ mini-css-extract-plugin
+│   │ └── ✕ missing peer webpack@^4.4.0
+│   ├─┬ url-loader
+│   │ └── ✕ missing peer webpack@^4.0.0
+│   └─┬ vue-loader
+│     └── ✕ missing peer webpack@"^3.0.0 || ^4.1.0 || ^5.0.0-0"
+```
+
+在`package.json`中加入以下代码, 官方文档 https://pnpm.io/zh/package_json#pnpmpeerdependencyrulesallowedversions
+```json
+"pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": ["adbkit","jimp","node-simctl","puppeteer","webpack"],
+    }
+  }
+```
+
+出现以下代码
+```text
+└─┬ @vue/cli-service
+  └─┬ vue-loader
+    └── ✕ unmet peer vue@^3.2.13: found 2.6.14
+```
+
+在`package.json`中加入以下代码，官方文档 https://pnpm.io/zh/package_json#pnpmneverbuiltdependencies
+```json
+"pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "vue": "2.6.14"
+      }
+    }
+  }
+```
+
+
 ## hbuliderx中运行
 
 1. 拖入hbuliderx中后，需要右键选择"重新识别项目类型"
 2. 安装依赖`npm install --registry=https://registry.npm.taobao.org`,必须使用`npm`
 4. 测试发现`yarn` 和 `pnpm`可能会有编译问题，详见[https://juejin.cn/post/7077918263954374670#heading-7]()
 
-# 新特性
+## 新特性
 
 - [x] rsa加解密
 - [x] 增加socket

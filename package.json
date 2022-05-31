@@ -122,6 +122,14 @@
     "uni-read-pages": "^1.0.5",
     "windicss": "^3.2.1"
   },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": ["adbkit","jimp","node-simctl","puppeteer","webpack"],
+      "allowedVersions": {
+        "vue": "2.6.14"
+      }
+    }
+  },
   "browserslist": [
     "Android >= 4.4",
     "ios >= 9"
