@@ -1,4 +1,4 @@
-const lifeData = uni.getStorageSync('lifeData')
+const lifeData = uni.getStorageSync('lifeData');
 
 export const state = {
   // 如果上面从本地获取的lifeData对象下有对应的属性，就赋值给state中对应的变量
@@ -6,10 +6,6 @@ export const state = {
   vuex_wang: lifeData.vuex_wang ? lifeData.vuex_wang : 'wangjiaho',
 };
 
-export const mutations = {
+export const mutations = {};
 
-};
-
-export const actions = {
-
-};
+export const actions = {};
