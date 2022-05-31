@@ -1,3 +1,9 @@
 unpackage
 node_modules
 uview-ui
+
+src/common/*
+src/config/*
+src/plugins/*
+
+touch-emulator.js

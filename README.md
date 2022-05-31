@@ -1,17 +1,20 @@
 # uview模版项目
+
 本项目基于uniapp-cli方式运行， `uview: 1.8.6`
 
 ## hbuliderx中运行
+
 1. 拖入hbuliderx中后，需要右键选择"重新识别项目类型"
 2. 安装依赖`npm install --registry=https://registry.npm.taobao.org`,必须使用`npm`
 4. 测试发现`yarn` 和 `pnpm`可能会有编译问题，详见[https://juejin.cn/post/7077918263954374670#heading-7]()
 
 # 新特性
+
 - [x] rsa加解密
 - [x] 增加socket
-- [ ] 使用uni-simple-router https://github.com/SilurianYang/uni-simple-router
-- [ ] 使用luch-request https://www.quanzhan.co/luch-request/ 
-- [ ] 热更模块集成 参考https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPUpdate
+- [x] 使用uni-simple-router https://github.com/SilurianYang/uni-simple-router
+- [ ] 使用luch-request https://www.quanzhan.co/luch-request/
+- [x] 热更模块集成 参考https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPUpdate
 - [ ] 微信小程序分享模块/公众号分享模块 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPshare
 - [ ] 增加默认页面【登录，注册，忘记密码，绑定手机号，协议页面，商品海报生成，推广海报生成】
 - [ ] 续期jwt，增加request的重试机制，和404等问题转发到指定页面
@@ -20,6 +23,7 @@
 - [ ] 原生协议 https://ask.dcloud.net.cn/article/36937
 
 # 不错的插件
+
 - 模版 https://ext.dcloud.net.cn/plugin?id=2009
 - 炫酷的样式、炫酷的动画效果 https://ext.dcloud.net.cn/plugin?id=3685
 - mp-html 富文本组件【全端支持，可编辑】 https://ext.dcloud.net.cn/plugin?id=805
@@ -38,3 +42,57 @@
 - 开箱即用的公共搜索组件（历史记录，app语音输入，搜索推荐） https://ext.dcloud.net.cn/plugin?id=512
 - 百度图表 echarts https://ext.dcloud.net.cn/plugin?id=4899
 - 蚂蚁图表 antv F2 https://ext.dcloud.net.cn/plugin?id=4613
+
+## eslint
+
+整个文件范围内禁止规则出现警告, 将/* eslint-disable */放置于文件最顶部
+
+```javascript
+/* eslint-disable */
+alert('foo');
+```
+
+在文件中临时禁止规则出现警告, 将需要忽略的代码块用注释包裹起来
+
+```javascript
+/* eslint-disable */
+alert('foo');
+/* eslint-enable */
+```
+
+对指定规则的启用或者禁用警告, 将需要忽略的代码块用注释包裹起来
+
+```javascript
+/* eslint-disable no-alert, no-console */
+alert('foo');
+console.log('bar');
+/* eslint-enable no-alert, no-console */
+```
+
+对指定行禁用规则警告, 此方法，有两种形式，参见下方。
+
+```javascript
+alert('foo'); // eslint-disable-line
+
+// eslint-disable-next-line
+alert('foo');
+```
+
+在指定行上禁用指定的某个规则
+
+```javascript
+alert('foo'); // eslint-disable-line no-alert
+
+// eslint-disable-next-line no-alert
+alert('foo');
+```
+
+在某个特定的行上禁用多个规则
+
+```javascript
+alert('foo'); // eslint-disable-line no-alert, quotes, semi
+
+// eslint-disable-next-line no-alert, quotes, semi
+alert('foo');
+
+```

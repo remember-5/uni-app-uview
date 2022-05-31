@@ -1,11 +1,15 @@
+# https://editorconfig.org
+
+root = true
+
 [*]
-#缩进风格：空格
-indent_style = tab
-#缩进大小2
-indent_size = 4
-#换行符lf
-end_of_line = lf
-#字符集utf-8
 charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
 
-
+[*.md]
+insert_final_newline = false
+trim_trailing_whitespace = false

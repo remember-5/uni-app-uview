@@ -1,29 +1,35 @@
 @import '@/style/mixin.scss';
+
 view,
 page,
 text,
 button,
 image,
 textarea,
-scroll-view,input {
-	box-sizing: border-box;
+scroll-view, input {
+  box-sizing: border-box;
 }
+
 image {
-	display: block;
+  display: block;
 }
+
 button {
-	margin: 0;
-	padding: 0;
-	background-color: #FFFF;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFF;
 }
+
 button::after {
-	border: none;
+  border: none;
 }
+
 // 主题背景色
 .themeBgColor {
-	background-color: $themeColor;
+  background-color: $themeColor;
 }
+
 // 主题字体色
 .themeFontColor {
-	color: $themeColor !important;
+  color: $themeColor !important;
 }

@@ -126,8 +126,8 @@
     "h5" : {
         "template" : "template.h5.html",
         "router" : {
-            "mode" : "hash",
-            "base" : ""
+            "mode" : "history",
+            "base" : "./"
         },
         "optimization" : {
             "treeShaking" : {
