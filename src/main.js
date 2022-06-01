@@ -1,4 +1,6 @@
 import Vue from 'vue';
+// VueI18n
+import VueI18n from 'vue-i18n';
 import App from './App';
 
 // 此处为演示vuex使用，非uView的功能部分
@@ -14,9 +16,6 @@ import directives from '@/directives';
 // 引入语言包，注意路径
 import Chinese from '@/common/locales/zh.js';
 import English from '@/common/locales/en.js';
-
-// VueI18n
-import VueI18n from '@/common/vue-i18n.min.js';
 
 // http拦截器，将此部分放在new Vue()和app.$mount()之间，才能App.vue中正常使用
 import httpInterceptor from '@/common/http.interceptor.js';

@@ -24,6 +24,8 @@
     <u-button @click="$u.route('/pages/user/register')">
       注册
     </u-button>
+    <view>{{$t('common.intro')}}</view>
+    <u-rate :count="count" v-model="value"></u-rate>
   </view>
 </template>
 
@@ -40,6 +42,8 @@ export default {
       afterShow: false, // 是否显示升级加载进度条
       percent: 0, // 升级加载进度条-百分比0~100
       appleId: '', // ios app id
+      count: 4,
+      value: 2,
     };
   },
   async created() {

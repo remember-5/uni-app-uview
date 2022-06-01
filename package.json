@@ -81,7 +81,8 @@
     "vue": "^2.6.11",
     "vuex": "^3.2.0",
     "uview-ui": "^1.8.6",
-    "uni-simple-router": "^2.0.7"
+    "uni-simple-router": "^2.0.7",
+    "vue-i18n": "^8.20.0"
   },
   "devDependencies": {
     "@babel/runtime": "~7.12.0",
@@ -124,7 +125,13 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": ["adbkit","jimp","node-simctl","puppeteer","webpack"],
+      "ignoreMissing": [
+        "adbkit",
+        "jimp",
+        "node-simctl",
+        "puppeteer",
+        "webpack"
+      ],
       "allowedVersions": {
         "vue": "2.6.14"
       }

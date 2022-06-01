@@ -2,8 +2,15 @@
 
 本项目基于uniapp-cli方式运行， `uview: 1.8.6`
 
+```shell
+npm config set registry https://registry.npm.taobao.org
+npm i 
+npm run server
+```
+
 ## pnpm使用
 
+pnpm可能会造成打包无法使用的情况，所以还是老老实实用npm吧
 
 如果出现以下代码
 ```text
