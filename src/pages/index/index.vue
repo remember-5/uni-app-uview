@@ -24,8 +24,14 @@
     <u-button @click="$u.route('/pages/user/register')">
       注册
     </u-button>
-    <view>{{$t('common.intro')}}</view>
-    <u-rate :count="count" v-model="value"></u-rate>
+    <u-button @click="$u.route('/pages/pdf/pdf')">
+      pdf预览
+    </u-button>
+    <view>{{ $t('common.intro') }}</view>
+    <u-rate
+      v-model="value"
+      :count="count"
+    ></u-rate>
   </view>
 </template>
 

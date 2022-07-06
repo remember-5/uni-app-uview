@@ -2,8 +2,17 @@ unpackage
 node_modules
 uview-ui
 
-src/common/*
+
+.gitlab/*
+
 src/config/*
 src/plugins/*
+src/hybrid/*
+src/uni_modules/*
+src/static/*
+src/uview-ui/*
 
 touch-emulator.js
+jsencrypt.js
+rsaEncrypt.js
+vue-i18n.min.js

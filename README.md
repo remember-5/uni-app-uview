@@ -180,3 +180,89 @@ alert('foo'); // eslint-disable-line no-alert, quotes, semi
 alert('foo');
 
 ```
+
+
+## 预览pdf
+
+目前最高支持版本`pdfjs-2.6.347`
+
+下载pdf插件 http://mozilla.github.io/pdf.js/getting_started/ 并解压
+
+得到`build` `web` 两个文件夹
+
+在uniapp的src下创建路径 `hybrid/html/pdf` ，并放入 `build` `web` 两个文件夹
+
+pdf.js不支持跨域请求 https://blog.csdn.net/xinlingdexueba/article/details/79555678
+
+`file origin does not match viewer’s，`
+
+注释viewer.js的代码：
+```javascript
+//    if (fileOrigin !== viewerOrigin) {
+//      throw new Error('file origin does not match viewer\'s');
+//    }
+```
+
+创建preview-pdf.vue，参考https://github.com/Eveveen/uni-app-pdf
+```vue
+<template>
+  <view class="content">
+    <web-view :src="url"></web-view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // pdf.js的viewer.htm所在路径
+      // 注意：静态的html文件需要放在根路径下的 hybrid/html 文件夹中
+      viewerUrl: '/hybrid/html/pdf/web/viewer.html',
+      // 要访问的pdf的路径
+      fileUrl: '',
+      // 最终显示在web-view中的路径
+      url: '',
+    };
+  },
+  onLoad(options) {
+    const link = decodeURIComponent(options.link);
+    // const link = decodeURIComponent('https://oss.bj-gly-zgdx-bzx-icp.caiicloudoss.com/smeapp/b8b18e7e-2623-4ffd-b102-59ec914ac44f.pdf');
+    // h5，使用h5访问的时候记得跨域
+    // #ifdef H5
+    this.url = `${this.viewerUrl}?file=${encodeURIComponent(link)}`;
+    // #endif
+
+    // 在安卓和ios手机上
+    // 判断是手机系统：安卓，使用pdf.js
+    // #ifdef APP-PLUS
+    if (plus.os.name === 'Android') {
+      this.url = `${this.viewerUrl}?file=${encodeURIComponent(link)}`;
+    }
+    // ios，直接访问pdf所在路径
+    else {
+      // 直接用在iOS15.4.1不生效
+      // this.url = encodeURIComponent(link);
+      this.url = `${this.viewerUrl}?file=${encodeURIComponent(link)}`;
+    }
+    // #endif
+  },
+  methods: {},
+};
+</script>
+
+<style>
+</style>
+
+```
+
+
+使用跳转就可以预览了
+```javascript
+const _link = encodeURIComponent('https://oss.bj-gly-zgdx-bzx-icp.caiicloudoss.com/smeapp/b8b18e7e-2623-4ffd-b102-59ec914ac44f.pdf');
+this.$u.route({
+  url: 'pages/home/pdf/preview-pdf.vue',
+  params: {
+    link: _link,
+  },
+});
+```

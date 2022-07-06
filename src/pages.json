@@ -75,7 +75,14 @@
 				"navigationBarTitleText": "登录1",
 				"enablePullDownRefresh": false
 			}
-		}
+		},
+    {
+      "path": "pages/pdf/pdf",
+      "style": {
+        "navigationBarTitleText": "预览pdf",
+        "enablePullDownRefresh": false
+      }
+    }
 	],
 	"subPackages": [],
 	"preloadRule": {},
