@@ -8,6 +8,15 @@ npm i
 npm run server
 ```
 
+## 使用less
+添加以下依赖
+```xml
+"less": "^4.0.0",
+"less-loader": "^5.0.0",
+```
+
+
+
 ## pnpm使用
 
 pnpm可能会造成打包无法使用的情况，所以还是老老实实用npm吧

@@ -7,9 +7,8 @@ test-compile:
     # 安装zip 和 pnpm
     - yum install -y zip
     - npm config set registry https://registry.npmmirror.com
-    - npm i pnpm -g
-    - pnpm install
-    - pnpm run build:app-plus:test
+    - npm i
+    - npm run build:app-plus:test
     # 压缩 & cp & 上传
     - cd dist/build/app-plus
     - zip -r app.wgt *
