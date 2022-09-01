@@ -15,7 +15,10 @@ npm run server
 "less-loader": "^5.0.0",
 ```
 
+## 普通项目改造成cli项目
+参考官网的教程 https://uniapp.dcloud.net.cn/quickstart-cli.html
 
+如果应用less，请参考上方`使用less`
 
 ## pnpm使用
 
