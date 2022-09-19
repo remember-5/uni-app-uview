@@ -1,6 +1,7 @@
 unpackage
 node_modules
 uview-ui
+dist/*
 
 
 .gitlab/*
