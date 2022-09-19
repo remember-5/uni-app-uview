@@ -1,12 +1,12 @@
 <template>
   <view class="wrap">
-    <view class="top"></view>
+    <view class="top" />
     <view class="content">
       <view class="title">
         <image
           src="@/static/icon/logo.png"
           mode="widthFix"
-        ></image>
+        />
         欢迎登录
       </view>
       <view class="login-title">
@@ -208,19 +208,18 @@
       </view>
     </view>
     <view class="buttom">
-      <view class="loginType">
-      </view>
+      <view class="loginType" />
     </view>
   </view>
 </template>
 
 <script>
 import {
-  encrypt,
-} from '@/common/rsaEncrypt.js';
+  encrypt
+} from '@/common/rsaEncrypt.js'
 import {
-  register, loginByAccount, loginByPhoneCaptcha, loginByWx, loginByZfb, code, captchaByRegister,
-} from '@/api/user.js';
+  register, loginByAccount, loginByWx, code, captchaByRegister
+} from '@/api/user.js'
 
 export default {
   data() {
@@ -239,196 +238,196 @@ export default {
       yzm: '',
       codeText: '获取验证码',
       btnBool: false,
-      wxcode: null,
-    };
+      wxcode: null
+    }
   },
   computed: {
     inputStyle() {
       return {
         color: '#fff',
         backgroundColor: '#C72323',
-        opacity: 1,
-      };
-    },
+        opacity: 1
+      }
+    }
   },
   created() {
-    this.getImgCaptcha();
+    this.getImgCaptcha()
   },
   methods: {
     // 微信登录
     wxlogin() {
-      const that = this;
+      const that = this
       uni.login({
         provider: 'weixin',
         success(loginRes) {
-          that.wxcode = loginRes.code;
-        },
-      });
+          that.wxcode = loginRes.code
+        }
+      })
     },
     // 支付宝登录
     zfblogin() {},
     // 验证码
     getPhoneCaptcha() {
       if (!this.phone) {
-        this.$u.toast('请输入手机号！');
-        return;
+        this.$u.toast('请输入手机号！')
+        return
       }
       if (!this.captcha) {
-        this.$u.toast('请输入图形验证码！');
-        return;
+        this.$u.toast('请输入图形验证码！')
+        return
       }
 
       captchaByRegister(this, this.phone).then((res) => {
-        if (res.code == '00000') {
-          this.setDaojishi();
+        if (res.code === '00000') {
+          this.setDaojishi()
         } else {
-          this.$u.toast(res.message);
+          this.$u.toast(res.message)
         }
       }).catch((err) => {
-        console.error(err);
-        this.$u.toast(err.message);
-      });
+        console.error(err)
+        this.$u.toast(err.message)
+      })
     },
     // 验证码倒计时
     setDaojishi() {
-      let i = 59;
-      this.codeText = '60s后重新获取';
-      this.btnBool = true;
+      let i = 59
+      this.codeText = '60s后重新获取'
+      this.btnBool = true
       const timer = setInterval(() => {
-        this.btnBool = true;
-        this.codeText = `${i}s后重新获取`;
-        i--;
+        this.btnBool = true
+        this.codeText = `${i}s后重新获取`
+        i--
         if (i < 0) {
-          this.btnBool = false;
-          this.codeText = '获取验证码';
-          clearInterval(timer);
+          this.btnBool = false
+          this.codeText = '获取验证码'
+          clearInterval(timer)
         }
-      }, 1000);
+      }, 1000)
     },
     // 获取图片验证码
     getImgCaptcha() {
       code(this).then((e) => {
-        this.imgCaptcha = e.data;
-      });
+        this.imgCaptcha = e.data
+      })
     },
     // 登录
     login() {
       if (!this.phone) {
-        this.$u.toast('请输入手机号！');
-        return;
+        this.$u.toast('请输入手机号！')
+        return
       }
       if (!this.password) {
-        this.$u.toast('请输入密码！');
-        return;
+        this.$u.toast('请输入密码！')
+        return
       }
       if (!this.captcha) {
-        this.$u.toast('请输入图形验证码！');
-        return;
+        this.$u.toast('请输入图形验证码！')
+        return
       }
       if (!this.isAgree) {
-        this.$u.toast('请阅读并同意条款！');
-        return;
+        this.$u.toast('请阅读并同意条款！')
+        return
       }
 
       const user = {
         phone: this.phone,
         password: encrypt(this.password),
         code: this.captcha,
-        uuid: this.imgCaptcha.uuid,
-      };
+        uuid: this.imgCaptcha.uuid
+      }
 
       loginByAccount(this, user).then((e) => {
-        if (e.code == '00000') {
-          const data = e.data;
-          this.$u.vuex('vuex_access_token', data.access_token);
-          this.$u.vuex('vuex_refresh_token', data.refresh_token);
-          this.$u.vuex('vuex_user_info', data.user_info);
-          this.$u.toast('登录成功！');
+        if (e.code === '00000') {
+          const data = e.data
+          this.$u.vuex('vuex_access_token', data.access_token)
+          this.$u.vuex('vuex_refresh_token', data.refresh_token)
+          this.$u.vuex('vuex_user_info', data.user_info)
+          this.$u.toast('登录成功！')
           setTimeout(() => {
             this.$u.route({
               url: 'pages/index/index',
-              type: 'switchTab',
-            });
-          }, 800);// 延时0.8秒
+              type: 'switchTab'
+            })
+          }, 800)// 延时0.8秒
         } else {
           // this.$u.toast(e.message);
-          this.$u.toast('账号或密码错误');
-          this.getImgCaptcha();
+          this.$u.toast('账号或密码错误')
+          this.getImgCaptcha()
           // this.getyzm();
         }
-      });
+      })
     },
     getphonenumberWx(e) {
-      const that = this;
+      const that = this
       loginByWx(that, {
         loginType: 4,
         code: that.wxcode,
         encryptedData: e.detail.encryptedData,
-        iv: e.detail.iv,
+        iv: e.detail.iv
       }).then((res) => {
-        if (res.code != '00000') {
-          that.$u.toast('登录失败！');
-          that.wxlogin();
+        if (res.code !== '00000') {
+          that.$u.toast('登录失败！')
+          that.wxlogin()
         }
-        this.$u.vuex('vuex_access_token', data.access_token);
-        this.$u.vuex('vuex_refresh_token', data.refresh_token);
-        this.$u.vuex('vuex_user_info', data.user_info);
-        that.$u.toast('登录成功！');
+        this.$u.vuex('vuex_access_token', res.data.access_token)
+        this.$u.vuex('vuex_refresh_token', res.data.refresh_token)
+        this.$u.vuex('vuex_user_info', res.data.user_info)
+        that.$u.toast('登录成功！')
         that.$u.route({
           url: 'pages/index/index',
-          type: 'switchTab',
-        });
-      });
+          type: 'switchTab'
+        })
+      })
     },
     getPhoneNumberZFB() {
-      my.getPhoneNumber({
-        success: (res) => {
-          // 获取到支付宝服务器返回的加密数据
-          // 其中 response 为 JSON 字符串，结构为：'{"response":"xxxxx","sign":"xxx"}'
-          const { respone, ariverRpcTraceId } = res;
-          console.log(res);
-          // 将加密数据传给后端，结合签名算法和AES密钥进行解密获取手机号
-          // my.request({
-          // 	url: '后端服务端 URL',
-          // 	data: respone,
-          // 	success: res => {
-          // 		// 解密成功返回
-          // 	},
-          // 	fail: err => {
-          // 		console.warn('my.request fail: ', err)
-          // 	}
-          // })
-        },
-        fail: (err) => {
-          console.warn('my.getPhoneNumber fail: ', err);
-        },
-      });
+      // getPhoneNumber({
+      //   success: (res) => {
+      //     // 获取到支付宝服务器返回的加密数据
+      //     // 其中 response 为 JSON 字符串，结构为：'{"response":"xxxxx","sign":"xxx"}'
+      //     // const { respone, ariverRpcTraceId } = res
+      //     console.log(res)
+      //     // 将加密数据传给后端，结合签名算法和AES密钥进行解密获取手机号
+      //     // my.request({
+      //     // 	url: '后端服务端 URL',
+      //     // 	data: respone,
+      //     // 	success: res => {
+      //     // 		// 解密成功返回
+      //     // 	},
+      //     // 	fail: err => {
+      //     // 		console.warn('my.request fail: ', err)
+      //     // 	}
+      //     // })
+      //   },
+      //   fail: (err) => {
+      //     console.warn('my.getPhoneNumber fail: ', err)
+      //   }
+      // })
     },
     // 注册用户
     register() {
       if (!this.phone) {
-        this.$u.toast('请输入手机号！');
-        return;
+        this.$u.toast('请输入手机号！')
+        return
       }
       if (!this.password1) {
-        this.$u.toast('请输入密码！');
-        return;
+        this.$u.toast('请输入密码！')
+        return
       }
-      if (this.password1 != this.password2) {
-        this.$u.toast('两次输入密码不一致!');
-        return;
+      if (this.password1 !== this.password2) {
+        this.$u.toast('两次输入密码不一致!')
+        return
       }
       if (!this.captcha) {
-        this.$u.toast('请输入图形验证码！');
-        return;
+        this.$u.toast('请输入图形验证码！')
+        return
       }
       if (!this.yzm) {
-        this.$u.toast('请输入短信验证码！');
-        return;
+        this.$u.toast('请输入短信验证码！')
+        return
       }
       if (!this.isAgree) {
-        this.$u.toast('请阅读并同意条款！');
-        return;
+        this.$u.toast('请阅读并同意条款！')
+        return
       }
 
       const user = {
@@ -436,38 +435,38 @@ export default {
         password: encrypt(this.password1),
         smsCode: this.yzm,
         code: this.captcha,
-        uuid: this.imgCaptcha.uuid,
-      };
+        uuid: this.imgCaptcha.uuid
+      }
       register(this, user).then((e) => {
-        if (e.code == '00000') {
-          this.$u.toast('注册成功，请登录！');
+        if (e.code === '00000') {
+          this.$u.toast('注册成功，请登录！')
           setTimeout(() => {
             this.$u.route({
-              url: 'pages/login/login',
-            });
-          }, 800);// 延时0.8秒
+              url: 'pages/login/login'
+            })
+          }, 800)// 延时0.8秒
         } else {
-          this.$u.toast(e.message);
-          this.getImgCaptcha();
+          this.$u.toast(e.message)
+          this.getImgCaptcha()
           // this.getyzm();
         }
-      });
+      })
     },
     toForget() {
       this.$u.route({
-        url: 'pages/login/forget',
-      });
+        url: 'pages/login/forget'
+      })
     },
     // 跳转用户协议
     toUserAgreement() {
-      this.$u.route('pages/userAgreement/index');
+      this.$u.route('pages/userAgreement/index')
     },
     // 跳转隐私政策
     toPrivacy() {
-      this.$u.route('pages/privacy/index');
-    },
-  },
-};
+      this.$u.route('pages/privacy/index')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

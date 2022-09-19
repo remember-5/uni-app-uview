@@ -9,8 +9,8 @@ export const state = {
   // 当前位置
   vuex_current_address: {
     areaName: '请选择',
-    areaId: '',
-  },
-};
-export const mutations = {};
-export const actions = {};
+    areaId: ''
+  }
+}
+export const mutations = {}
+export const actions = {}

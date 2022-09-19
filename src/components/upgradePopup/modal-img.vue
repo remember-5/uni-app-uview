@@ -9,7 +9,7 @@
         src="http://oss.bj-gly-zgdx-bzx-icp.caiicloudoss.com/smeapp/7a3bb7ca-726c-4658-ae1d-a3d1fbaed587.png"
         lazy-load
         mode="widthFix"
-      ></image>
+      />
       <!-- 新版本升级-更新前 -->
       <view
         v-if="!afterShow"
@@ -73,24 +73,24 @@ export default {
   props: {
     show: {
       type: Boolean,
-      default: false,
+      default: false
     },
     afterShow: {
       type: Boolean,
-      default: false,
+      default: false
     },
     percent: {
       type: Number,
-      default: 0, // 百分比0~100
-    },
+      default: 0 // 百分比0~100
+    }
   },
   methods: {
     updateNowBtn() {
-      this.$emit('updateNowBtn');
-    },
+      this.$emit('updateNowBtn')
+    }
 
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>

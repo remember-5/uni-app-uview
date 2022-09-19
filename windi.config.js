@@ -1,16 +1,16 @@
-import colors from 'windicss/colors';
+import colors from 'windicss/colors'
 
 export default {
   presets: [require('./src/config/windicss/preset')],
   extract: {
-    include: ['./src/**/*.{vue,nvue}'],
+    include: ['./src/**/*.{vue,nvue}']
   },
   theme: {
     extend: {
       colors: {
         gray: colors.trueGray,
-        'theme-primary': '#2b9939',
-      },
-    },
-  },
-};
+        'theme-primary': '#2b9939'
+      }
+    }
+  }
+}

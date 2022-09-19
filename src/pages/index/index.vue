@@ -31,12 +31,13 @@
     <u-rate
       v-model="value"
       :count="count"
-    ></u-rate>
+    />
   </view>
 </template>
 
 <script>
-import { login } from '@/api/user.js';
+// import { login } from '@/api/user.js'
+import { isnew } from '@/api/version'
 
 export default {
   components: {},
@@ -49,16 +50,16 @@ export default {
       percent: 0, // 升级加载进度条-百分比0~100
       appleId: '', // ios app id
       count: 4,
-      value: 2,
-    };
+      value: 2
+    }
   },
   async created() {
-    this.cickUpdata();
+    this.cickUpdata()
 
-    console.log('index create', this.vuex_user, this.vuex_wang);
-    this.$u.vuex('vuex_user', '1');
-    this.$u.vuex('vuex_wang', '1');
-    console.log('index set', this.vuex_user, this.vuex_wang);
+    console.log('index create', this.vuex_user, this.vuex_wang)
+    this.$u.vuex('vuex_user', '1')
+    this.$u.vuex('vuex_wang', '1')
+    console.log('index set', this.vuex_user, this.vuex_wang)
     // console.log("created");
     // await login(this).then(e=>{
     // 	console.log(e);
@@ -70,58 +71,58 @@ export default {
     cickUpdata() {
       // todo 版本升级
       if (this.vuex_version && this.vuex_version_code) {
-        this.updataapp();
+        this.updataapp()
       }
     },
     // 新版本升级弹窗-点击马上更新进入加载进度条
     updateNowBtn() {
-      this.installapp(this.dowAppUrl);
+      this.installapp(this.dowAppUrl)
     },
 
     updataapp() {
       isnew(this).then((res) => {
         if (!res.data.isnew) {
-          this.modalShow = true;
-          this.dowAppUrl = res.data.url;
+          this.modalShow = true
+          this.dowAppUrl = res.data.url
         }
-      });
+      })
     },
     installapp(url) {
-      if (this.vuex_platform == 'ios') {
+      if (this.vuex_platform === 'ios') {
         uni.request({
           url: `https://itunes.apple.com/cn/lookup?id=${this.appleId}`,
           success: (e) => {
-            console.log(e.data.results[0].version);
-            const tiao = `itms-apps://itunes.apple.com/app/${this.appleId}`;
-            plus.runtime.openURL(tiao);
+            console.log(e.data.results[0].version)
+            const tiao = `itms-apps://itunes.apple.com/app/${this.appleId}`
+            plus.runtime.openURL(tiao)
           },
           fail: (err) => {
-            console.log(err);
+            console.log(err)
           },
-          complete: () => {},
-        });
-        return;
+          complete: () => {}
+        })
+        return
       }
-      this.afterShow = true;
+      this.afterShow = true
       const dowAppTask = uni.downloadFile({
         url,
         success: (res1) => {
           if (res1.statusCode === 200) {
-            console.log(res1.tempFilePath);
-            plus.runtime.openFile(res1.tempFilePath);
+            console.log(res1.tempFilePath)
+            plus.runtime.openFile(res1.tempFilePath)
           }
         },
         fail: (res1) => {
-          plus.nativeUI.alert('下载失败！');
-        },
-      });
-      const that = this;
+          plus.nativeUI.alert('下载失败！')
+        }
+      })
+      const that = this
       dowAppTask.onProgressUpdate((res) => {
-        that.percent = res.progress;
-      });
-    },
-  },
-};
+        that.percent = res.progress
+      })
+    }
+  }
+}
 </script>
 
 <style>

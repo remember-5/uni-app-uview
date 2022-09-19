@@ -1,12 +1,12 @@
 <template>
   <view class="protocol_page">
-    <z-nav-bar title="协议"></z-nav-bar>
+    <z-nav-bar title="协议" />
     <!-- 公共组件-每个页面必须引入 -->
-    <public-module></public-module>
+    <public-module />
     <view class="title">
       {{ title }}
     </view>
-    <jyf-parser ref="article"></jyf-parser>
+    <jyf-parser ref="article" />
   </view>
 </template>
 
@@ -15,23 +15,23 @@ export default {
   data() {
     return {
       type: 1000,
-      title: '用户协议',
-    };
+      title: '用户协议'
+    }
   },
   // 第一次加载
   onLoad(e) {
     if (e.type) {
       // eslint-disable-next-line
       this.type = parseInt(e.type);
-      let title;
+      let title
       switch (this.type) {
         case 1000:
-          title = '登录注册用户协议';
-          break;
+          title = '登录注册用户协议'
+          break
       }
-      this.title = title;
+      this.title = title
     }
-    this.pageData();
+    this.pageData()
   },
   // 页面显示
   onShow() {
@@ -41,12 +41,12 @@ export default {
     pageData() {
       this.$http
         .get('api/common/v1/protocol', {
-          type: this.type,
+          type: this.type
         })
         .then((res) => {
-          this.$refs.article.setContent(res);
-        });
-    },
+          this.$refs.article.setContent(res)
+        })
+    }
   },
   // 页面隐藏
   onHide() {
@@ -62,9 +62,9 @@ export default {
   },
   // 用户点击分享
   onShareAppMessage(e) {
-    return this.wxShare();
-  },
-};
+    return this.wxShare()
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '@/style/mixin.scss';

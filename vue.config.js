@@ -1,6 +1,6 @@
-const TransformPages = require('uni-read-pages');
+const TransformPages = require('uni-read-pages')
 
-const { webpack } = new TransformPages();
+const { webpack } = new TransformPages()
 
 module.exports = {
   publicPath: '',
@@ -8,7 +8,7 @@ module.exports = {
   configureWebpack: {
     devServer: {
       // 调试时允许内网穿透，让外网的人访问到本地调试的H5页面
-      disableHostCheck: true,
+      disableHostCheck: true
       // 环境配置
       // port: devServerConfig.proxyPort,
       // hot: true, // false防止开发模式白屏(使用路由缓存时)
@@ -30,14 +30,14 @@ module.exports = {
       new webpack.DefinePlugin({
         ROUTES: webpack.DefinePlugin.runtimeValue(() => {
           const tfPages = new TransformPages({
-            includes: ['path', 'name', 'aliasPath'],
-          });
-          return JSON.stringify(tfPages.routes);
-        }, true),
-      }),
-    ],
+            includes: ['path', 'name', 'aliasPath']
+          })
+          return JSON.stringify(tfPages.routes)
+        }, true)
+      })
+    ]
   },
   // productionSourceMap: false,
   // 指定需要编译的依赖
-  transpileDependencies: ['uview-ui'],
-};
+  transpileDependencies: ['uview-ui']
+}

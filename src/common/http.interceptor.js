@@ -5,12 +5,12 @@ const install = (Vue, vm) => {
     baseUrl: process.env.VUE_APP_BASE_API,
     // 如果将此值设置为true，拦截回调中将会返回服务端返回的所有数据response，而不是response.data
     // 设置为true后，就需要在this.$u.http.interceptor.response进行多一次的判断，请打印查看具体值
-    originalData: true,
+    originalData: true
     // 设置自定义头部content-type
     // header: {
     // 	'content-type': 'xxx'
     // }
-  });
+  })
   // 请求拦截，配置Token等参数
   Vue.prototype.$u.http.interceptor.request = (config) => {
     // config.header.Token = 'xxxxxx';
@@ -29,13 +29,13 @@ const install = (Vue, vm) => {
     // config.header.token = token;
     // TODO 增加version_code 和 access_token
     // #ifdef APP-PLUS
-    config.header.version = vm.vuex_version;
-    config.header.versionCode = vm.vuex_version_code;
-    config.header.platform = vm.vuex_platform;
+    config.header.version = vm.vuex_version
+    config.header.versionCode = vm.vuex_version_code
+    config.header.platform = vm.vuex_platform
     // #endif
-    config.header.Authorization = `Bearer ${vm.vuex_access_token}`;
-    return config;
-  };
+    config.header.Authorization = `Bearer ${vm.vuex_access_token}`
+    return config
+  }
   // 响应拦截，判断状态码是否通过
   Vue.prototype.$u.http.interceptor.response = (res) => {
     // console.log(res);
@@ -44,24 +44,24 @@ const install = (Vue, vm) => {
     // TODO 增加loading和跳转错误页面
     if (res.statusCode === 200) {
       // 如果把originalData设置为了true，这里return回什么，this.$u.post的then回调中就会得到什么
-      return res.data;
+      return res.data
     } if (res.statusCode === 401) {
-      uni.removeStorageSync('accessToken');
-      uni.removeStorageSync('user_info');
-      vm.$u.toast('登陆过期');
+      uni.removeStorageSync('accessToken')
+      uni.removeStorageSync('user_info')
+      vm.$u.toast('登陆过期')
       vm.$u.route({
-        url: 'pages/login/login',
-      });
+        url: 'pages/login/login'
+      })
     } else if (res.statusCode === 500) {
       if (res.data.message) {
-        vm.$u.toast(res.data.message);
+        vm.$u.toast(res.data.message)
       } else {
-        vm.$u.toast('请求异常');
+        vm.$u.toast('请求异常')
       }
-    } return false;
-  };
-};
+    } return false
+  }
+}
 
 export default {
-  install,
-};
+  install
+}

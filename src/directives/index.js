@@ -1,5 +1,5 @@
-import vFull from './vFull';
+import vFull from './vFull'
 
 export default function install(app) {
-  app.directive('full', vFull);
+  app.directive('full', vFull)
 }

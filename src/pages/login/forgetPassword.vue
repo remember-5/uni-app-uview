@@ -17,7 +17,7 @@
             v-model="form.phone"
             :border="false"
             placeholder="请输入手机号"
-          ></u-input>
+          />
         </u-form-item>
         <u-form-item
           :label-style="{color: '#333333',fontWeight:'bold', fontSize: '28rpx',height:'30rpx'}"
@@ -29,7 +29,7 @@
             v-model="form.captcha"
             :border="false"
             placeholder="请输入图形验证码"
-          ></u-input>
+          />
           <u-image
             slot="right"
             class="captchaImg"
@@ -50,7 +50,7 @@
             v-model="form.yzm"
             :border="false"
             placeholder="请输入短信验证码"
-          ></u-input>
+          />
           <u-button
             slot="right"
             class="code-btn"
@@ -75,7 +75,7 @@
             :border="false"
             type="password"
             placeholder="请输入新密码"
-          ></u-input>
+          />
         </u-form-item>
         <u-form-item
           :label-style="{color: '#333333',fontWeight:'bold', fontSize: '28rpx',height:'30rpx'}"
@@ -88,7 +88,7 @@
             :border="false"
             type="password"
             placeholder="请输入确认密码"
-          ></u-input>
+          />
         </u-form-item>
       </u-form>
     </view>
@@ -112,9 +112,9 @@
 
 <script>
 import {
-  checkPhoneCode, phoneSms, imgCaptcha, forgotPwd,
-} from '@/api/user';
-import { encrypt } from '@/common/rsaEncrypt';
+  phoneSms, imgCaptcha, forgotPwd
+} from '@/api/user'
+import { encrypt } from '@/common/rsaEncrypt'
 
 export default {
   data() {
@@ -131,12 +131,12 @@ export default {
 
         // 图形验证码
         captcha: null,
-        imgCaptcha: {},
-      },
-    };
+        imgCaptcha: {}
+      }
+    }
   },
   created() {
-    this.getImgCaptcha();
+    this.getImgCaptcha()
   },
   methods: {
     // 验证码
@@ -144,152 +144,152 @@ export default {
       if (!this.form.phone) {
         this.$refs.uToast.show({
           title: '请输入手机号！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
-      const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
+      const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
       if (!strTemp.test(this.form.phone)) {
         this.$refs.uToast.show({
           title: '请输入正确手机号！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
       if (!this.form.captcha) {
         this.$refs.uToast.show({
           title: '请输入图形验证码！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
       const userYzm = {
         phone: this.form.phone,
         code: this.form.captcha,
-        uuid: this.form.imgCaptcha.uuid,
-      };
+        uuid: this.form.imgCaptcha.uuid
+      }
       phoneSms(this, userYzm).then((res) => {
         if (res.code === 'E0001') {
-          this.setDaojishi();
+          this.setDaojishi()
         } else if (res.code === 'E0002') {
           this.$refs.uToast.show({
             title: '操作频繁,请稍后再试',
-            type: 'warning',
-          });
-          this.getImgCaptcha();
+            type: 'warning'
+          })
+          this.getImgCaptcha()
         } else {
-          this.$u.toast(res.message);
-          this.getImgCaptcha();
+          this.$u.toast(res.message)
+          this.getImgCaptcha()
         }
       }).catch((err) => {
-        console.error(err);
-        this.$u.toast(err.message);
-      });
+        console.error(err)
+        this.$u.toast(err.message)
+      })
     },
     // 验证码倒计时
     setDaojishi() {
-      let i = 59;
-      this.form.codeText = '60s后重新获取';
-      this.form.btnBool = true;
+      let i = 59
+      this.form.codeText = '60s后重新获取'
+      this.form.btnBool = true
       const timer = setInterval(() => {
-        this.form.btnBool = true;
-        this.form.codeText = `${i}s后重新获取`;
-        i--;
+        this.form.btnBool = true
+        this.form.codeText = `${i}s后重新获取`
+        i--
         if (i < 0) {
-          this.form.btnBool = false;
-          this.form.codeText = '获取验证码';
-          clearInterval(timer);
+          this.form.btnBool = false
+          this.form.codeText = '获取验证码'
+          clearInterval(timer)
         }
-      }, 1000);
+      }, 1000)
     },
     // 获取图片验证码
     getImgCaptcha() {
       imgCaptcha(this).then((e) => {
-        this.form.imgCaptcha = e.data;
-      });
+        this.form.imgCaptcha = e.data
+      })
     },
     // 完成提交
     complete() {
       if (!this.form.phone) {
         this.$refs.uToast.show({
           title: '请输入手机号！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
-      const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
+      const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
       if (!strTemp.test(this.form.phone)) {
         this.$refs.uToast.show({
           title: '请输入正确手机号',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
       if (!this.form.captcha) {
         this.$refs.uToast.show({
           title: '请输入图形验证码！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
       if (!this.form.yzm) {
         this.$refs.uToast.show({
           title: '请输入短信验证码！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
       if (!this.form.newpassword) {
         this.$refs.uToast.show({
           title: '请输入新密码！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
       if (!this.form.confirmpassword) {
         this.$refs.uToast.show({
           title: '请输入确认密码！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
-      if (this.form.newpassword != this.form.confirmpassword) {
+      if (this.form.newpassword !== this.form.confirmpassword) {
         this.$refs.uToast.show({
           title: '两次输入密码不一致！',
-          type: 'warning',
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
-      this.submitResFun();
+      this.submitResFun()
     },
 
     submitResFun() {
-      const phoneYzm = {
-        phone: this.form.phone,
-        smsCode: this.form.yzm,
-        code: this.form.captcha,
-        uuid: this.form.imgCaptcha.uuid,
-      };
+      // const phoneYzm = {
+      //   phone: this.form.phone,
+      //   smsCode: this.form.yzm,
+      //   code: this.form.captcha,
+      //   uuid: this.form.imgCaptcha.uuid
+      // }
       const passParams = {
         phone: this.form.phone,
         smsCode: this.form.yzm,
         newPassword: encrypt(this.form.newpassword),
-        confirmPassword: encrypt(this.form.confirmpassword),
-      };
+        confirmPassword: encrypt(this.form.confirmpassword)
+      }
       forgotPwd(this, passParams).then((e) => {
-        this.$u.toast(e.message);
-        if (e.code == '00000') {
+        this.$u.toast(e.message)
+        if (e.code === '00000') {
           setTimeout(() => {
-            uni.navigateBack();// 返回上一页
-          }, 800);
+            uni.navigateBack()// 返回上一页
+          }, 800)
         }
       }).catch((err) => {
-        console.error(err);
-        this.$u.toast(err.message);
-      });
-    },
-  },
-};
+        console.error(err)
+        this.$u.toast(err.message)
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

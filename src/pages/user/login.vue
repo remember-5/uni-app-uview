@@ -1,13 +1,13 @@
 <template>
   <view class="register_page">
-    <z-nav-bar :shadow="false"></z-nav-bar>
+    <z-nav-bar :shadow="false" />
     <!-- 公共组件-每个页面必须引入 -->
-    <public-module></public-module>
+    <public-module />
     <view class="logo">
       <image
         :src="logo"
         mode="aspectFill"
-      ></image>
+      />
     </view>
     <view class="login_method">
       <view
@@ -35,7 +35,7 @@
         placeholder="请输入您的邮箱"
         placeholder-class="grey"
         @input="onInput"
-      />
+      >
     </view>
     <view
       v-if="type == 2000"
@@ -49,7 +49,7 @@
         maxlength="6"
         @input="onInput"
         @confirm="onSubmit"
-      />
+      >
       <button
         class="active"
         @click="onSetCode"
@@ -69,26 +69,26 @@
         placeholder-class="grey"
         @input="onInput"
         @confirm="onSubmit"
-      />
+      >
       <image
         v-if="isSee"
         src="../../static/images/ic_logon_display.png"
         mode="aspectFit"
         @click="isSee = false"
-      ></image>
+      />
       <image
         v-else-if="!isSee"
         src="../../static/images/ic_logon_hide.png"
         mode="aspectFit"
         @click="isSee = true"
-      ></image>
+      />
     </view>
     <view class="protocol_box">
       <view
         class="select"
         :class="{active: agree}"
         @click="agree = !agree"
-      ></view>
+      />
       我已同意
       <text @click="onPageJump('/pages/user/protocol')">
         《用户协议》
@@ -135,13 +135,13 @@
           src="../../static/images/ic_login_weixin.png"
           mode="aspectFit"
           @click="onWxAppLogin"
-        ></image>
+        />
         <image
           v-if="isIos && system >= 13"
           src="../../static/images/ic_login_ios.png"
           mode="aspectFit"
           @click="onAppleLogin"
-        ></image>
+        />
       </view>
     </view>
     <!-- #endif -->
@@ -150,13 +150,12 @@
 
 <script>
 import {
-  mapState,
-  mapMutations,
-} from 'vuex';
-import md5 from '@/plugins/md5';
-import socket from '@/config/socket';
+  mapMutations
+} from 'vuex'
+import md5 from '@/plugins/md5'
+import socket from '@/config/socket'
 
-let clear;
+let clear
 
 export default {
   data() {
@@ -176,20 +175,20 @@ export default {
       isIos: true,
       isWeixin: true,
       system: 13,
-      clearTime: null,
-    };
+      clearTime: null
+    }
   },
   // 第一次加载
   onLoad(e) {
-    this.logo = this.$base.logoUrl;
+    this.logo = this.$base.logoUrl
     // #ifdef APP-PLUS
-    this.isIos = (plus.os.name == 'iOS');
-    const systemInfo = uni.getSystemInfoSync();
-    this.system = parseFloat(systemInfo.system.replace(/[a-zA-Z]/g, ''));
+    this.isIos = (plus.os.name === 'iOS')
+    const systemInfo = uni.getSystemInfoSync()
+    this.system = parseFloat(systemInfo.system.replace(/[a-zA-Z]/g, ''))
     this.isWeixin = plus.runtime.isApplicationExist({
       pname: 'com.tencent.mm',
-      action: 'weixin://',
-    });
+      action: 'weixin://'
+    })
     // #endif
   },
   // 页面显示
@@ -200,129 +199,129 @@ export default {
     ...mapMutations(['setUserInfo']),
     onPageJump(url) {
       uni.navigateTo({
-        url,
-      });
+        url
+      })
     },
     onInput() {
-      this.clearTime && clearTimeout(this.clearTime);
+      this.clearTime && clearTimeout(this.clearTime)
       this.clearTime = setTimeout(() => {
-        if (this.type == 2000) {
+        if (this.type === 2000) {
           if (this.email && this.code) {
-            this.btnShow = true;
+            this.btnShow = true
           } else {
-            this.btnShow = false;
+            this.btnShow = false
           }
         } else if (this.email && this.password) {
-          this.btnShow = true;
+          this.btnShow = true
         } else {
-          this.btnShow = false;
+          this.btnShow = false
         }
-      }, 500);
+      }, 500)
     },
     // 验证码按钮文字状态
     getCodeState() {
-      clear && clearInterval(clear);
-      const _this = this;
-      this.readonly = true;
-      this.codeText = '60S';
-      let s = 60;
+      clear && clearInterval(clear)
+      const _this = this
+      this.readonly = true
+      this.codeText = '60S'
+      let s = 60
       clear = setInterval(() => {
-        s--;
-        _this.codeText = `${s}S`;
+        s--
+        _this.codeText = `${s}S`
         if (s <= 0) {
-          clearInterval(clear);
-          _this.codeText = '获取验证码';
-          _this.readonly = false;
+          clearInterval(clear)
+          _this.codeText = '获取验证码'
+          _this.readonly = false
         }
-      }, 1000);
+      }, 1000)
     },
     // 发送验证码
     onSetCode() {
       if (this.readonly) {
-        return;
+        return
       }
       if (!this.email) {
         uni.showToast({
           title: '请输入邮箱',
-          icon: 'none',
-        });
-        return;
+          icon: 'none'
+        })
+        return
       }
       if (!this.$base.mailRegular.test(this.email)) {
         uni.showToast({
           title: '邮箱格式不正确',
-          icon: 'none',
-        });
-        return;
+          icon: 'none'
+        })
+        return
       }
       this.$http
         .post('api/common/v1/send_sms', {
           email: this.email,
-          type: 2000,
+          type: 2000
         })
         .then((res) => {
-          this.getCodeState();
-        });
+          this.getCodeState()
+        })
     },
     onSubmit() {
       if (!this.agree) {
         uni.showToast({
           title: '请先同意《用户协议》和《隐私协议》',
-          icon: 'none',
-        });
-        return;
+          icon: 'none'
+        })
+        return
       }
       if (!this.email) {
         uni.showToast({
           title: '请输入邮箱',
-          icon: 'none',
-        });
-        return;
+          icon: 'none'
+        })
+        return
       }
       if (!this.$base.mailRegular.test(this.email)) {
         uni.showToast({
           title: '邮箱格式不正确',
-          icon: 'none',
-        });
-        return;
+          icon: 'none'
+        })
+        return
       }
       const httpData = {
-        email: this.email,
-      };
-      if (this.type == 2000) {
+        email: this.email
+      }
+      if (this.type === 2000) {
         if (!this.code) {
           uni.showToast({
             title: '请输入验证码',
-            icon: 'none',
-          });
-          return;
+            icon: 'none'
+          })
+          return
         }
-        httpData.code = this.code;
+        httpData.code = this.code
       } else {
         if (!this.password) {
           uni.showToast({
             title: '请输入密码',
-            icon: 'none',
-          });
-          return;
+            icon: 'none'
+          })
+          return
         }
-        httpData.password = md5(this.password);
+        httpData.password = md5(this.password)
       }
       this.$http.post('api/common/v1/login', httpData).then((res) => {
-        this.setUserInfo(res);
-        socket.init();
+        this.setUserInfo(res)
+        socket.init()
         uni.showToast({
           title: '登录成功',
           duration: 2000,
           success: () => {
             setTimeout(() => {
               uni.switchTab({
-                url: 'pages/template/addTemplate',
-              });
-            }, 2000);
-          },
-        });
-      });
+                url: 'pages/template/addTemplate'
+              })
+            }, 2000)
+          }
+        })
+      })
     },
     // 微信APP登录
     onWxAppLogin() {
@@ -331,32 +330,32 @@ export default {
         success: (res) => {
           uni.getUserInfo({
             success: (info) => {
-              this.userInfo = info.userInfo;
+              this.userInfo = info.userInfo
               if (res.authResult.openid && res.authResult.unionid) {
                 this.$http
                   .post('api/open/v1/login', {
                     wxAppOpenId: res.authResult.openid,
                     unionid: res.authResult.unionid,
                     nickname: this.userInfo.nickName,
-                    headImg: this.userInfo.avatarUrl,
+                    headImg: this.userInfo.avatarUrl
                   })
                   .then((data) => {
                     this.setUserInfo({
                       openId: res.authResult.openid,
                       unionid: res.authResult.unionid,
-                      ...data,
-                    });
+                      ...data
+                    })
                     if (data.thirdLoginSuccess) {
-                      socket.init();
+                      socket.init()
                       uni.showToast({
                         title: '登录成功',
-                        duration: 2000,
-                      });
+                        duration: 2000
+                      })
                       setTimeout(() => {
                         uni.switchTab({
-                          url: '/pages/home/home',
-                        });
-                      }, 2000);
+                          url: '/pages/home/home'
+                        })
+                      }, 2000)
                     } else {
                       uni.showModal({
                         title: '提示',
@@ -366,29 +365,29 @@ export default {
                         success: (res) => {
                           if (res.confirm) {
                             uni.redirectTo({
-                              url: '/pages/user/bindPhone',
-                            });
+                              url: '/pages/user/bindPhone'
+                            })
                           }
-                        },
-                      });
+                        }
+                      })
                     }
-                  });
+                  })
               } else {
                 uni.showToast({
                   title: '点击无效，请再次点击',
-                  icon: 'none',
-                });
+                  icon: 'none'
+                })
               }
             },
             fail: () => {
-              console.log('未授权');
-            },
-          });
+              console.log('未授权')
+            }
+          })
         },
         fail(err) {
-          console.log(err);
-        },
-      });
+          console.log(err)
+        }
+      })
     },
     // 苹果登录
     onAppleLogin() {
@@ -401,21 +400,21 @@ export default {
               if (userInfoRes.userInfo.identityToken) {
                 this.$http
                   .post('api/open/v1/ios_login', {
-                    identityToken: userInfoRes.userInfo.identityToken,
+                    identityToken: userInfoRes.userInfo.identityToken
                   })
                   .then((data) => {
-                    this.setUserInfo(data);
+                    this.setUserInfo(data)
                     if (data.thirdLoginSuccess) {
-                      socket.init();
+                      socket.init()
                       uni.showToast({
                         title: '登录成功',
-                        duration: 2000,
-                      });
+                        duration: 2000
+                      })
                       setTimeout(() => {
                         uni.switchTab({
-                          url: '/pages/home/home',
-                        });
-                      }, 2000);
+                          url: '/pages/home/home'
+                        })
+                      }, 2000)
                     } else {
                       uni.showModal({
                         title: '提示',
@@ -425,43 +424,40 @@ export default {
                         success: (res) => {
                           if (res.confirm) {
                             uni.redirectTo({
-                              url: '/pages/user/bindPhone',
-                            });
+                              url: '/pages/user/bindPhone'
+                            })
                           }
-                        },
-                      });
+                        }
+                      })
                     }
-                  });
+                  })
               }
-            },
-          });
+            }
+          })
         },
         fail: (err) => {
+          console.log(err)
           uni.showToast({
             title: '登录失败',
-            icon: 'none',
-          });
-        },
-      });
-    },
+            icon: 'none'
+          })
+        }
+      })
+    }
   },
   // 页面隐藏
-  onHide() {
-  },
+  onHide() {},
   // 页面卸载
-  onUnload() {
-  },
+  onUnload() {},
   // 页面下来刷新
-  onPullDownRefresh() {
-  },
+  onPullDownRefresh() {},
   // 页面上拉触底
-  onReachBottom() {
-  },
+  onReachBottom() {},
   // 用户点击分享
   onShareAppMessage(e) {
-    return this.wxShare();
-  },
-};
+    return this.wxShare()
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '@/style/mixin.scss';
