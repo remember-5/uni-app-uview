@@ -218,7 +218,7 @@ import {
   encrypt
 } from '@/common/rsaEncrypt.js'
 import {
-  register, loginByAccount, loginByWx, code, captchaByRegister
+  register, loginByAccount, loginByWx, code, captchaByRegister,wxMiniAppCode2Sessions,wxMiniAppLogin
 } from '@/api/user.js'
 
 export default {
@@ -238,7 +238,7 @@ export default {
       yzm: '',
       codeText: '获取验证码',
       btnBool: false,
-      wxcode: null
+      wxCode: null
     }
   },
   computed: {
@@ -252,16 +252,48 @@ export default {
   },
   created() {
     this.getImgCaptcha()
+    // #ifdef MP-WEIXIN
+    this.getWxCode()
+    // #endif
   },
   methods: {
-    // 微信登录
-    wxlogin() {
-      const that = this
+    // #ifdef MP-WEIXIN
+    getWxCode() {
+      // #ifdef MP-WEIXIN
       uni.login({
         provider: 'weixin',
-        success(loginRes) {
-          that.wxcode = loginRes.code
+        success: (loginRes) => {
+          this.wxCode = loginRes.code
         }
+      })
+    },
+    // #endif
+    // 微信登录
+    wxlogin(loginInfo) {
+      wxMiniAppCode2Sessions(this, { wxCode: this.wxCode }).then(e => {
+        if (e.code === '00000') {
+          console.log(e)
+          this.sessionKey = e.data
+        } else {
+          this.$u.toast('获取sessionKey失败！')
+        }
+      }).then(e => {
+        const params = { ...loginInfo.detail, 'wxCode': this.wxCode, 'sessionKey': this.sessionKey }
+        wxMiniAppLogin(this, params).then(info => {
+          if (info.code === '00000') {
+            const data = e.data
+            this.$u.vuex('vuex_access_token', data.access_token)
+            this.$u.vuex('vuex_refresh_token', data.refresh_token)
+            this.$u.vuex('vuex_user_info', data.user_info)
+            this.$u.toast('登录成功！')
+            setTimeout(() => {
+              this.$u.route({
+                url: 'pages/index/index',
+                type: 'switchTab'
+              })
+            }, 800)// 延时0.8秒
+          }
+        })
       })
     },
     // 支付宝登录

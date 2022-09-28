@@ -8,6 +8,10 @@ export const loginByAccount = (vm, data) => vm.$u.post('/user/loginByAccount', d
 export const loginByPhoneCaptcha = (vm, data) => vm.$u.post('/user/loginByPhoneCaptcha', data)
 // 微信一键登录
 export const loginByWx = (vm, data) => vm.$u.post('/user/loginByWx', data)
+// 微信小程序code换取session
+export const wxMiniAppCode2Sessions = (vm, params) => vm.$u.post(`/user/wxMiniAppCode2Sessions`, params)
+// 微信小程序登录
+export const wxMiniAppLogin = (vm, params) => vm.$u.post(`/user/wxMiniAppLogin`, params)
 // 支付宝一键登录
 export const loginByZfb = (vm, data) => vm.$u.post('/user/loginByZfb', data)
 // Token续期
