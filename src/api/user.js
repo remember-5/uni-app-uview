@@ -17,7 +17,7 @@ export const loginByZfb = (vm, data) => vm.$u.post('/user/loginByZfb', data)
 // Token续期
 export const refToken = (vm, data) => vm.$u.post('/user/refToken', data)
 // 获取图形验证码
-export const code = (vm, data) => vm.$u.get('/user/code', data)
+export const code = (vm) => vm.$u.get('/user/code')
 // 注销
 export const deleted = (vm, data) => vm.$u.get('/user/deleted', data)
 // 短信验证码

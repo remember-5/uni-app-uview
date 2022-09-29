@@ -218,7 +218,7 @@ import {
   encrypt
 } from '@/common/rsaEncrypt.js'
 import {
-  register, loginByAccount, loginByWx, code, captchaByRegister,wxMiniAppCode2Sessions,wxMiniAppLogin
+  register, loginByAccount, loginByWx, code, captchaByRegister, wxMiniAppCode2Sessions, wxMiniAppLogin
 } from '@/api/user.js'
 
 export default {
@@ -259,7 +259,6 @@ export default {
   methods: {
     // #ifdef MP-WEIXIN
     getWxCode() {
-      // #ifdef MP-WEIXIN
       uni.login({
         provider: 'weixin',
         success: (loginRes) => {
@@ -464,6 +463,7 @@ export default {
 
       const user = {
         phone: this.phone,
+        username: this.phone,
         password: encrypt(this.password1),
         smsCode: this.yzm,
         code: this.captcha,
