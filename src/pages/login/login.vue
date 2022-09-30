@@ -218,7 +218,7 @@ import {
   encrypt
 } from '@/common/rsaEncrypt.js'
 import {
-  register, loginByAccount, loginByWx, code, captchaByRegister, wxMiniAppCode2Sessions, wxMiniAppLogin
+  register, loginByAccount, loginByWx, code, captchaByRegister, wxMiniAppCode2Sessions, wxMiniAppLogin, getUserInfo
 } from '@/api/user.js'
 
 export default {
@@ -253,7 +253,7 @@ export default {
   created() {
     this.getImgCaptcha()
     // #ifdef MP-WEIXIN
-    this.getWxCode()
+    // this.getWxCode()
     // #endif
   },
   methods: {
@@ -374,12 +374,15 @@ export default {
           this.$u.vuex('vuex_refresh_token', data.refresh_token)
           this.$u.vuex('vuex_user_info', data.user_info)
           this.$u.toast('登录成功！')
-          setTimeout(() => {
-            this.$u.route({
-              url: 'pages/index/index',
-              type: 'switchTab'
-            })
-          }, 800)// 延时0.8秒
+          getUserInfo(this).then(info => {
+            console.log(info)
+          })
+          // setTimeout(() => {
+          //   this.$u.route({
+          //     url: 'pages/index/index',
+          //     type: 'switchTab'
+          //   })
+          // }, 800)// 延时0.8秒
         } else {
           // this.$u.toast(e.message);
           this.$u.toast('账号或密码错误')

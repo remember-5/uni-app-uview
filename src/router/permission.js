@@ -1,15 +1,15 @@
 import store from '@/store'
 
 export default (router) => {
-  console.log(store)
-  console.log(store.state.vuex_access_token)
+  // console.log(store)
+  // console.log(store.state.vuex_access_token)
   // 路由白名单
   const whiteList = ['/pages/login/login', '/pages/index/index'] // no redirect whitelist
 
   // 全局路由前置守卫
   router.beforeEach(async(to, from, next) => {
-    console.log('router.beforeEach.to', to)
-    console.log('router.beforeEach.from', from)
+    // console.log('router.beforeEach.to', to)
+    // console.log('router.beforeEach.from', from)
 
     const token = store.state.vuex_access_token
     const userId = store.state.vuex_user_info
@@ -54,7 +54,7 @@ export default (router) => {
 
   // 全局路由后置守卫
   router.afterEach((to, from) => {
-    console.log('router.afterEach.to', to)
-    console.log('router.afterEach.from', from)
+    // console.log('router.afterEach.to', to)
+    // console.log('router.afterEach.from', from)
   })
 }

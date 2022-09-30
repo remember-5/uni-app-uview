@@ -4,6 +4,8 @@ export const register = (vm, data) => vm.$u.post('/user/register', data)
 export const logout = (vm) => vm.$u.post('/user/logout')
 // 账号登录
 export const loginByAccount = (vm, data) => vm.$u.post('/user/loginByAccount', data)
+// 账号登录
+export const getUserInfo = (vm) => vm.$u.get('/user/info')
 // 手机验证码登录
 export const loginByPhoneCaptcha = (vm, data) => vm.$u.post('/user/loginByPhoneCaptcha', data)
 // 微信一键登录
