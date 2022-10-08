@@ -81,7 +81,7 @@
     "regenerator-runtime": "^0.13.9",
     "vue": "^2.6.14",
     "vuex": "^3.6.2",
-    "uview-ui": "^1.8.6",
+    "uview-ui": "^1.8.7",
     "uni-simple-router": "^2.0.7",
     "vue-i18n": "^8.20.0"
   },
