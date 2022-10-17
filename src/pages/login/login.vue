@@ -83,7 +83,6 @@
           style="margin-bottom: 20px;"
           class="getCaptcha"
           open-type="getPhoneNumber"
-          @tap="wxlogin"
           @getphonenumber="getphonenumberWx"
         >
           微信账号一键登录
@@ -218,7 +217,7 @@ import {
   encrypt
 } from '@/common/rsaEncrypt.js'
 import {
-  register, loginByAccount, loginByWx, code, captchaByRegister, wxMiniAppCode2Sessions, wxMiniAppLogin, getUserInfo
+  register, loginByAccount, code, captchaByRegister, wxMiniAppCode2Sessions, wxMiniAppLogin, getUserInfo
 } from '@/api/user.js'
 
 export default {
@@ -269,7 +268,7 @@ export default {
     },
     // #endif
     // 微信登录
-    wxlogin(loginInfo) {
+    getphonenumberWx(loginInfo) {
       wxMiniAppCode2Sessions(this, { wxCode: this.wxCode }).then(e => {
         if (e.code === '00000') {
           console.log(e)
@@ -390,28 +389,6 @@ export default {
           this.getImgCaptcha()
           // this.getyzm();
         }
-      })
-    },
-    getphonenumberWx(e) {
-      const that = this
-      loginByWx(that, {
-        loginType: 4,
-        code: that.wxcode,
-        encryptedData: e.detail.encryptedData,
-        iv: e.detail.iv
-      }).then((res) => {
-        if (res.code !== '00000') {
-          that.$u.toast('登录失败！')
-          that.wxlogin()
-        }
-        this.$u.vuex('vuex_access_token', res.data.access_token)
-        this.$u.vuex('vuex_refresh_token', res.data.refresh_token)
-        this.$u.vuex('vuex_user_info', res.data.user_info)
-        that.$u.toast('登录成功！')
-        that.$u.route({
-          url: 'pages/index/index',
-          type: 'switchTab'
-        })
       })
     },
     getPhoneNumberZFB() {
