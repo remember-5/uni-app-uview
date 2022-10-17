@@ -96,9 +96,9 @@
         "appid" : "",
         "setting" : {
             "urlCheck" : true,
-            "es6" : false,
+            "es6" : true,
             "minified" : true,
-            "postcss" : true
+            "postcss" : false
         },
         "optimization" : {
             "subPackages" : true

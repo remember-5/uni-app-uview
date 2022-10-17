@@ -238,7 +238,8 @@ export default {
       yzm: '',
       codeText: '获取验证码',
       btnBool: false,
-      wxCode: null
+      wxCode: null,
+      sessionKey: null
     }
   },
   computed: {
@@ -253,7 +254,7 @@ export default {
   created() {
     this.getImgCaptcha()
     // #ifdef MP-WEIXIN
-    // this.getWxCode()
+    this.getWxCode()
     // #endif
   },
   methods: {
