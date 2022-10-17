@@ -1,5 +1,5 @@
 // 引用
-import JSEncrypt from 'jsencrypt'
+import JSEncrypt from './jsencrypt'
 
 // 密钥对生成 http://web.chacuo.net/netrsakeypair
 // 加密
