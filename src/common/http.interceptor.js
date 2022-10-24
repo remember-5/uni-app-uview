@@ -45,8 +45,9 @@ const install = (Vue, vm) => {
       // 如果把originalData设置为了true，这里return回什么，this.$u.post的then回调中就会得到什么
       return res.data
     } if (res.statusCode === 401) {
-      uni.removeStorageSync('accessToken')
-      uni.removeStorageSync('user_info')
+      this.$u.vuex('vuex_access_token', '')
+      this.$u.vuex('vuex_refresh_token', '')
+      this.$u.vuex('vuex_user_info', {})
       vm.$u.toast('登陆过期')
       vm.$u.route({
         url: 'pages/login/login'
