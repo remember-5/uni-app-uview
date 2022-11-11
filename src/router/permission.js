@@ -4,7 +4,7 @@ export default (router) => {
   // console.log(store)
   // console.log(store.state.vuex_access_token)
   // 路由白名单
-  const whiteList = ['/pages/login/login', '/pages/index/index'] // no redirect whitelist
+  const whiteList = ['/pages/login/login', '/pages/index/index', '/pages/index/upload'] // no redirect whitelist
 
   // 全局路由前置守卫
   router.beforeEach(async(to, from, next) => {

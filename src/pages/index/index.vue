@@ -27,6 +27,9 @@
     <u-button @click="$u.route('/pages/pdf/pdf')">
       pdf预览
     </u-button>
+    <u-button @click="$u.route('/pages/index/upload')">
+      下载图片，并上传到服务器
+    </u-button>
     <view>{{ $t('common.intro') }}</view>
     <u-rate
       v-model="value"
