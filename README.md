@@ -278,3 +278,8 @@ this.$u.route({
   },
 });
 ```
+
+## 热更方案
+待完善
+
+使用插件 [https://excalidraw.com/](https://excalidraw.com/) 打开`docs/app-upgrade.excalidraw`

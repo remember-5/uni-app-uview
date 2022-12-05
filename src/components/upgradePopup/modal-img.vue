@@ -1,15 +1,16 @@
 <template>
   <view
-    class="zaiui-modal-box"
-    :class="show?'show':''"
+    v-show="show"
+    class="zaiui-modal-box show"
   >
     <view class="dialog">
       <image
         class="img"
-        src="http://oss.bj-gly-zgdx-bzx-icp.caiicloudoss.com/smeapp/7a3bb7ca-726c-4658-ae1d-a3d1fbaed587.png"
+        src="@/static/images/upgrade_bg.png"
         lazy-load
         mode="widthFix"
       />
+      <u-icon name="close" color="#606266" size="28" class="close-icon" @click="close" />
       <!-- 新版本升级-更新前 -->
       <view
         v-if="!afterShow"
@@ -87,6 +88,9 @@ export default {
   methods: {
     updateNowBtn() {
       this.$emit('updateNowBtn')
+    },
+    close() {
+      this.$emit('close')
     }
 
   }
@@ -118,14 +122,14 @@ export default {
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    width: 522 rpx;
+    width: 522rpx;
     border-radius: 3%;
-    height: 608 rpx;
+    height: 608rpx;
 
     .img {
       width: 100%;
       border-radius: 3%;
-      height: 608 rpx;
+      height: 608rpx;
     }
 
     .before-box {
@@ -137,40 +141,40 @@ export default {
         position: absolute;
         z-index: 9;
         top: 0;
-        margin-top: 260 rpx;
+        margin-top: 260rpx;
         left: 0;
         right: 0;
 
         .title-font {
-          font-size: 38 rpx;
+          font-size: 38rpx;
           font-family: SourceHanSansCN-Medium-, SourceHanSansCN-Medium;
           font-weight: normal;
           color: #C72323;
-          line-height: 66 rpx;
+          line-height: 66rpx;
         }
 
         .cont-font {
-          font-size: 20 rpx;
+          font-size: 20rpx;
           font-family: SourceHanSansCN-Regular-, SourceHanSansCN-Regular;
           font-weight: normal;
           color: #A5A5A5;
-          line-height: 40 rpx;
-          margin-top: 30 rpx;
+          line-height: 40rpx;
+          margin-top: 30rpx;
         }
       }
 
       .anniulq-main {
-        width: 310 rpx;
-        height: 72 rpx;
+        width: 310rpx;
+        height: 72rpx;
         position: absolute;
-        bottom: 60 rpx;
+        bottom: 60rpx;
         left: 0;
         right: 0;
         margin: 0 auto;
 
         .btnlq-img {
-          width: 310 rpx;
-          height: 72 rpx;
+          width: 310rpx;
+          height: 72rpx;
         }
       }
     }
@@ -184,35 +188,35 @@ export default {
         position: absolute;
         z-index: 9;
         top: 0;
-        margin-top: 260 rpx;
+        margin-top: 260rpx;
         left: 0;
         right: 0;
 
         .title-font {
-          font-size: 38 rpx;
+          font-size: 38rpx;
           font-family: SourceHanSansCN-Medium-, SourceHanSansCN-Medium;
           font-weight: normal;
           color: #C72323;
-          line-height: 66 rpx;
+          line-height: 66rpx;
         }
 
         .cont-font {
-          font-size: 20 rpx;
+          font-size: 20rpx;
           font-family: SourceHanSansCN-Regular-, SourceHanSansCN-Regular;
           font-weight: normal;
           color: #A5A5A5;
-          line-height: 40 rpx;
-          margin-top: 60 rpx;
+          line-height: 40rpx;
+          margin-top: 60rpx;
         }
       }
 
       .progress-main {
         position: absolute;
-        bottom: 60 rpx;
+        bottom: 60rpx;
         left: 0;
         right: 0;
         margin: 0 auto;
-        padding: 0 70 rpx;
+        padding: 0 70rpx;
       }
 
       // 进度条
@@ -220,19 +224,25 @@ export default {
         display: block;
         text-align: right;
         color: #A5A5A5;
-        font-size: 20 rpx;
+        font-size: 20rpx;
       }
     }
 
   }
 }
 
-  .zaiui-modal-box.show {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 1;
-    pointer-events: auto;
-  }
+.zaiui-modal-box.show {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.close-icon{
+  position: absolute;
+  top: 60px;
+  right: 15px;
+}
 </style>
