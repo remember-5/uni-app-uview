@@ -81,7 +81,7 @@ export default {
     updateNowBtn() {
       this.installapp(this.dowAppUrl)
     },
-
+    // 更新app
     updataapp() {
       isnew(this).then((res) => {
         if (!res.data.isnew) {
@@ -90,6 +90,7 @@ export default {
         }
       })
     },
+    // 安装app
     installapp(url) {
       if (this.vuex_platform === 'ios') {
         uni.request({
