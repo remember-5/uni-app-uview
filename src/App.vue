@@ -1,5 +1,8 @@
 <script>
-import { getVersion } from '@/api/version'
+import {
+  getVersion
+} from '@/common/api/device.js'
+// import { mPushInfoDel, mPushInfoPut, mPushInfoDelAll } from '@/api/tags'
 
 export default {
   // 此处globalData为了演示其作用，不是uView框架的一部分
@@ -7,68 +10,111 @@ export default {
     username: ''
   },
   onLaunch() {
-    // 1.1.0版本之前关于http拦截器代码，已平滑移动到/common/http.interceptor.js中
-    // 注意，需要在/main.js中实例化Vue之后引入如下(详见文档说明)：
-    // import httpInterceptor from '@/common/http.interceptor.js'
-    // Vue.use(httpInterceptor, app)
-    // process.env.VUE_APP_PLATFORM 为通过js判断平台名称的方法，结果分别如下：
-    // #ifdef APP-PLUS
-    if (!this.vuex_version || !this.vuex_version_code) {
-      plus.runtime.getProperty(plus.runtime.appid, (wgtinfo) => {
-        // console.log(wgtinfo)
-        // todo 需要在版本或版本号更改时进行重新获取
-        this.$u.vuex('vuex_version', wgtinfo.version)
-        this.$u.vuex('vuex_version_code', wgtinfo.versionCode)
-        this.getVersion()
-      })
-    } else {
-      this.getVersion()
-    }
-    // #endif
+    // 判断app和h5平台
     // #ifdef APP-PLUS || H5
-    if (!this.vuex_platform) {
-      uni.getSystemInfo({
-        success: (info) => {
-          this.$u.vuex('vuex_platform', info.platform)
-        }
-      })
-    }
+    const systemInfoSync = uni.getSystemInfoSync()
+    this.$u.vuex('vuex_platform', systemInfoSync.platform)
     // #endif
-    /**
-     * h5，app-plus(nvue下也为app-plus)，mp-weixin，mp-alipay......
-     */
+
     // 判断微信更新
     // #ifdef MP-WEIXIN
-    const updateManager = uni.getUpdateManager()
-    updateManager.onCheckForUpdate((res) => {
-      // 请求完新版本信息的回调
-      // console.log(res.hasUpdate);
-    })
-
-    updateManager.onUpdateReady((res) => {
-      uni.showModal({
-        title: '更新提示',
-        content: '新版本已经准备好，是否重启应用？',
-        success(res) {
-          if (res.confirm) {
-            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-            updateManager.applyUpdate()
-          }
-        }
-      })
-    })
-
-    updateManager.onUpdateFailed((res) => {
-      // 新的版本下载失败
-      uni.showModal({
-        title: '提示',
-        content: '新版小程序下载失败\n请自行退出程序，手动卸载本程序，再运行',
-        confirmText: '知道了'
-      })
+    this.wxMiniProgramUpgrade()
+    // #endif
+  },
+  onShow() {
+    // #ifdef APP-PLUS
+    plus.runtime.getProperty(plus.runtime.appid, async(wgtinfo) => {
+      this.$u.vuex('vuex_version', wgtinfo.version)
+      this.$u.vuex('vuex_version_code', wgtinfo.versionCode)
+      await this.checkStats()
+      this.getVersion()
     })
     // #endif
   },
   methods: {
+    // #ifdef MP-WEIXIN
+    /**
+     * 微信小程序更新
+     */
+    wxMiniProgramUpgrade() {
+      const updateManager = uni.getUpdateManager()
+      updateManager.onCheckForUpdate((res) => {
+        // 请求完新版本信息的回调
+        // console.log(res.hasUpdate);
+      })
+
+      updateManager.onUpdateReady((res) => {
+        uni.showModal({
+          title: '更新提示',
+          content: '新版本已经准备好，是否重启应用？',
+          success(res) {
+            if (res.confirm) {
+              // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+              updateManager.applyUpdate()
+            }
+          }
+        })
+      })
+
+      updateManager.onUpdateFailed((res) => {
+        // 新的版本下载失败
+        uni.showModal({
+          title: '提示',
+          content: '新版小程序下载失败\n请自行退出程序，手动卸载本程序，再运行',
+          confirmText: '知道了'
+        })
+      })
+    },
+    // #endif
+    /**
+     * 检测更新状态
+     * @returns {Promise<RequestTask>}
+     */
+    async checkStats() {
+      // 判断是否维护
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise(async(resolve, reject) => {
+        console.log('开始checkStats')
+        const version = this.vuex_version
+        const versionCode = this.vuex_version_code
+        let platform = this.vuex_platform
+        // #ifdef H5
+        platform = 'h5'
+        // #endif
+
+        uni.request({
+          url: process.env.VUE_APP_STATS_API, // 仅为示例，并非真实接口地址。
+          data: {},
+          header: {
+            version,
+            versionCode,
+            platform
+          },
+          success: (res) => {
+            console.log('checkStats response ', res)
+            if (res.statusCode === 200) {
+              const res_data = res.data
+              if (res_data.code === '00000') {
+                if (res_data.data && res_data.data === true) {
+                  // 开始维护
+                  console.warn('系统维护中')
+                  this.$u.route('pages/index/upgradePage')
+                }
+                // 不维护
+              }
+            } else {
+              console.warn('系统维护中')
+              this.$u.route('pages/index/upgradePage')
+            }
+            resolve()
+          },
+          fail: (e) => {
+            console.warn('开始维护')
+            this.$u.route('pages/index/upgradePage')
+          }
+        })
+      })
+    },
     getVersion() {
       getVersion(this).then((res) => {
         res = res.data
