@@ -1,7 +1,7 @@
 <script>
 import {
   getVersion
-} from '@/common/api/device.js'
+} from '@/api/version.js'
 // import { mPushInfoDel, mPushInfoPut, mPushInfoDelAll } from '@/api/tags'
 
 export default {
