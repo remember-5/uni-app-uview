@@ -94,6 +94,13 @@
         "navigationBarTitleText": "预览pdf",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path": "pages/webview/webview",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "subPackages": [],

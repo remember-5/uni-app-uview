@@ -40,6 +40,7 @@ export default (router) => {
       // 在免登录白名单，直接进入
       next()
     } else {
+      // next()
       next({
         path: '/pages/login/login',
         query: {
