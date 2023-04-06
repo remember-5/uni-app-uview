@@ -1,31 +1,10 @@
 const TransformPages = require('uni-read-pages')
-
 const { webpack } = new TransformPages()
-
 module.exports = {
-  publicPath: '',
-  // 配置路径别名
+  // productionSourceMap: false,
+  lintOnSave: process.env.NODE_ENV === 'development',
+  transpileDependencies: ['uview-ui', 'luch-request'], // 需要babel-loader转义的第三方依赖, 指定需要编译的依赖
   configureWebpack: {
-    devServer: {
-      // 调试时允许内网穿透，让外网的人访问到本地调试的H5页面
-      disableHostCheck: true
-      // 环境配置
-      // port: devServerConfig.proxyPort,
-      // hot: true, // false防止开发模式白屏(使用路由缓存时)
-      // ...(devServerConfig.useProxy && devServerConfig.proxyURL
-      //   ? {
-      //     proxy: {
-      //       /** 解决本地测试跨域问题 */
-      //       [`${devServerConfig.proxyPath}`]: {
-      //         target: devServerConfig.proxyURL,
-      //         pathRewrite: {
-      //           [`^${devServerConfig.proxyPath}`]: '',
-      //         },
-      //       },
-      //     },
-      //   }
-      //   : {}),
-    },
     plugins: [
       new webpack.DefinePlugin({
         ROUTES: webpack.DefinePlugin.runtimeValue(() => {
@@ -36,8 +15,5 @@ module.exports = {
         }, true)
       })
     ]
-  },
-  // productionSourceMap: false,
-  // 指定需要编译的依赖
-  transpileDependencies: ['uview-ui']
+  }
 }

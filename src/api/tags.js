@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const mPushInfoPut = (vm, params) => vm.$u.put('/api/mPushInfo', params)
-export const mPushInfoDel = (vm, params) => vm.$u.delete('/api/mPushInfo', params)
-export const mPushInfoDelAll = (vm, params) => vm.$u.delete('/api/mPushInfo/all', params)
+import { http } from '@/service/request.js'
+export const mPushInfoPut = (data) => http.get('/api/mPushInfo', { params: data })
+export const mPushInfoDel = (params) => http.delete('/api/mPushInfo', params)
+export const mPushInfoDelAll = (params) => http.delete('/api/mPushInfo/all', params)

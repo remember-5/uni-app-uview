@@ -1,27 +1,34 @@
-# uview模版项目
+# 介绍
 
-本项目基于uniapp-cli方式运行， `uview: 1.8.6`
+使用`uniapp`框架，使用`cli`方式运行， ui使用`uview: 1.8.8`
 
+`terminal`运行m, 国内建议改为taobao源
 ```shell
-npm config set registry https://registry.npm.taobao.org
-npm i 
-npm run server
+npm config set registry http://registry.npmmirror.com
+npm i && npm run server
 ```
+测试发现`pnpm`可能会有编译问题，详见 https://juejin.cn/post/7077918263954374670#heading-7
 
-## 使用less
-添加以下依赖
-```xml
-"less": "^4.0.0",
-"less-loader": "^5.0.0",
-```
+`hbuliderx` 中运行问题
+1. 拖入hbuliderx中后，需要右键选择"重新识别项目类型"
+
+`webstorm`中运行问题
+1. rpx插件`wechat-mini-program-support`,开启微信小程序的支持,在设置里面配置wechat... 点击开启
 
 ## 普通项目改造成cli项目
 参考官网的教程 https://uniapp.dcloud.net.cn/quickstart-cli.html
+如果应用less，请参考下方 `使用less`
 
-如果应用less，请参考上方`使用less`
+## 使用less(不建议使用)
+添加以下依赖, 
+```json lines
+{
+  "less": "^4.0.0",
+  "less-loader": "^5.0.0"
+}
+```
 
-## pnpm使用
-
+## pnpm使用(不建议使用)
 pnpm可能会造成打包无法使用的情况，所以还是老老实实用npm吧
 
 如果出现以下代码
@@ -75,34 +82,34 @@ pnpm可能会造成打包无法使用的情况，所以还是老老实实用npm�
   }
 ```
 
-
-## hbuliderx中运行
-
-1. 拖入hbuliderx中后，需要右键选择"重新识别项目类型"
-2. 安装依赖`npm install --registry=https://registry.npm.taobao.org`,必须使用`npm`
-3. 测试发现`yarn` 和 `pnpm`可能会有编译问题，详见[https://juejin.cn/post/7077918263954374670#heading-7]()
-
-## webstorm中运行
-1. 安装插件`wechat-mini-program-support`
-2. 开启微信小程序的支持,在设置里面配置wechat... 点击开启
-
-
 ## 新特性
-
+- [x] vs code 不支持一件格式化的问题(eslint问题)
+- [x] i18n 集成
+- [x] http 全部使用async await
+- [ ] 热更新提示&热更的改造
+- [ ] 改造登录页面和套餐页面为模版
+- [ ] 增加mock
+- [ ] husky
 - [x] rsa加解密
-- [x] 增加socket
+- [ ] 增加socket
 - [x] 使用uni-simple-router https://github.com/SilurianYang/uni-simple-router
-- [ ] 使用luch-request https://www.quanzhan.co/luch-request/
-- [x] 热更模块集成 参考https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPUpdate
+- [x] 使用luch-request https://www.quanzhan.co/luch-request/
+- [x] 热更模块集成 参考 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPUpdate
 - [ ] 微信小程序分享模块/公众号分享模块 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPshare
 - [ ] 增加默认页面【登录，注册，忘记密码，绑定手机号，协议页面，商品海报生成，推广海报生成】
 - [ ] 续期jwt，增加request的重试机制，和404等问题转发到指定页面
 - [ ] 导航栏到配置，参考 uniappDemo/#/pages/demo/navBarMemo/index
 - [ ] 启动界面 manifest.json -> 'App启动界面配置' https://ask.dcloud.net.cn/article/37474
 - [ ] 原生协议 https://ask.dcloud.net.cn/article/36937
-
+- [ ] lodash-es 一致性、模块化、高性能的 JavaScript 实用工具库 https://www.lodashjs.com/
+- [ ] qs URL解析成对象 https://juejin.cn/post/7125723650627469319
+```js
+import Qs from 'qs'
+let url = 'method=query_sql_dataset_data&projectId=85&appToken=7d22e38e-5717-11e7-907b-a6006ad3dba0';
+Qs.parse(url);
+console.log(Qs.parse(url));
+```
 # 不错的插件
-
 - 模版 https://ext.dcloud.net.cn/plugin?id=2009
 - 炫酷的样式、炫酷的动画效果 https://ext.dcloud.net.cn/plugin?id=3685
 - mp-html 富文本组件【全端支持，可编辑】 https://ext.dcloud.net.cn/plugin?id=805
@@ -123,14 +130,13 @@ pnpm可能会造成打包无法使用的情况，所以还是老老实实用npm�
 - 蚂蚁图表 antv F2 https://ext.dcloud.net.cn/plugin?id=4613
 
 ## eslint
-
 git上传的时候格式化
 
 ```json
   "husky": {
-"hooks": {
-"pre-commit": "lint-staged"
-}
+    "hooks": {
+    "pre-commit": "lint-staged"
+    }
 },
 "lint-staged": {
 "src/**/*.{js,vue}": [
@@ -195,16 +201,10 @@ alert('foo');
 
 
 ## 预览pdf
-
-目前最高支持版本`pdfjs-2.6.347`
-
-下载pdf插件 http://mozilla.github.io/pdf.js/getting_started/ 并解压
-
-得到`build` `web` 两个文件夹
-
-在uniapp的src下创建路径 `hybrid/html/pdf` ，并放入 `build` `web` 两个文件夹
-
-pdf.js不支持跨域请求 https://blog.csdn.net/xinlingdexueba/article/details/79555678
+目前最高支持版本`pdfjs-2.6.347`  
+下载pdf插件 http://mozilla.github.io/pdf.js/getting_started/ 并解压得到`build` `web` 两个文件夹    
+在uniapp的src下创建路径 `hybrid/html/pdf` ，并放入 `build` `web` 两个文件夹  
+pdf.js不支持跨域请求 https://blog.csdn.net/xinlingdexueba/article/details/79555678    
 
 `file origin does not match viewer’s，`
 
@@ -283,3 +283,16 @@ this.$u.route({
 待完善
 
 使用插件 [https://excalidraw.com/](https://excalidraw.com/) 打开`docs/app-upgrade.excalidraw`
+
+# 打包
+## 不同平台打包
+`package.json`中的`scripts`为所有命令，命令定义为`${env}:${platform}`, 即(环境:平台)  
+`${env}`中`dev`前缀的是开发环境的命令,`build`为生产打包命令  
+`${platform}`请参考官方文档 https://zh.uniapp.dcloud.io/worktile/CLI.html  
+
+## 不同环境打包
+如有多个环境，可以在根目录创建 `.env.xxx` 文件，其中`xxx`用来区分环境  
+在启动命令后添加`--mode ${env}`即可，例如, 创建`.env.test`为`test`环境的变量，h5启动命令`dev:h5`中加入`--mode test`
+
+## docker打包
+在本地执行相关的命令，修改`Dockerfile`中的`COPY`命令即可(默认为h5)

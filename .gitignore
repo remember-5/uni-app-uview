@@ -14,7 +14,7 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*lock.*
+
 # Editor directories and files
 .project
 .idea
@@ -24,10 +24,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-
-/unpackage/dist/*
-/node_modules/*
-/.idea/*
-deploy.sh
-.hbuilderx/*

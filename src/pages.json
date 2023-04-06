@@ -40,55 +40,6 @@
       }
     },
     {
-      "path": "pages/user/bindPhone",
-      "style": {
-        "navigationBarTitleText": "绑定手机号",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/user/forget",
-      "style": {
-        "navigationBarTitleText": "忘记密码",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/user/protocol",
-      "style": {
-        "navigationBarTitleText": "协议",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/user/register",
-      "style": {
-        "navigationBarTitleText": "注册",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/user/login",
-      "style": {
-        "navigationBarTitleText": "登录",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/login/login",
-      "style": {
-        "navigationBarTitleText": "登录1",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/login/forgetPassword",
-      "style": {
-        "navigationBarTitleText": "登录1",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
       "path": "pages/pdf/pdf",
       "style": {
         "navigationBarTitleText": "预览pdf",
@@ -99,6 +50,13 @@
       "path": "pages/webview/webview",
       "style": {
         "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/404/index",
+      "style": {
+        "navigationBarTitleText": "404",
         "enablePullDownRefresh": false
       }
     }

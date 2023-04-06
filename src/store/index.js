@@ -12,13 +12,10 @@ const modules = {
 }
 
 // 需要永久存储，且下次APP启动需要取出的，在state中的变量名
-const saveStateKeys = [
-  'vuex_user_info', 'vuex_access_token', 'vuex_refresh_token',
-  'vuex_wang', 'vuex_platform', 'vuex_version_code', 'vuex_version'
-]
+const saveStateKeys = ['vuex_user_info', 'vuex_access_token', 'vuex_refresh_token', 'vuex_wang', 'vuex_platform', 'vuex_version_code', 'vuex_version']
 
 // 保存变量到本地存储中
-const saveLifeData = function(key, value) {
+const saveLifeData = function (key, value) {
   // 判断变量名是否在需要存储的数组中
   if (saveStateKeys.indexOf(key) !== -1) {
     // 获取本地存储的lifeData对象，将变量添加到对象中

@@ -1,13 +1,20 @@
 import store from '@/store'
 
 export default (router) => {
-  // console.log(store)
-  // console.log(store.state.vuex_access_token)
   // 路由白名单
-  const whiteList = ['/pages/login/login', '/pages/index/index', '/pages/index/upload'] // no redirect whitelist
+  const whiteList = [
+    '/pages/login/login',
+    '/pages/index/index',
+    '/pages/home/home',
+    '/pages/404/index',
+    '/pages/webview/webview',
+    '/pages/index/upload',
+    '/pages/anran/index',
+    '/pages/pdf/pdf'
+  ] // no redirect whitelist
 
   // 全局路由前置守卫
-  router.beforeEach(async(to, from, next) => {
+  router.beforeEach(async (to, from, next) => {
     // console.log('router.beforeEach.to', to)
     // console.log('router.beforeEach.from', from)
 
@@ -16,15 +23,15 @@ export default (router) => {
 
     if (token) {
       if (to.path === '/pages/login/login') {
-        next()
+        next('/pages/login/login')
       } else if (!userId) {
         try {
-          await store.dispatch('user/getUserData')
+          // await store.dispatch('user/getUserData')
           next()
         } catch (error) {
-          await store.dispatch('user/logout')
+          // await store.dispatch('user/logout')
           next({
-            path: '/pages/login/login',
+            path: '/pages/login/index',
             query: {
               redirect: JSON.stringify({
                 path: to.path,
@@ -40,9 +47,8 @@ export default (router) => {
       // 在免登录白名单，直接进入
       next()
     } else {
-      // next()
       next({
-        path: '/pages/login/login',
+        path: '/pages/account/login/index',
         query: {
           redirectView: JSON.stringify({
             path: to.path,

@@ -1,3 +1,18 @@
+/**
+ * Copyright [2022] [remember5]
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 // 这里的vm，就是我们在vue文件里面的this，所以我们能在这里获取vuex的变量，比如存放在里面的token
 // 同时，我们也可以在此使用getApp().globalData，如果你把token放在getApp().globalData的话，也是可以使用的
 const install = (Vue, vm) => {
@@ -44,7 +59,8 @@ const install = (Vue, vm) => {
     if (res.statusCode === 200) {
       // 如果把originalData设置为了true，这里return回什么，this.$u.post的then回调中就会得到什么
       return res.data
-    } if (res.statusCode === 401) {
+    }
+    if (res.statusCode === 401) {
       this.$u.vuex('vuex_access_token', '')
       this.$u.vuex('vuex_refresh_token', '')
       this.$u.vuex('vuex_user_info', {})
@@ -58,7 +74,8 @@ const install = (Vue, vm) => {
       } else {
         vm.$u.toast('请求异常')
       }
-    } return false
+    }
+    return false
   }
 }
 

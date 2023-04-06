@@ -1,19 +1,18 @@
-unpackage
+# .eslintignore
+
+public
+dist
 node_modules
-uview-ui
-dist/*
+docs
+
+src/static
+src/hybrid
+src/plugins
 
 
-.gitlab/*
+src/common/jsencrypt.js
 
-src/config/*
-src/plugins/*
-src/hybrid/*
-src/uni_modules/*
-src/static/*
-src/uview-ui/*
 
-touch-emulator.js
-jsencrypt.js
-rsaEncrypt.js
-vue-i18n.min.js
+.automator
+.sourcemap
+.md
