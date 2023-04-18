@@ -9,7 +9,16 @@
   import { testMockRequest } from '@/api/user.js'
   export default {
     name: 'MockView',
+    data() {
+      return {
+        mock: false
+      }
+    },
     created() {
+      if (process.env.VUE_APP_MOCK === 'false') {
+        this.$u.toast('请开启mock后重试')
+        return
+      }
       this.testMock()
     },
     methods: {

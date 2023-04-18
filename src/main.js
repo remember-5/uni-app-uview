@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import App from './App'
-import { router, RouterMount } from './router/index.js'
+import App from '@/App'
+import { router, RouterMount } from '@/router/index.js'
 
 // eslint-disable-next-line
-import Mock from './mock'
+import Mock from '@/mock'
 
 // // 引入并使用vue-i18n
 import VueI18n from 'vue-i18n'
