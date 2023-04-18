@@ -17,6 +17,10 @@
         fileList: []
       }
     },
+    onLoad() {
+      // 获取方式
+      console.log(this.$Route.query)
+    },
     mounted() {
       // this.downloadFile()
     },

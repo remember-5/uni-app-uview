@@ -101,7 +101,11 @@ test.interceptors.response.use(
 const http = new Request()
 http.setConfig((config) => {
   /* 设置全局配置 */
-  config.baseURL = process.env.VUE_APP_BASE_API /* 根域名不同 */
+  if (process.env.VUE_APP_MOCK === 'false') {
+    config.baseURL = process.env.VUE_APP_BASE_API /* 根域名不同 */
+  } else {
+    console.warn('==========已开启mock==========')
+  }
   config.header = {
     ...config.header,
     a: 1, // 演示

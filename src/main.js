@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import { router, RouterMount } from './router/index.js'
 
+// eslint-disable-next-line
+import Mock from './mock'
+
 // // 引入并使用vue-i18n
 import VueI18n from 'vue-i18n'
 import uView from 'uview-ui'
@@ -13,9 +16,6 @@ import store from '@/store'
 // 引入语言包，注意路径
 import Chinese from '@/common/locales/zh.js'
 import English from '@/common/locales/en.js'
-
-// http拦截器，将此部分放在new Vue()和app.$mount()之间，才能App.vue中正常使用
-import httpInterceptor from '@/common/http.interceptor.js'
 
 // 引入uView对小程序分享的mixin封装
 const mpShare = require('uview-ui/libs/mixin/mpShare.js')
@@ -49,15 +49,11 @@ Vue.config.productionTip = false
 // 小程序页面组件和这个 App.vue 组件的写法和引入方式是一致的，为了区分两者，需要设置mpType值
 App.mpType = 'app'
 
-Vue.use(httpInterceptor, app)
-
 const app = new Vue({
   i18n,
   store,
   ...App
 })
-
-RouterMount(app, router, '#app')
 
 //v1.3.5起 H5端 你应该去除原有的app.$mount();使用路由自带的渲染方式
 // #ifdef H5

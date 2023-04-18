@@ -10,7 +10,7 @@
       {
         "name": "test",
         //模式名称
-        "path": "pages/login/login",
+        "path": "",
         //启动页面，必选
         "query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d095e&__id__=1"
         //启动参数，在页面的onLoad函数里面得到
@@ -29,6 +29,13 @@
       "path": "pages/index/upload",
       "style": {
         "navigationBarTitleText": "上传",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/index/mock",
+      "style": {
+        "navigationBarTitleText": "mock",
         "enablePullDownRefresh": false
       }
     },
@@ -54,14 +61,48 @@
       }
     },
     {
-      "path" : "pages/404/index",
+      "path": "pages/404/index",
       "style": {
         "navigationBarTitleText": "404",
         "enablePullDownRefresh": false
       }
     }
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "pages/login",
+      "pages": [
+        {
+          "path": "login",
+          "style": {
+            "navigationBarTitleText": "登录",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "register",
+          "style": {
+            "navigationBarTitleText": "注册",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "forgotPassword",
+          "style": {
+            "navigationBarTitleText": "忘记密码",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "wxauth",
+          "style": {
+            "navigationBarTitleText": "微信登录",
+            "enablePullDownRefresh": false
+          }
+        }
+      ]
+    }
+  ],
   "preloadRule": {},
   "globalStyle": {
     "navigationBarTextStyle": "black",

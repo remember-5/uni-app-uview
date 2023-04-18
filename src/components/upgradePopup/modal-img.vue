@@ -2,7 +2,7 @@
   <view v-show="show" class="zaiui-modal-box show">
     <view class="dialog">
       <image class="img" src="@/static/images/upgrade_bg.png" lazy-load mode="widthFix" />
-      <u-icon :show="closeShow" name="close" color="#606266" size="28" class="close-icon" @click="modalClose" />
+      <u-icon :show="closeShow" name="close" color="#606266" size="28" class="close-icon" @tap="modalClose" />
       <!-- 新版本升级-更新前 -->
       <view v-if="!afterShow" class="before-box">
         <view class="weizi-main">
@@ -17,7 +17,6 @@
             shape="circle"
             :custom-style="{ background: '#C72323', width: '100%', height: '84rpx', lineHeight: '56rpx', color: '#ffffff', fontSize: '30rpx' }"
             hover-class="none"
-            open-type="contact"
             @click="updateNowBtn"
           >
             马上更新
@@ -63,31 +62,23 @@
       },
       afterShow: {
         type: Boolean,
-        default: false
+        default: false // 关闭之后
       },
       closeShow: {
         type: Boolean,
-        default: false
+        default: false // 是否开启关闭按钮
       },
       percent: {
         type: Number,
         default: 0 // 百分比0~100
-      },
-      close: {
-        type: Function,
-        default: null
-      },
-      updateNow: {
-        type: Function,
-        default: null
       }
     },
     methods: {
       updateNowBtn() {
-        this.updateNow()
+        this.$emit('updateNow')
       },
       modalClose() {
-        this.close()
+        this.$emit('close')
       }
     }
   }

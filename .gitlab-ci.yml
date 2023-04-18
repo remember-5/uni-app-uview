@@ -13,7 +13,7 @@ cache:
 
 # 全局环境变量
 variables:
-  MY_NAME: ""
+  MY_NAME: ''
 
 # 导入单个模版
 include:

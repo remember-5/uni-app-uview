@@ -15,7 +15,7 @@ main-compile:
     - rm -rf /tmp/app.wgt
     - cp app.wgt /tmp
     # 上传文件到后台路径
-#    - curl -F "file=@/tmp/app.wgt" -F "key=" https://remember5.top/xxx
+  #    - curl -F "file=@/tmp/app.wgt" -F "key=" https://remember5.top/xxx
   only:
     - main
   tags:

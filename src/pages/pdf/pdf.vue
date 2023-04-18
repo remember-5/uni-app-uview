@@ -17,8 +17,8 @@
         url: ''
       }
     },
-    onLoad(options) {
-      const link = decodeURIComponent(options.link)
+    onLoad() {
+      const link = decodeURIComponent(this.$Route.query.link)
       // h5，使用h5访问的时候记得跨域
       // #ifdef H5
       this.url = `${this.viewerUrl}?file=${encodeURIComponent(link)}`

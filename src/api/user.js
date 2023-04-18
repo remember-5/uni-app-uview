@@ -90,3 +90,5 @@ export const captchaByRegister = (data) => http.get(`/user/captchaByRegister`, {
  * @returns {HttpPromise<any>}
  */
 export const captchaByResetPassword = (data) => http.get(`/user/captchaByResetPassword`, { params: data })
+
+export const testMockRequest = () => http.get('api/test')

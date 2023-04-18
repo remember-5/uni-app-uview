@@ -1,16 +1,19 @@
 import store from '@/store'
 
 export default (router) => {
-  // 路由白名单
+  // 路由白名单，可以考虑不同环境配置不同白名单
   const whiteList = [
-    '/pages/login/login',
     '/pages/index/index',
     '/pages/home/home',
     '/pages/404/index',
     '/pages/webview/webview',
     '/pages/index/upload',
-    '/pages/anran/index',
-    '/pages/pdf/pdf'
+    '/pages/index/mock',
+    '/pages/pdf/pdf',
+    '/pages/login/login',
+    '/pages/login/wxauth',
+    '/pages/login/register',
+    '/pages/login/forgotPassword'
   ] // no redirect whitelist
 
   // 全局路由前置守卫
@@ -23,7 +26,7 @@ export default (router) => {
 
     if (token) {
       if (to.path === '/pages/login/login') {
-        next('/pages/login/login')
+        next()
       } else if (!userId) {
         try {
           // await store.dispatch('user/getUserData')

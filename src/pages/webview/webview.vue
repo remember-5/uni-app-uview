@@ -14,11 +14,11 @@
         type: ''
       }
     },
-    onLoad(options) {
+    onLoad() {
       // type为navigateTo，redirectTo，switchTab，reLaunch时为必填
-      this.url = decodeURIComponent(decodeURIComponent(options.url))
-      this.backUrl = decodeURIComponent(options.backUrl)
-      this.type = options.type
+      this.url = this.$Route.query.url
+      this.backUrl = this.$Route.backUrl
+      this.type = this.$Route.type
 
       this.initPageNum = 0
       // #ifdef H5
