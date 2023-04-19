@@ -4,6 +4,7 @@ const config = {
   parser: require('postcss-comment'),
   plugins: [
     require('postcss-import')({
+      // eslint-disable-next-line
       resolve(id, basedir, importOptions) {
         if (id.startsWith('~@/')) {
           return path.resolve(process.env.UNI_INPUT_DIR, id.substr(3))

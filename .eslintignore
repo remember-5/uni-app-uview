@@ -10,9 +10,6 @@ src/hybrid
 src/plugins
 
 
-src/common/jsencrypt.js
-
-
 .automator
 .sourcemap
 .md

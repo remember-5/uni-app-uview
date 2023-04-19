@@ -13,4 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * 伪造休眠
+ * @param delay 单位ms
+ * @returns {Promise<unknown>}
+ */
 export const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
