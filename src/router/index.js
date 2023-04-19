@@ -21,6 +21,7 @@ const router = createRouter({
     ...ROUTES,
     {
       path: '*',
+      // eslint-disable-next-line
       redirect: (to) => {
         return { path: 'pages/404/index' }
       }

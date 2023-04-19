@@ -19,12 +19,14 @@ export default (router) => {
   // 路由白名单，可以考虑不同环境配置不同白名单
   const whiteList = [
     '/pages/index/index',
+    '/pages/index/upload',
+    '/pages/index/mock',
+
     '/pages/home/home',
     '/pages/404/index',
     '/pages/webview/webview',
-    '/pages/index/upload',
-    '/pages/index/mock',
     '/pages/pdf/pdf',
+
     '/pages/login/login',
     '/pages/login/wxauth',
     '/pages/login/register',
@@ -78,6 +80,7 @@ export default (router) => {
   })
 
   // 全局路由后置守卫
+  // eslint-disable-next-line
   router.afterEach((to, from) => {
     // console.log('router.afterEach.to', to)
     // console.log('router.afterEach.from', from)
