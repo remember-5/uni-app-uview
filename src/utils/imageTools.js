@@ -1,9 +1,4 @@
-/**
- *获取本地的文件路径
- * @param path 文件路径
- * @returns {*|string}
- */
-export const getLocalFilePath = (path) => {
+function getLocalFilePath(path) {
   if (path.indexOf('_www') === 0 || path.indexOf('_doc') === 0 || path.indexOf('_documents') === 0 || path.indexOf('_downloads') === 0) {
     return path
   }
@@ -14,7 +9,7 @@ export const getLocalFilePath = (path) => {
     return path
   }
   if (path.indexOf('/') === 0) {
-    const localFilePath = plus.io.convertAbsoluteFileSystem(path)
+    var localFilePath = plus.io.convertAbsoluteFileSystem(path)
     if (localFilePath !== path) {
       return localFilePath
     } else {
@@ -24,22 +19,60 @@ export const getLocalFilePath = (path) => {
   return '_www/' + path
 }
 
-/**
- * 文件路径转base64
- * @param path 文件路径
- * @returns {Promise<unknown>}
- */
-export const pathToBase64 = (path) => {
-  return new Promise((resolve, reject) => {
+function dataUrlToBase64(str) {
+  var array = str.split(',')
+  return array[array.length - 1]
+}
+
+var index = 0
+function getNewFileId() {
+  return Date.now() + String(index++)
+}
+
+function biggerThan(v1, v2) {
+  var v1Array = v1.split('.')
+  var v2Array = v2.split('.')
+  var update = false
+  for (var index = 0; index < v2Array.length; index++) {
+    var diff = v1Array[index] - v2Array[index]
+    if (diff !== 0) {
+      update = diff > 0
+      break
+    }
+  }
+  return update
+}
+
+export function pathToBase64(path) {
+  return new Promise(function (resolve, reject) {
     if (typeof window === 'object' && 'document' in window) {
-      let canvas = document.createElement('canvas')
-      let c2x = canvas.getContext('2d')
-      let img = new Image()
+      if (typeof FileReader === 'function') {
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', path, true)
+        xhr.responseType = 'blob'
+        xhr.onload = function () {
+          if (this.status === 200) {
+            let fileReader = new FileReader()
+            fileReader.onload = function (e) {
+              resolve(e.target.result)
+            }
+            fileReader.onerror = reject
+            fileReader.readAsDataURL(this.response)
+          }
+        }
+        xhr.onerror = reject
+        xhr.send()
+        return
+      }
+      var canvas = document.createElement('canvas')
+      var c2x = canvas.getContext('2d')
+      var img = new Image()
       img.onload = function () {
         canvas.width = img.width
         canvas.height = img.height
         c2x.drawImage(img, 0, 0)
         resolve(canvas.toDataURL())
+        canvas.height = canvas.width = 0
       }
       img.onerror = reject
       img.src = path
@@ -51,7 +84,7 @@ export const pathToBase64 = (path) => {
         function (entry) {
           entry.file(
             function (file) {
-              let fileReader = new plus.io.FileReader()
+              var fileReader = new plus.io.FileReader()
               fileReader.onload = function (data) {
                 resolve(data.target.result)
               }
@@ -88,37 +121,72 @@ export const pathToBase64 = (path) => {
   })
 }
 
-/**
- * base64保存文件到本地
- * @param base64 base64字符串
- * @returns {Promise<unknown>}
- */
-export const base64ToPath = (base64) => {
+export function base64ToPath(base64) {
   return new Promise(function (resolve, reject) {
+    let filePath
     if (typeof window === 'object' && 'document' in window) {
       base64 = base64.split(',')
-      let type = base64[0].match(/:(.*?);/)[1]
-      let str = atob(base64[1])
-      let n = str.length
-      let array = new Uint8Array(n)
+      var type = base64[0].match(/:(.*?);/)[1]
+      var str = atob(base64[1])
+      var n = str.length
+      var array = new Uint8Array(n)
       while (n--) {
         array[n] = str.charCodeAt(n)
       }
       return resolve((window.URL || window.webkitURL).createObjectURL(new Blob([array], { type: type })))
     }
-    let extName = base64.match(/data:\S+\/(\S+);/)
+    var extName = base64.split(',')[0].match(/data\:\S+\/(\S+);/)
     if (extName) {
       extName = extName[1]
     } else {
       reject(new Error('base64 error'))
     }
-    let fileName = Date.now() + '.' + extName
+    var fileName = getNewFileId() + '.' + extName
     if (typeof plus === 'object') {
-      let bitmap = new plus.nativeObj.Bitmap('bitmap' + Date.now())
+      var basePath = '_doc'
+      var dirPath = 'uniapp_temp'
+      filePath = basePath + '/' + dirPath + '/' + fileName
+      if (!biggerThan(plus.os.name === 'Android' ? '1.9.9.80627' : '1.9.9.80472', plus.runtime.innerVersion)) {
+        plus.io.resolveLocalFileSystemURL(
+          basePath,
+          function (entry) {
+            entry.getDirectory(
+              dirPath,
+              {
+                create: true,
+                exclusive: false
+              },
+              function (entry) {
+                entry.getFile(
+                  fileName,
+                  {
+                    create: true,
+                    exclusive: false
+                  },
+                  function (entry) {
+                    entry.createWriter(function (writer) {
+                      writer.onwrite = function () {
+                        resolve(filePath)
+                      }
+                      writer.onerror = reject
+                      writer.seek(0)
+                      writer.writeAsBinary(dataUrlToBase64(base64))
+                    }, reject)
+                  },
+                  reject
+                )
+              },
+              reject
+            )
+          },
+          reject
+        )
+        return
+      }
+      var bitmap = new plus.nativeObj.Bitmap(fileName)
       bitmap.loadBase64Data(
         base64,
         function () {
-          let filePath = '_doc/uniapp_temp/' + fileName
           bitmap.save(
             filePath,
             {},
@@ -140,10 +208,10 @@ export const base64ToPath = (base64) => {
       return
     }
     if (typeof wx === 'object' && wx.canIUse('getFileSystemManager')) {
-      let filePath = wx.env.USER_DATA_PATH + '/' + fileName
+      filePath = wx.env.USER_DATA_PATH + '/' + fileName
       wx.getFileSystemManager().writeFile({
         filePath: filePath,
-        data: base64.replace(/^data:\S+\/\S+;base64,/, ''),
+        data: dataUrlToBase64(base64),
         encoding: 'base64',
         success: function () {
           resolve(filePath)
