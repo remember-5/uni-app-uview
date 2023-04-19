@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const state = {
-  // webView地址
-  vuex_webview_url: '',
-  vuex_loading_how: false,
-  // 微信场景参数
-  vuex_chat_scenes_info: {},
-  // 绑定微信头像昵称弹窗状态
-  vuex_bind_userinfo_show: false,
-  // 当前位置
-  vuex_current_address: {
-    areaName: '请选择',
-    areaId: ''
-  }
+/**
+ *
+ * @returns {Promise<unknown>}
+ */
+export const getWxLoginCode = () => {
+  return new Promise((resolve, reject) => {
+    uni.login({
+      provider: 'weixin',
+      success: (res) => {
+        if (res?.code) {
+          resolve(res.code)
+        } else {
+          reject(res.errMsg)
+        }
+      },
+      fail: (e) => {
+        reject(e)
+      }
+    })
+  })
 }
-export const mutations = {}
-export const actions = {}

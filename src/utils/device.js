@@ -13,19 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const state = {
-  // webView地址
-  vuex_webview_url: '',
-  vuex_loading_how: false,
-  // 微信场景参数
-  vuex_chat_scenes_info: {},
-  // 绑定微信头像昵称弹窗状态
-  vuex_bind_userinfo_show: false,
-  // 当前位置
-  vuex_current_address: {
-    areaName: '请选择',
-    areaId: ''
-  }
+import Vue from '@/main.js'
+
+/**
+ *  获取设备信息
+ */
+export const getSystemInfo = () => {
+  const systemInfoSync = uni.getSystemInfoSync()
+  Vue.$u.vuex('vuex_system_info', systemInfoSync)
 }
-export const mutations = {}
-export const actions = {}

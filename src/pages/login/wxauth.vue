@@ -6,11 +6,11 @@
     </view>
 
     <view>
-      <u-image style="margin: auto" src="https://jf.sh.189.cn/minio/gov-miniapp/icon/logo_circle.png" mode="widthFix" width="372" />
+      <u-image style="margin: auto" src="@/static/images/WeChatIcon.png" mode="widthFix" width="372" />
     </view>
 
     <view>
-      <view>为提供优质服务，翼企购需要获取你的以下信息：</view>
+      <view>为提供优质服务，xxx需要获取你的以下信息：</view>
       <view>你的公开信息（头像、昵称等）</view>
     </view>
 
@@ -22,7 +22,7 @@
         hover-class="none"
         open-type="getPhoneNumber"
         @getphonenumber="getphonenumberWx"
-        >授权登录翼企购</u-button
+        >授权登录xxx</u-button
       >
     </view>
   </view>
