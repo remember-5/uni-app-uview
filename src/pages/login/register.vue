@@ -76,9 +76,9 @@
     <!-- 隐私政策 -->
     <view class="sjmima-checkbox">
       <label class="radio">
-        <checkbox-group @change="checkboxIsAgree">
+        <checkbox-group @change="iAgree = !iAgree">
           <label>
-            <checkbox value="cb" :checked="isAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
+            <checkbox value="cb" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
             我已阅读并同意
             <text class="link" @click="$u.route('/pages/index/agreement/index')">《用户服务协议》</text>
             和
@@ -95,7 +95,7 @@
     name: 'loginPage',
     data() {
       return {
-        isAgree: false,
+        iAgree: false,
         form: {
           phone: '',
           captcha: '',
@@ -115,7 +115,7 @@
     created() {},
     methods: {
       checkboxIsAgree() {
-        this.isAgree = !this.isAgree
+        this.iAgree = !this.iAgree
       },
       notClickedAgree() {
         this.$u.toast('请阅读协议')
@@ -173,7 +173,7 @@
       },
       // 勾选
       checkboxIsAgreeQita() {
-        this.isAgree = !this.isAgree
+        this.iAgree = !this.iAgree
       },
       // 其他登录
       loginDenlu() {
@@ -195,7 +195,7 @@
           this.$u.toast('两次密码不一致!')
           return
         }
-        if (!this.isAgree) {
+        if (!this.iAgree) {
           this.$u.toast('请阅读协议!')
           return
         }

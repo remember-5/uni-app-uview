@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { wxMiniAppLogin } from '@/api/user'
+
 /**
- *
+ * 获取微信登录的code
  * @returns {Promise<unknown>}
  */
 export const getWxLoginCode = () => {
@@ -33,4 +35,17 @@ export const getWxLoginCode = () => {
       }
     })
   })
+}
+
+export const wxLogin = async (params) => {
+  try {
+    console.log(params)
+    const result = await wxMiniAppLogin(params)
+    // save token
+    console.log(result)
+    return true
+  } catch (e) {
+    console.log(e)
+    return false
+  }
 }
