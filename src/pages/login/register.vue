@@ -16,6 +16,20 @@
               placeholder-style="color: #B2B2B2; font-size: 28rpx;"
             />
           </u-form-item>
+          <!--          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="130" label="验证码：" prop="code">-->
+          <!--            <view style="display: flex">-->
+          <!--              <u-input-->
+          <!--                v-model="form.captcha"-->
+          <!--                placeholder="请输入您的验证码"-->
+          <!--                :border="false"-->
+          <!--                maxlength="6"-->
+          <!--                type="text"-->
+          <!--                :custom-style="{ color: '#494949', fontSize: '28rpx' }"-->
+          <!--                placeholder-style="color: #B2B2B2; font-size: 28rpx;"-->
+          <!--              />-->
+          <!--              <u-image class="captchaImg" width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />-->
+          <!--            </view>-->
+          <!--          </u-form-item>-->
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="短信验证码：" prop="code">
             <u-input
               v-model="form.smsCode"
@@ -34,7 +48,7 @@
               shape="circle"
               :custom-style="{ background: '#FFFFFF', color: '#3F69FF', fontSize: '28rpx', width: '200rpx', height: '50rpx' }"
               hover-class="background:#fff"
-              @click="getyzm"
+              @click="getSmsCode"
             >
               {{ form.codeText }}
             </u-button>
@@ -51,7 +65,7 @@
               :password-icon="true"
             />
           </u-form-item>
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="code">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="确认密码：" prop="code">
             <u-input
               v-model="form.passwordTrue"
               placeholder="请确认您的密码"
@@ -67,7 +81,7 @@
       </view>
       <view class="sjmima-button">
         <view class="wxbuton">
-          <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="loginDenlu">
+          <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="toRegisterUser">
             <text class="login-wxfont">注册</text>
           </u-button>
         </view>
@@ -91,8 +105,10 @@
 </template>
 
 <script>
+  import { sendSmsCode, registerUser, getImgCaptcha } from '@/utils/login'
+
   export default {
-    name: 'loginPage',
+    name: 'registerPage',
     data() {
       return {
         iAgree: false,
@@ -111,52 +127,59 @@
       }
     },
     onLoad() {},
-    onShow() {},
+    onShow() {
+      // await this.initImgCaptcha()
+    },
     created() {},
     methods: {
+      /**
+       * 用户服务和隐私政策选中
+       */
       checkboxIsAgree() {
         this.iAgree = !this.iAgree
       },
+      /**
+       * 未选中用户服务和隐私政策
+       */
       notClickedAgree() {
         this.$u.toast('请阅读协议')
       },
-      toIndexPage() {
-        setTimeout(() => {
-          uni.switchTab({
-            url: '/pages/tabbar/index'
-          })
-        }, 800)
+      /**
+       * 获取图片验证码
+       * @returns {Promise<void>}
+       */
+      async initImgCaptcha() {
+        this.form.imgCaptcha = await getImgCaptcha()
       },
-      // 获取验证码
-      getyzm() {
+      /**
+       * 获取短信验证码
+       */
+      async getSmsCode() {
         if (!this.form.phone) {
           this.$u.toast('请输入手机号!')
           return
         }
-
-        // const useryzm = {
-        //   phone: this.form.phone,
-        //   code: this.form.captcha,
-        //   uuid: this.form.imgCaptcha.uuid
+        // if (!this.form.captcha) {
+        //   this.$u.toast('请输入图形验证码!')
+        //   return
         // }
-        // smsCode(this, useryzm)
-        //   .then((res) => {
-        //     if (res.code === '00000') {
-        //       this.setDaojishi()
-        //     } else {
-        //       this.$u.toast(res.message)
-        //       setTimeout(() => {
-        //         this.getImgCaptcha()
-        //       }, 1500)
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.error(err)
-        //     this.$u.toast(err.message)
-        //   })
+        const smsParams = {
+          phone: this.form.phone
+          // code: this.form.captcha,
+          // uuid: this.form.imgCaptcha.uuid
+        }
+        const isSuccess = await sendSmsCode(smsParams)
+        if (isSuccess) {
+          this.countdown()
+        }
+        // else {
+        //   await this.initImgCaptcha()
+        // }
       },
-      // 验证码倒计时
-      setDaojishi() {
+      /**
+       * 短信验证码倒计时
+       */
+      countdown() {
         let i = 59
         this.form.codeText = '60s后重新获取'
         this.form.btnBool = true
@@ -171,12 +194,8 @@
           }
         }, 1000)
       },
-      // 勾选
-      checkboxIsAgreeQita() {
-        this.iAgree = !this.iAgree
-      },
-      // 其他登录
-      loginDenlu() {
+      // 注册
+      async toRegisterUser() {
         const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
         // 密码登录提交
         if (!this.form.phone) {
@@ -185,6 +204,10 @@
         }
         if (!strTemp.test(this.form.phone)) {
           this.$u.toast('请输入正确手机号!')
+          return
+        }
+        if (!this.form.smsCode) {
+          this.$u.toast('请输入您的验证码!')
           return
         }
         if (!this.form.password) {
@@ -199,28 +222,24 @@
           this.$u.toast('请阅读协议!')
           return
         }
-
-        //   const user = {
-        //     phone: this.form.phone,
-        //     password: encrypt(this.form.password),
-        //     code: this.form.captcha,
-        //     uuid: this.form.imgCaptcha.uuid
-        //   }
-        //   loginByAccount(this, user).then((e) => {
-        //     if (e.code && e.code !== '00000') {
-        //       this.$u.toast(e.message)
-        //       this.getImgCaptcha()
-        //     } else {
-        //       this.$u.vuex('vuex_access_token', e.data.access_token)
-        //       this.$u.vuex('vuex_refresh_token', e.data.refresh_token)
-        //       this.$u.vuex('vuex_user_info', e.data.user_info)
-        //       this.getUserVipGrade()
-        //       this.$u.toast('登录成功！')
-        //       setTimeout(() => {
-        //         this.$u.route('/pages/index/login/wxauth')
-        //       }, 800)
-        //     }
-        //   })
+        const user = {
+          phone: this.form.phone,
+          // todo 密码加密传输
+          // password: encrypt(this.form.password),
+          password: this.form.password,
+          smsCode: this.form.smsCode
+          // code: this.form.captcha,
+          // uuid: this.form.imgCaptcha.uuid
+        }
+        const isSuccess = await registerUser(user)
+        if (isSuccess) {
+          // 注册成功跳转路径
+          setTimeout(() => {
+            this.$Router.push({ path: '/pages/login/login' })
+          }, 800)
+        } else {
+          // await this.initImgCaptcha()
+        }
       }
     }
   }

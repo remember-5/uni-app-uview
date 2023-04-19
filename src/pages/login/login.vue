@@ -12,9 +12,8 @@
             <text class="login-wxfont">微信用户一键登录</text>
           </u-button>
         </view>
-
         <view v-show="iAgree" key="2" class="wxbuton">
-          <u-button type="success" shape="circle" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getWxPhoneNumber">
+          <u-button type="success" shape="circle" hover-class="none" open-type="getPhoneNumber" @getphonenumber="toWxLogin">
             <text class="login-wxfont">微信用户一键登录</text>
           </u-button>
         </view>
@@ -25,10 +24,10 @@
       <view class="sjmima-header">
         <view class="title-font">欢迎使用！</view>
       </view>
-      <!-- 密码登录 -->
+      <!-- 账号密码登录 -->
       <view class="form-warp" v-if="loginType === 1">
         <u-form ref="uForm" :model="form">
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="100" label="账号：" prop="name">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="130" label="账号：" prop="name">
             <u-input
               v-model="form.phone"
               placeholder="请输入手机号或邮箱"
@@ -38,7 +37,7 @@
               placeholder-style="color: #B2B2B2; font-size: 28rpx;"
             />
           </u-form-item>
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="100" label="密码：" prop="code">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="130" label="密码：" prop="code">
             <view style="display: flex">
               <u-input
                 v-model="form.password"
@@ -53,12 +52,26 @@
               <view class="wjmm" @click="doRouter('/pages/login/forgotPassword')">忘记密码</view>
             </view>
           </u-form-item>
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="130" label="验证码：" prop="code">
+            <view style="display: flex">
+              <u-input
+                v-model="form.captcha"
+                placeholder="请输入您的验证码"
+                :border="false"
+                maxlength="6"
+                type="text"
+                :custom-style="{ color: '#494949', fontSize: '28rpx' }"
+                placeholder-style="color: #B2B2B2; font-size: 28rpx;"
+              />
+              <u-image class="captchaImg" width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />
+            </view>
+          </u-form-item>
         </u-form>
         <view class="qtdl-box">
           <text @click="doRouter('/pages/login/register')">注册账号</text>
         </view>
       </view>
-      <!-- 验证码登录 -->
+      <!-- 短信验证码登录 -->
       <view class="form-warp" v-if="loginType === 2">
         <u-form ref="uForm" :model="form">
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="手机号：" prop="name">
@@ -102,7 +115,7 @@
 
       <view class="sjmima-button">
         <view class="wxbuton">
-          <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="loginDenlu">
+          <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="otherLogins">
             <text class="login-wxfont">登录</text>
           </u-button>
         </view>
@@ -113,7 +126,7 @@
       <label class="radio">
         <checkbox-group @change="iAgree = !iAgree">
           <label>
-            <checkbox value="cb" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
+            <checkbox value="checkbox" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
             我已阅读并同意
             <text class="link" @click="doRouter('/pages/index/agreement/index')">《用户服务协议》</text>
             和
@@ -127,16 +140,16 @@
       <!-- 切换按钮 -->
       <view class="loginWay">
         <view v-if="loginType !== 0" @click="loginType = 0">
-          <image src="@/static/images/wxdl.png"></image>
+          <image src="@/static/images/login_wx_icon.png" />
           <view>微信登陆</view>
         </view>
         <view v-if="loginType !== 1" @click="loginType = 1">
-          <image src="@/static/images/zhdl.png"></image>
+          <image src="@/static/images/login_account_icon.png" />
           <view>账户登录</view>
         </view>
         <view v-if="loginType !== 2" @click="loginType = 2">
-          <image src="@/static/images/sjyz.png"></image>
-          <view>手机验证</view>
+          <image src="@/static/images/login_sms_icon.png" />
+          <view>短信验证</view>
         </view>
       </view>
     </view>
@@ -144,13 +157,13 @@
 </template>
 
 <script>
-  import { getWxLoginCode } from '@/utils/login'
+  import { getWxLoginCode, login, getImgCaptcha, sendSmsCode } from '@/utils/login'
 
   export default {
     name: 'LoginPage',
     data() {
       return {
-        // 0微信一键登录 1密码登录 2手机验证码登录
+        // 0 微信一键登录 1 密码登录 2 手机验证码登录
         loginType: 0,
         // 用户协议
         iAgree: false,
@@ -187,9 +200,9 @@
     },
     async onShow() {
       try {
-        await this.getImgCaptcha()
+        await this.initImgCaptcha()
         // #ifdef MP-WEIXIN
-        this.wxCode = await getWxLoginCode()
+        await this.getWxCode()
         // #endif
       } catch (e) {
         this.$u.toast(e)
@@ -206,33 +219,25 @@
         this.$Router.push({ path: url, query: query })
       },
       /**
-       * 获取微信登录的手机号
+       * 获取微信授权code
+       * @returns {Promise<void>}
        */
-      getWxPhoneNumber() {
-        // console.log(loginInfo)
-        // const params = {
-        //   ...loginInfo.detail,
-        //   wxCode: this.wxCode,
-        //   invitationCode: this.vuex_user_inviter
-        // }
-        // wxMiniAppLogin(this, params)
-        //   .then((info) => {
-        //     if (info.code === '00000') {
-        //       const data = info.data
-        //       this.$u.vuex('vuex_access_token', data.access_token)
-        //       this.$u.vuex('vuex_refresh_token', data.refresh_token)
-        //       this.$u.vuex('vuex_user_info', data.user_info)
-        //       this.getUserVipGrade()
-        //       this.$u.toast('登录成功！')
-        //     } else {
-        //       this.getWxCode()
-        //     }
-        //   })
-        //   .then((e) => {
-        //     // 返回页面
-        //     this.callbackUrl()
-        //   })
+      async getWxCode() {
+        this.wxCode = await getWxLoginCode()
       },
+      /**
+       * 微信登录
+       */
+      async toWxLogin(wxLoginInfo) {
+        const params = {
+          wxCode: this.wxCode,
+          ...wxLoginInfo.detail
+        }
+        await this.toLogin(params)
+      },
+      /**
+       * 未选中服务条款
+       */
       notClickedAgree() {
         if (!this.iAgree) {
           this.$u.toast('请勾选服务条款')
@@ -242,42 +247,34 @@
        * 获取图片验证码
        * @returns {Promise<void>}
        */
-      async getImgCaptcha() {
-        // code(this).then((e) => {
-        //   this.form.imgCaptcha = e.data
-        // })
+      async initImgCaptcha() {
+        this.form.imgCaptcha = await getImgCaptcha()
       },
       /**
        * 获取短信验证码
        */
-      getSmsCode() {
+      async getSmsCode() {
         if (!this.form.phone) {
           this.$u.toast('请输入手机号!')
           return
         }
-
-        // const useryzm = {
-        //   phone: this.form.phone,
-        //   code: this.form.captcha,
-        //   uuid: this.form.imgCaptcha.uuid
+        // if (!this.form.captcha) {
+        //   this.$u.toast('请输入图形验证码!')
+        //   return
         // }
-        // smsCode(this, useryzm)
-        //   .then((res) => {
-        //     if (res.code === '00000') {
-        //       this.setDaojishi()
-        //     } else {
-        //       this.$u.toast(res.message)
-        //       setTimeout(() => {
-        //         this.getImgCaptcha()
-        //       }, 1500)
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.error(err)
-        //     this.$u.toast(err.message)
-        //   })
+        const smsParams = {
+          phone: this.form.phone
+          // code: this.form.captcha,
+          // uuid: this.form.imgCaptcha.uuid
+        }
+        const isSuccess = await sendSmsCode(smsParams)
+        if (isSuccess) {
+          this.countdown()
+        }
+        // else {
+        //   this.initImgCaptcha()
+        // }
       },
-
       /**
        * 短信验证码倒计时
        */
@@ -334,7 +331,7 @@
         }
       },
       /**
-       * 没有点击同意条款
+       * 去首页
        */
       toIndexPage() {
         setTimeout(() => {
@@ -343,8 +340,11 @@
           })
         }, 800)
       },
-      // 其他登录
-      loginDenlu() {
+      /**
+       * 其他登录方式
+       * @returns {Promise<void>}
+       */
+      async otherLogins() {
         const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
         const emailReg = /^[a-zA-Z0-9]+([-_.][A-Za-zd]+)*@([a-zA-Z0-9]+[-.])+[A-Za-zd]{2,5}$/
         // 密码登录提交
@@ -357,10 +357,10 @@
             this.$u.toast('请输入正确手机号或邮箱!')
             return
           }
-          //   if (!this.form.captcha) {
-          //     this.$u.toast('请输入图形验证码!')
-          //     return
-          //   }
+          if (!this.form.captcha) {
+            this.$u.toast('请输入图形验证码!')
+            return
+          }
           if (!this.form.password) {
             this.$u.toast('请输入您的密码!')
             return
@@ -369,27 +369,15 @@
             this.$u.toast('请阅读协议!')
             return
           }
-          //   const user = {
-          //     phone: this.form.phone,
-          //     password: encrypt(this.form.password),
-          //     code: this.form.captcha,
-          //     uuid: this.form.imgCaptcha.uuid
-          //   }
-          //   loginByAccount(this, user).then((e) => {
-          //     if (e.code && e.code !== '00000') {
-          //       this.$u.toast(e.message)
-          //       this.getImgCaptcha()
-          //     } else {
-          //       this.$u.vuex('vuex_access_token', e.data.access_token)
-          //       this.$u.vuex('vuex_refresh_token', e.data.refresh_token)
-          //       this.$u.vuex('vuex_user_info', e.data.user_info)
-          //       this.getUserVipGrade()
-          //       this.$u.toast('登录成功！')
-          //       setTimeout(() => {
-          //         this.$u.route('/pages/index/login/wxauth')
-          //       }, 800)
-          //     }
-          //   })
+          const user = {
+            phone: this.form.phone,
+            // todo 密码加密传输
+            // password: encrypt(this.form.password),
+            password: this.form.password,
+            code: this.form.captcha,
+            uuid: this.form.imgCaptcha.uuid
+          }
+          await this.toLogin(user)
         } else if (this.loginType === 2) {
           // 手机验证码登录
           if (!this.form.phone) {
@@ -412,30 +400,46 @@
             this.$u.toast('请阅读协议!')
             return
           }
-          //   const user = {
-          //     phone: this.form.phone,
-          //     code: this.form.captcha,
-          //     uuid: this.form.imgCaptcha.uuid,
-          //     smsCode: this.form.smsCode,
-          //     invitationCode: this.vuex_user_inviter
-          //   }
-          //   loginByPhoneCaptcha(this, user).then((e) => {
-          //     if (e.code && e.code !== '00000') {
-          //       this.$u.toast(e.message)
-          //       setTimeout(() => {
-          //         this.getImgCaptcha()
-          //       }, 1500)
-          //     } else {
-          //       this.$u.vuex('vuex_access_token', e.data.access_token)
-          //       this.$u.vuex('vuex_refresh_token', e.data.refresh_token)
-          //       this.$u.vuex('vuex_user_info', e.data.user_info)
-          //       this.getUserVipGrade()
-          //       this.$u.toast('登录成功！')
-          //       setTimeout(() => {
-          //         this.$u.route('/pages/index/login/wxauth')
-          //       }, 800)
-          //     }
-          //   })
+          const user = {
+            phone: this.form.phone,
+            // code: this.form.captcha,
+            // uuid: this.form.imgCaptcha.uuid,
+            smsCode: this.form.smsCode
+          }
+          await this.toLogin(user)
+        }
+      },
+      /**
+       * 去登录
+       * @param user 登录用户信息
+       * @returns {Promise<void>}
+       */
+      async toLogin(user) {
+        const loginSuccess = await login(user, this.loginType)
+        if (loginSuccess) {
+          // 登录成功跳转路径
+          setTimeout(() => {
+            this.$u.route('/pages/index/login/wxauth')
+          }, 800)
+          // this.callbackUrl()
+        } else {
+          // 登录失败，对应事件
+          switch (this.loginType) {
+            case 0:
+              // 重新获取 wxCode
+              await this.getWxCode()
+              break
+            case 1:
+              // 刷新图片验证码
+              await this.initImgCaptcha()
+              break
+            case 2:
+              // 短信登录
+              // await this.initImgCaptcha()
+              break
+            default:
+              break
+          }
         }
       }
     }

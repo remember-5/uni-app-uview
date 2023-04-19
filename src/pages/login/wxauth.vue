@@ -32,7 +32,7 @@
   //   import { wxMiniAppCode2OpenId } from '@/api/user'
   //   import { objToUrl, urlToToObj } from '@/config/urlUtils'
   export default {
-    name: 'wxauthPage',
+    name: 'wxAuthPage',
     data() {
       return {
         wxCode: null,

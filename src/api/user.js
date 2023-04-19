@@ -73,6 +73,11 @@ export const refToken = (data) => http.post('/user/refToken', data)
  */
 export const code = () => http.get('/user/code')
 /**
+ * 发送短信验证码
+ * @returns {HttpPromise<any>} /
+ */
+export const smsCode = (data) => http.post('/user/smsCode', data)
+/**
  * 注销
  * @param data
  * @returns {HttpPromise<any>}
@@ -90,5 +95,11 @@ export const captchaByRegister = (data) => http.get(`/user/captchaByRegister`, {
  * @returns {HttpPromise<any>}
  */
 export const captchaByResetPassword = (data) => http.get(`/user/captchaByResetPassword`, { params: data })
+/**
+ * 忘记密码
+ * @param data
+ * @returns {HttpPromise<any>}
+ */
+export const resetPassword = (data) => http.post(`/user/resetPassword`, data)
 
 export const testMockRequest = () => http.get('api/test')
