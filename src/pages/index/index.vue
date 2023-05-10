@@ -5,6 +5,7 @@
     <u-button @click="doRouter('/pages/index/mock')"> mock </u-button>
     <u-button @click="toPdf"> pdf预览</u-button>
     <u-button @click="toWebView()"> webview</u-button>
+    <u-button @click="jumpToSwitchTab('/pages/home/home')"> home</u-button>
     <view>
       <view>i18n</view>
       <u-button @click="switchLang" :throttle-time="0">切换语言</u-button>
@@ -76,11 +77,17 @@
         this.$Router.push({ path: url, query: { name: 'wang' } })
         // 在onLoad中使用this.$Route.query获取参数
       },
+      jumpToSwitchTab(url) {
+        this.$Router.pushTab({ path: url, query: { name: 'wang' } })
+      },
       /**
        * 跳转webview
        */
       toWebView() {
-        this.$Router.push({ path: '/pages/webview/webview', query: { url: 'https://www.baidu.com' } })
+        this.$Router.push({
+          path: '/pages/webview/webview',
+          query: { url: 'https://www.baidu.com', backUrl: '/pages/home/home', backType: 'switchTab' }
+        })
       },
       /**
        * 预览pdf
