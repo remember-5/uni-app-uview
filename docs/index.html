@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>webview-postMessage-test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  </head>
+  <!-- 微信的SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script type="text/javascript">
+    var userAgent = navigator.userAgent
+    if (userAgent.indexOf('AlipayClient') > -1) {
+      // 支付宝小程序的 JS-SDK 防止 404 需要动态加载，如果不需要兼容支付宝小程序，则无需引用此 JS 文件。
+      document.writeln('<script src="https://appx/web-view.min.js"' + '>' + '<' + '/' + 'script>')
+    } else if (/QQ/i.test(userAgent) && /miniProgram/i.test(userAgent)) {
+      // QQ 小程序
+      document.write('<script type="text/javascript" src="https://qqq.gtimg.cn/miniprogram/webview_jssdk/qqjssdk-1.0.0.js"><\/script>')
+    } else if (/miniProgram/i.test(userAgent) && /micromessenger/i.test(userAgent)) {
+      // 微信小程序 JS-SDK 如果不需要兼容微信小程序，则无需引用此 JS 文件。
+      document.write('<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"><\/script>')
+    } else if (/toutiaomicroapp/i.test(userAgent)) {
+      // 头条小程序 JS-SDK 如果不需要兼容头条小程序，则无需引用此 JS 文件。
+      document.write('<script type="text/javascript" src="https://s3.pstatp.com/toutiao/tmajssdk/jssdk-1.0.1.js"><\/script>')
+    } else if (/swan/i.test(userAgent)) {
+      // 百度小程序 JS-SDK 如果不需要兼容百度小程序，则无需引用此 JS 文件。
+      document.write('<script type="text/javascript" src="https://b.bdstatic.com/searchbox/icms/searchbox/js/swan-2.0.18.js"><\/script>')
+    } else if (/quickapp/i.test(userAgent)) {
+      // quickapp
+      document.write('<script type="text/javascript" src="https://quickapp/jssdk.webview.min.js"><\/script>')
+    }
+    if (!/toutiaomicroapp/i.test(userAgent)) {
+      document.querySelector('.post-message-section').style.visibility = 'visible'
+    }
+  </script>
+  <body>
+    <div id="app">
+      <div>
+        测试vue变量是否正常展示
+        <div>
+          <span>{{ message }}</span>
+          <span>{{ data }}</span>
+        </div>
+      </div>
+
+      <div>
+        测试接受url参数
+        <div>
+          <span>name: {{ name }}</span>
+          <span>age: {{ age }}</span>
+        </div>
+      </div>
+
+      <div>
+        <button @click="postMessage">向app/小程序发送消息</button>
+        <button @click="toHome">跳转页面</button>
+      </div>
+    </div>
+    <!-- 微信的SDK -->
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <!-- uni 的 SDK -->
+    <script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
+    <script type="text/javascript">
+      var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello Vue!',
+          data: '',
+          name: null,
+          age: null
+        },
+        mounted() {
+          const name = this.getQueryString('name')
+          const age = this.getQueryString('age')
+
+          console.log('name: ', name)
+          console.log('age: ', age)
+          this.name = name
+          this.age = age
+        },
+        methods: {
+          getQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+            var r = window.location.search.substr(1).match(reg) //search,查询？后面的参数，并匹配正则
+            if (r != null) return decodeURI(r[2])
+            return null
+          },
+          postMessage() {
+            document.addEventListener('UniAppJSBridgeReady', function () {
+              uni.getEnv(function (res) {
+                console.log('当前环境：' + JSON.stringify(res))
+              })
+              uni.postMessage({
+                data: {
+                  action: 'message'
+                }
+              })
+            })
+          },
+          toHome() {
+            uni.switchTab({
+              url: '/pages/bottomTabbar/tabHome'
+            })
+
+            uni.postMessage({
+              data: {
+                action2: '我是按钮2',
+                action1: '我是按钮1'
+              }
+            })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

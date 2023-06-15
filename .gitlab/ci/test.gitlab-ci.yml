@@ -6,16 +6,16 @@ test-compile:
     - echo "Running compile"
     # 安装zip 和 pnpm
     - yum install -y zip
-    - npm install pnpm --registry=https://registry.npm.taobao.org
-    - pnpm install
-    - pnpm run build:app-plus:test
+    - npm config set registry https://registry.npmmirror.com
+    - npm i
+    - npm run build:app-plus:test
     # 压缩 & cp & 上传
     - cd dist/build/app-plus
     - zip -r app.wgt *
     - rm -rf /tmp/app.wgt
     - cp app.wgt /tmp
     # 上传文件到后台路径
-#    - curl -F "file=@/tmp/app.wgt" -F "key=1234" https://remember5.top/xxx
+  #    - curl -F "file=@/tmp/app.wgt" -F "key=1234" https://remember5.top/xxx
   only:
     - dev
   tags:

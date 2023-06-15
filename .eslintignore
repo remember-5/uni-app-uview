@@ -1,9 +1,14 @@
-unpackage
+# .eslintignore
+
+public
+dist
 node_modules
-uview-ui
+docs
 
-src/common/*
-src/config/*
-src/plugins/*
+src/static
+src/hybrid
+src/plugins/jsencrypt.js
 
-touch-emulator.js
+.automator
+.sourcemap
+.md
