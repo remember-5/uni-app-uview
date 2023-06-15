@@ -16,6 +16,8 @@
 import Vue from 'vue'
 import App from '@/App'
 import { router, RouterMount } from '@/router/index.js'
+import LoadingPlugin from '@/plugins/loading.js'
+
 
 // eslint-disable-next-line
 import Mock from '@/mock'
@@ -43,7 +45,7 @@ Vue.use(router)
 Vue.use(uView)
 // VueI18n
 Vue.use(VueI18n)
-
+Vue.use(LoadingPlugin)
 const i18n = new VueI18n({
   // 默认语言，这里的local属性，对应message中的zh、en属性
   locale: 'zh',
