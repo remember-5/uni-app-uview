@@ -76,7 +76,7 @@
     "@dcloudio/uni-stat": "2.0.2-3080420230530001",
     "@vue/shared": "^3.2.34",
     "better-mock": "^0.3.6",
-    "core-js": "^3.22.5",
+    "core-js": "^3.31.1",
     "crypto-js": "^4.1.1",
     "flyio": "^0.6.14",
     "js-cookie": "^3.0.1",
