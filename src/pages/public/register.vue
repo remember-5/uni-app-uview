@@ -16,20 +16,6 @@
               placeholder-style="color: #B2B2B2; font-size: 28rpx;"
             />
           </u-form-item>
-          <!--          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="130" label="验证码：" prop="code">-->
-          <!--            <view style="display: flex">-->
-          <!--              <u-input-->
-          <!--                v-model="form.captcha"-->
-          <!--                placeholder="请输入您的验证码"-->
-          <!--                :border="false"-->
-          <!--                maxlength="6"-->
-          <!--                type="text"-->
-          <!--                :custom-style="{ color: '#494949', fontSize: '28rpx' }"-->
-          <!--                placeholder-style="color: #B2B2B2; font-size: 28rpx;"-->
-          <!--              />-->
-          <!--              <u-image class="captchaImg" width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />-->
-          <!--            </view>-->
-          <!--          </u-form-item>-->
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="短信验证码：" prop="code">
             <u-input
               v-model="form.smsCode"
@@ -315,5 +301,173 @@
 </script>
 
 <style lang="scss">
-  @import '@/pages/public/login.scss';
+// 登录
+.login-header {
+  text-align: center;
+  padding: 86rpx 86rpx 168rpx;
+
+  .login-logoimg {
+    width: 524rpx;
+    height: 315rpx;
+    margin: 0 auto 118rpx;
+  }
+
+  .title-font {
+    font-size: 48rpx;
+    font-family: PingFang SC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+  }
+}
+
+.login-button {
+  margin: 0 62rpx;
+  text-align: center;
+
+  .qt-font {
+    font-size: 32rpx;
+    font-family: Inter-Regular, Inter;
+    font-weight: 400;
+    color: #333333;
+    line-height: 38rpx;
+    margin-top: 58rpx;
+  }
+
+  .login-wxfont {
+    margin-left: 12rpx;
+  }
+}
+
+// 手机验证码登录和密码登录
+.sjmima-header {
+  text-align: left;
+  padding: 50rpx 62rpx 60rpx;
+  .login-logoimg {
+    width: 382rpx;
+    height: 280rpx;
+  }
+  .title-font {
+    font-size: 48rpx;
+    font-family: PingFang SC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    margin-top: 42rpx;
+    margin-left: 24rpx;
+  }
+}
+.form-warp {
+  margin: 0 62rpx;
+  button[disabled] {
+    color: #b2b2b2 !important;
+    background: #ffffff !important;
+  }
+  .register-box {
+    margin-top: 32rpx;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 32rpx;
+    font-family: Inter-Regular, Inter;
+    font-weight: 400;
+    color: #3f69ff;
+  }
+}
+.sjmima-button {
+  margin: 120rpx 62rpx 0rpx;
+  text-align: center;
+  .qt-font {
+    font-size: 32rpx;
+    font-family: Inter-Regular, Inter;
+    font-weight: 400;
+    color: #333333;
+    line-height: 38rpx;
+    margin-top: 58rpx;
+  }
+  .login-wxfont {
+    margin-left: 12rpx;
+  }
+}
+.wjmm {
+  margin-left: 40rpx;
+  color: rgb(144, 147, 153);
+  font-size: 28rpx;
+}
+.sjmima-checkbox {
+  font-size: 24rpx;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 32rpx 0rpx;
+  ::v-deep .u-checkbox {
+    margin-right: -12rpx;
+  }
+  ::v-deep .uni-label-pointer {
+    display: flex;
+    align-items: center;
+  }
+  .link {
+    color: #3f69ff;
+  }
+}
+
+// 提示确认弹框
+.slot-content {
+  text-align: center;
+  font-size: 32rpx;
+  font-family: Hiragino Sans GB-W3, Hiragino Sans GB;
+  font-weight: normal;
+  color: rgba(51, 51, 51, 0.3);
+  padding: 50rpx;
+  line-height: 60rpx;
+}
+
+// 复选框
+::v-deep uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
+  border-color: rgba(51, 51, 51, 0.6);
+}
+
+::v-deep uni-checkbox .uni-checkbox-input {
+  margin-right: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: 0;
+  border: 1px solid rgba(51, 51, 51, 0.6);
+  background-color: #fff;
+  border-radius: 3px;
+  width: 22px;
+  height: 22px;
+  position: relative;
+}
+
+//隐私政策
+.privacy {
+  margin-top: 20rpx;
+}
+//切换
+.loginWay {
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: center;
+  color: rgb(144, 147, 153);
+  font-size: 26rpx;
+  & > view {
+    text-align: center;
+  }
+  & > view:nth-child(2) {
+    margin-left: 60rpx;
+  }
+  image {
+    width: 68rpx;
+    height: 68rpx;
+  }
+}
+.otherLogin {
+  position: fixed;
+  bottom: 20rpx;
+  left: 0;
+  right: 0;
+}
+
 </style>
