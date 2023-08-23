@@ -49,7 +49,7 @@
                 :clearable="true"
                 :password-icon="true"
               />
-              <view class="wjmm" @click="doRouter('/pages/login/forgotPassword')">忘记密码</view>
+              <view class="wjmm" @click="doRouter('/pages/public/forgotPassword')">忘记密码</view>
             </view>
           </u-form-item>
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="130" label="验证码：" prop="code">
@@ -68,7 +68,7 @@
           </u-form-item>
         </u-form>
         <view class="qtdl-box">
-          <text @click="doRouter('/pages/login/register')">注册账号</text>
+          <text @click="doRouter('/pages/public/register')">注册账号</text>
         </view>
       </view>
       <!-- 短信验证码登录 -->
@@ -109,7 +109,7 @@
           </u-form-item>
         </u-form>
         <view class="qtdl-box">
-          <text @click="doRouter('/pages/login/register')">注册账号</text>
+          <text @click="doRouter('/pages/public/register')">注册账号</text>
         </view>
       </view>
 
@@ -128,9 +128,9 @@
           <label>
             <checkbox value="checkbox" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
             我已阅读并同意
-            <text class="link" @click="doRouter('/pages/index/agreement/index')">《用户服务协议》</text>
+            <text class="link" @click="doRouter('/pages/public/agreement/index')">《用户服务协议》</text>
             和
-            <text class="link" @click="doRouter('/pages/index/privacy/index')">《隐私政策》</text>
+            <text class="link" @click="doRouter('/pages/public/privacy/index')">《隐私政策》</text>
           </label>
         </checkbox-group>
       </label>
@@ -419,7 +419,7 @@
         if (loginSuccess) {
           // 登录成功跳转路径
           setTimeout(() => {
-            this.$u.route('/pages/index/login/wxauth')
+            this.$u.route('/pages/public/wxauth')
           }, 800)
           // this.callbackUrl()
         } else {
@@ -447,5 +447,5 @@
 </script>
 
 <style lang="scss">
-  @import '@/pages/login/login.scss';
+  @import '@/pages/public/login.scss';
 </style>

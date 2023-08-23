@@ -1,23 +1,7 @@
 <template>
   <view>
     <view>其他</view>
-    <u-button @click="doRouter('/pages/index/upload')"> 上传图片</u-button>
-    <u-button @click="doRouter('/pages/index/mock')"> mock </u-button>
-    <u-button @click="toPdf"> pdf预览</u-button>
-    <u-button @click="toWebView()"> webview</u-button>
-    <u-button @click="jumpToSwitchTab('/pages/home/home')"> home</u-button>
-    <view>
-      <view>i18n</view>
-      <u-button @click="switchLang" :throttle-time="0">切换语言</u-button>
-      {{ $t('common.intro') }}
-    </view>
-    <view>登录界面</view>
-    <u-button @click="doRouter('/pages/login/login')"> 登录</u-button>
-    <u-button @click="doRouter('/pages/login/wxauth')"> 微信授权</u-button>
-    <view>
-      <view>uview演示</view>
-      <u-rate v-model="value" :count="count" />
-    </view>
+    <u-button @click="$Router.push({ path: '/pages/test/test'})">测试页面</u-button>
     <upgrade-popup
       :show="upgradeOptions.popupShow"
       :update-content="upgradeOptions.upgradeContent"
@@ -50,9 +34,7 @@
           popupAfterShow: false, // 是否显示升级加载进度条
           percent: 0, // 升级加载进度条-百分比0~100
           appleId: '' // ios app id
-        },
-        count: 4,
-        value: 2
+        }
       }
     },
     created() {
@@ -60,44 +42,6 @@
     },
     onShow() {},
     methods: {
-      /**
-       * 切换中英文
-       * @param language
-       */
-      switchLang() {
-        this.$i18n.locale = this.$i18n.locale === 'en' ? 'zh' : 'en'
-      },
-      /**
-       * 做路由跳转
-       * @param url
-       * @param params
-       */
-      doRouter(url) {
-        // 路由跳转
-        this.$Router.push({ path: url, query: { name: 'wang' } })
-        // 在onLoad中使用this.$Route.query获取参数
-      },
-      jumpToSwitchTab(url) {
-        this.$Router.pushTab({ path: url, query: { name: 'wang' } })
-      },
-      /**
-       * 跳转webview
-       */
-      toWebView() {
-        this.$Router.push({
-          path: '/pages/webview/webview',
-          query: { url: 'https://www.baidu.com', backUrl: '/pages/home/home', backType: 'switchTab' }
-        })
-      },
-      /**
-       * 预览pdf
-       */
-      toPdf() {
-        this.$Router.push({
-          path: '/pages/pdf/pdf',
-          query: { link: 'http://42.193.105.146:9000/nt1/%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE.pdf' }
-        })
-      },
       /**
        * 关闭更新弹窗
        */

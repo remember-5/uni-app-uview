@@ -27,51 +27,42 @@
       }
     },
     {
-      "path": "pages/index/upload",
-      "style": {
-        "navigationBarTitleText": "上传",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/index/mock",
-      "style": {
-        "navigationBarTitleText": "mock",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/home/home",
+      "path": "pages/index/home",
       "style": {
         "navigationBarTitleText": "我的",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/pdf/pdf",
-      "style": {
-        "navigationBarTitleText": "预览pdf",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/webview/webview",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/404/index",
-      "style": {
-        "navigationBarTitleText": "404",
         "enablePullDownRefresh": false
       }
     }
   ],
   "subPackages": [
     {
-      "root": "pages/login",
+      "root": "pages/test",
+      "pages": [
+        {
+          "path": "test",
+          "style": {
+            "navigationBarTitleText": "测试页面",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "upload",
+          "style": {
+            "navigationBarTitleText": "上传",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "mock",
+          "style": {
+            "navigationBarTitleText": "mock",
+            "enablePullDownRefresh": false
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/public",
       "pages": [
         {
           "path": "login",
@@ -100,11 +91,37 @@
             "navigationBarTitleText": "微信登录",
             "enablePullDownRefresh": false
           }
+        },
+        {
+          "path": "webview",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "404",
+          "style": {
+            "navigationBarTitleText": "404",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pdf",
+          "style": {
+            "navigationBarTitleText": "预览pdf",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     }
   ],
-  "preloadRule": {},
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["pages/public"]
+    }
+  },
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uView",
@@ -119,15 +136,15 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/icon/tab/component.png",
-        "selectedIconPath": "static/icon/tab/component_select.png",
-        "text": "组件"
+        "iconPath": "static/icon/tab/home.png",
+        "selectedIconPath": "static/icon/tab/home_select.png",
+        "text": "首页"
       },
       {
-        "pagePath": "pages/home/home",
-        "iconPath": "static/icon/tab/js.png",
-        "selectedIconPath": "static/icon/tab/js_select.png",
-        "text": "home"
+        "pagePath": "pages/index/home",
+        "iconPath": "static/icon/tab/user.png",
+        "selectedIconPath": "static/icon/tab/user_select.png",
+        "text": "我的"
       }
     ]
   }

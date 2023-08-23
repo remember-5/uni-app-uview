@@ -94,9 +94,9 @@
           <label>
             <checkbox value="cb" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
             我已阅读并同意
-            <text class="link" @click="$u.route('/pages/index/agreement/index')">《用户服务协议》</text>
+            <text class="link" @click="$u.route('/pages/public/agreement/index')">《用户服务协议》</text>
             和
-            <text class="link" @click="$u.route('/pages/index/privacy/index')">《隐私政策》</text>
+            <text class="link" @click="$u.route('/pages/public/privacy/index')">《隐私政策》</text>
           </label>
         </checkbox-group>
       </label>
@@ -123,14 +123,79 @@
           smsCode: '',
           codeText: '获取验证码',
           btnBool: false
+        },
+        rules: {
+          phone: [
+            {
+              pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              required: true,
+              message: '请输入手机号',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ],
+          email: [
+            {
+              type: 'email',
+              required: true,
+              message: '请输入正确的邮箱',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ],
+          password: [
+            {
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
+              required: true,
+              message: '密码是8为以上包含大小写字母和数字和特殊字符',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ],
+          passwordTrue: [
+            {
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
+              required: true,
+              message: '密码不一致',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            },
+            {
+              validator: (rule, value, callback) => {
+                console.log(this.form.password === this.form.passwordTrue)
+                return this.form.password === this.form.passwordTrue
+              },
+              message: '密码不一致',
+              trigger: ['blur']
+            }
+          ],
+
+          captcha: [
+            {
+              required: true,
+              len: 4,
+              message: '请输入验证码',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ]
+        },
+        labelStyle: {
+          color: '#494949',
+          fontSize: '28rpx',
+          height: '30rpx'
         }
       }
     },
     onLoad() {},
-    onShow() {
-      // await this.initImgCaptcha()
+    async onShow() {
+      await this.initImgCaptcha()
     },
     created() {},
+    // 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+    onReady() {
+      this.$refs.uForm.setRules(this.rules)
+    },
     methods: {
       /**
        * 用户服务和隐私政策选中
@@ -196,55 +261,59 @@
       },
       // 注册
       async toRegisterUser() {
-        const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
-        // 密码登录提交
-        if (!this.form.phone) {
-          this.$u.toast('请输入手机号!')
-          return
-        }
-        if (!strTemp.test(this.form.phone)) {
-          this.$u.toast('请输入正确手机号!')
-          return
-        }
-        if (!this.form.smsCode) {
-          this.$u.toast('请输入您的验证码!')
-          return
-        }
-        if (!this.form.password) {
-          this.$u.toast('请输入您的密码!')
-          return
-        }
-        if (this.form.password !== this.form.passwordTrue) {
-          this.$u.toast('两次密码不一致!')
-          return
-        }
-        if (!this.iAgree) {
-          this.$u.toast('请阅读协议!')
-          return
-        }
-        const user = {
-          phone: this.form.phone,
-          // todo 密码加密传输
-          // password: encrypt(this.form.password),
-          password: this.form.password,
-          smsCode: this.form.smsCode
-          // code: this.form.captcha,
-          // uuid: this.form.imgCaptcha.uuid
-        }
-        const isSuccess = await registerUser(user)
-        if (isSuccess) {
-          // 注册成功跳转路径
-          setTimeout(() => {
-            this.$Router.push({ path: '/pages/login/login' })
-          }, 800)
-        } else {
-          // await this.initImgCaptcha()
-        }
+        this.$refs.uForm.validate(async (valid) => {
+          const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
+          // 密码登录提交
+          if (!this.form.phone) {
+            this.$u.toast('请输入手机号!')
+            return
+          }
+          if (!strTemp.test(this.form.phone)) {
+            this.$u.toast('请输入正确手机号!')
+            return
+          }
+          if (!this.form.smsCode) {
+            this.$u.toast('请输入您的验证码!')
+            return
+          }
+          if (!this.form.password) {
+            this.$u.toast('请输入您的密码!')
+            return
+          }
+          if (this.form.password !== this.form.passwordTrue) {
+            this.$u.toast('两次密码不一致!')
+            return
+          }
+          if (!this.iAgree) {
+            this.$u.toast('请阅读协议!')
+            return
+          }
+          const user = {
+            phone: this.form.phone,
+            // todo 密码加密传输
+            // password: encrypt(this.form.password),
+            password: this.form.password,
+            smsCode: this.form.smsCode
+            // code: this.form.captcha,
+            // uuid: this.form.imgCaptcha.uuid
+          }
+          const isSuccess = await registerUser(user)
+          if (isSuccess) {
+            // 注册成功跳转路径
+            setTimeout(() => {
+              this.$Router.push({ path: '/pages/public/login' })
+            }, 800)
+          } else {
+            // await this.initImgCaptcha()
+          }
+
+        })
+
       }
     }
   }
 </script>
 
 <style lang="scss">
-  @import '@/pages/login/login.scss';
+  @import '@/pages/public/login.scss';
 </style>

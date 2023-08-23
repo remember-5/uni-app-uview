@@ -19,18 +19,20 @@ export default (router) => {
   // 路由白名单，可以考虑不同环境配置不同白名单
   const whiteList = [
     '/pages/index/index',
-    '/pages/index/upload',
-    '/pages/index/mock',
+    '/pages/index/home',
 
-    '/pages/home/home',
-    '/pages/404/index',
-    '/pages/webview/webview',
-    '/pages/pdf/pdf',
+    '/pages/test/mock',
+    '/pages/test/test',
+    '/pages/test/upload',
 
-    '/pages/login/login',
-    '/pages/login/wxauth',
-    '/pages/login/register',
-    '/pages/login/forgotPassword'
+    '/pages/public/404',
+    '/pages/public/webview',
+    '/pages/public/pdf',
+
+    '/pages/public/login',
+    '/pages/public/wxauth',
+    '/pages/public/register',
+    '/pages/public/forgotPassword'
   ] // no redirect whitelist
 
   // 全局路由前置守卫
@@ -42,7 +44,7 @@ export default (router) => {
     const userId = store.state.vuex_user_info
 
     if (token) {
-      if (to.path === '/pages/login/login') {
+      if (to.path === '/pages/public/login') {
         next()
       } else if (!userId) {
         try {
@@ -51,7 +53,7 @@ export default (router) => {
         } catch (error) {
           // await store.dispatch('user/logout')
           next({
-            path: '/pages/login/index',
+            path: '/pages/public/index',
             query: {
               redirect: JSON.stringify({
                 path: to.path,
@@ -68,7 +70,7 @@ export default (router) => {
       next()
     } else {
       next({
-        path: '/pages/account/login/index',
+        path: '/pages/public/login',
         query: {
           redirectView: JSON.stringify({
             path: to.path,

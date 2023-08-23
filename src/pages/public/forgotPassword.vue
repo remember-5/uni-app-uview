@@ -1,4 +1,4 @@
-<template>
+99<template>
   <view>
     <view>
       <view class="sjmima-header">
@@ -204,7 +204,7 @@
         if (isSuccess) {
           // 注册成功跳转路径
           setTimeout(() => {
-            this.$Router.push({ path: '/pages/login/login' })
+            this.$Router.push({ path: '/pages/public/login' })
           }, 800)
         } else {
           // await this.initImgCaptcha()
@@ -215,5 +215,5 @@
 </script>
 
 <style lang="scss">
-  @import '@/pages/login/login.scss';
+  @import '@/pages/public/login.scss';
 </style>
