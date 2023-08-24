@@ -6,7 +6,7 @@
     </view>
 
     <view>
-      <u-image style="margin: auto" src="@/static/images/WeChatIcon.png" mode="widthFix" width="372" />
+      <u-image style="margin: auto" src="@/static/images/wechat_icon.png" mode="widthFix" width="372" />
     </view>
 
     <view>

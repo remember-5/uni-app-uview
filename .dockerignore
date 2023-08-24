@@ -1,4 +1,8 @@
-# 排除所有文件
-*
-# 引入打包后的文件
-!dist
+# 排除文件
+.git
+.gitlab
+.idea
+dist
+node_modules
+package-lock.json
+
