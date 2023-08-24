@@ -3,13 +3,11 @@
     <!-- 微信登陆 -->
     <view v-if="loginType === 0">
       <view class="login-header">
-        <image src="@/static/images/login_bg_img.png" mode="widthFix" class="bg-img" />
+        <image class="bg-img" src="@/static/images/login_bg_img.png" mode="widthFix" />
         <view class="title-font">欢迎使用！</view>
       </view>
       <view class="login-button">
-        <u-button v-show="!iAgree" key="1" shape="circle" hover-class="none" @click="notClickedAgree()">
-          微信用户一键登录
-        </u-button>
+        <u-button v-show="!iAgree" key="1" shape="circle" hover-class="none" @click="notClickedAgree()"> 微信用户一键登录 </u-button>
         <u-button v-show="iAgree" key="2" type="success" shape="circle" hover-class="none" open-type="getPhoneNumber" @getphonenumber="toWxLogin">
           微信用户一键登录
         </u-button>
@@ -17,72 +15,50 @@
     </view>
     <!-- 其他方式登录 -->
     <view v-if="loginType !== 0">
-      <view class="sms-code-header">
-        <view class="title-font">欢迎使用！</view>
-      </view>
+      <view class="sms-code-header title_font">欢迎使用！</view>
       <!-- 账号密码登录 -->
       <view class="form-warp" v-if="loginType === 1">
-        <u-form ref="uForm" :model="form">
+        <u-form :model="form">
           <u-form-item label-width="130" label="账号：" prop="name">
-            <u-input
-              v-model="form.phone"
-              placeholder="请输入手机号或邮箱"
-              :border="false"
-              type="text"
-            />
+            <u-input v-model="form.phone" placeholder="请输入手机号或邮箱" :border="false" type="text" />
           </u-form-item>
-          <u-form-item  label-width="130" label="密码：" prop="code">
-            <view style="display: flex">
-              <u-input
-                v-model="form.password"
-                placeholder="请输入您的密码"
-                :border="false"
-                type="password"
-                :clearable="true"
-                :password-icon="true"
-              />
+          <u-form-item label-width="130" label="密码：" prop="code">
+            <view class="password_flex">
+              <u-input v-model="form.password" placeholder="请输入您的密码" :border="false" type="password" :clearable="true" :password-icon="true" />
               <view class="wjmm" @click="doRouter('/pages/public/forgotPassword')">忘记密码</view>
             </view>
           </u-form-item>
           <u-form-item label-width="130" label="验证码：" prop="code">
-            <view style="display: flex">
-              <u-input
-                v-model="form.captcha"
-                placeholder="请输入您的验证码"
-                :border="false"
-                maxlength="6"
-                type="text"
-              />
-              <u-image class="captchaImg" width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />
+            <view class="d_flex">
+              <u-input v-model="form.captcha" placeholder="请输入您的验证码" :border="false" maxlength="6" type="text" />
+              <u-image width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />
             </view>
           </u-form-item>
         </u-form>
-        <view class="register-box">
-          <text @click="doRouter('/pages/public/register')">注册账号</text>
-        </view>
+        <view class="register-box" @click="doRouter('/pages/public/register')">注册账号</view>
       </view>
       <!-- 短信验证码登录 -->
       <view class="form-warp" v-if="loginType === 2">
-        <u-form ref="uForm" :model="form">
-          <u-form-item :label-style="labelStyle" label-width="180" label="手机号：" prop="name">
+        <u-form :model="form">
+          <u-form-item :label-style="labelStyle[1]" label-width="180" label="手机号：" prop="name">
             <u-input
               v-model="form.phone"
               placeholder="请输入您的手机号"
               :border="false"
               type="text"
-              :custom-style="{ color: '#494949', fontSize: '28rpx' }"
-              placeholder-style="color: #B2B2B2; font-size: 28rpx;"
+              :custom-style="labelStyle[0]"
+              :placeholder-style="placeholder_style"
             />
           </u-form-item>
-          <u-form-item :label-style="labelStyle" label-width="180" label="短信验证码：" prop="code">
+          <u-form-item :label-style="labelStyle[1]" label-width="180" label="短信验证码：" prop="code">
             <u-input
               v-model="form.smsCode"
               placeholder="请输入您的验证码"
               :border="false"
               maxlength="6"
               type="text"
-              :custom-style="{ color: '#494949', fontSize: '28rpx' }"
-              placeholder-style="color: #B2B2B2; font-size: 28rpx;"
+              :custom-style="labelStyle[0]"
+              :placeholder-style="placeholder_style"
             />
             <u-button
               slot="right"
@@ -90,7 +66,7 @@
               :disabled="form.btnBool"
               type="default"
               shape="circle"
-              :custom-style="{ background: '#FFFFFF', color: '#3F69FF', fontSize: '28rpx', width: '200rpx', height: '50rpx' }"
+              :custom-style="labelStyle[2]"
               hover-class="background:#fff"
               @click="getSmsCode"
             >
@@ -98,32 +74,24 @@
             </u-button>
           </u-form-item>
         </u-form>
-        <view class="register-box" @click="doRouter('/pages/public/register')">
-          注册账号
-        </view>
+        <view class="register-box" @click="doRouter('/pages/public/register')">注册账号</view>
       </view>
 
       <view class="sjmima-button">
-        <view class="wxbuton">
-          <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="otherLogins">
-            <text class="login-wxfont">登录</text>
-          </u-button>
-        </view>
+        <u-button class="login-wxfont" type="primary" shape="circle" :custom-style="custom_style" hover-class="none" @click="otherLogins">登录</u-button>
       </view>
     </view>
     <!-- 隐私政策 -->
     <view class="sjmima-checkbox">
-      <label class="radio">
-        <checkbox-group @change="iAgree = !iAgree">
-          <label>
-            <checkbox value="checkbox" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
-            我已阅读并同意
-            <text class="link" @click="doRouter('/pages/public/agreement/index')">《用户服务协议》</text>
-            和
-            <text class="link" @click="doRouter('/pages/public/privacy/index')">《隐私政策》</text>
-          </label>
-        </checkbox-group>
-      </label>
+      <checkbox-group @change="iAgree = !iAgree">
+        <label>
+          <checkbox value="checkbox" :checked="iAgree" color="rgba(51, 51, 51, 0.7)" style="transform: scale(0.6)" />
+          我已阅读并同意
+          <text class="blue" @click="doRouter('/pages/public/agreement/index')">《用户服务协议》</text>
+          和
+          <text class="blue" @click="doRouter('/pages/public/privacy/index')">《隐私政策》</text>
+        </label>
+      </checkbox-group>
     </view>
     <view class="otherLogin">
       <u-divider>其他登陆方式</u-divider>
@@ -154,7 +122,7 @@
     data() {
       return {
         // 0 微信一键登录 1 密码登录 2 手机验证码登录
-        loginType: 0,
+        loginType: 1,
         // 用户协议
         iAgree: false,
         // 微信登录需要
@@ -176,7 +144,13 @@
 
           btnBool: false
         },
-        labelStyle: { color: '#494949', fontSize: '28rpx', height: '30rpx' }
+        labelStyle: [
+          { color: '#494949', fontSize: '28rpx' },
+          { color: '#494949', fontSize: '28rpx', height: '30rpx' },
+          { background: '#FFFFFF', color: '#3F69FF', fontSize: '28rpx', width: '200rpx', height: '50rpx' }
+        ],
+        placeholder_style: 'color: #B2B2B2; font-size: 28rpx;',
+        custom_style: {height: '88rpx'}
       }
     },
     onLoad() {
@@ -438,166 +412,137 @@
 </script>
 
 <style lang="scss">
-// 登录
-.login-header {
-  text-align: center;
-  padding: 86rpx 86rpx 168rpx;
-
-  .bg-img {
-    width: 524rpx;
-    height: 315rpx;
-    margin: 0 auto 118rpx;
+  // 登录
+  .login-header {
+    text-align: center;
+    padding: 86rpx 86rpx 168rpx;
+    .bg-img {
+      width: 524rpx;
+      height: 315rpx;
+      margin: 0 auto 118rpx;
+    }
+    .title-font {
+      font-size: 48rpx;
+      color: #333333;
+    }
   }
 
-  .title-font {
-    font-size: 48rpx;
-    font-weight: 500;
-    color: #333333;
-  }
-}
-
-.login-button {
-  margin: 0 62rpx;
-  text-align: center;
-
-  .qt-font {
-    font-size: 32rpx;
-    font-weight: 400;
-    color: #333333;
-    line-height: 38rpx;
-    margin-top: 58rpx;
+  .login-button {
+    margin: 0 62rpx;
+    text-align: center;
   }
 
-  .login-wxfont {
-    margin-left: 12rpx;
+  // 手机验证码登录和密码登录
+  .sms-code-header {
+    text-align: left;
+    padding: 50rpx 62rpx 60rpx;
   }
-}
 
-// 手机验证码登录和密码登录
-.sms-code-header {
-  text-align: left;
-  padding: 50rpx 62rpx 60rpx;
-  .login-logoimg {
-    width: 382rpx;
-    height: 280rpx;
-  }
-  .title-font {
+  .title_font {
     font-size: 48rpx;
     font-weight: 500;
     color: #333333;
     margin-top: 42rpx;
     margin-left: 24rpx;
   }
-}
-.form-warp {
-  margin: 0 62rpx;
-  button[disabled] {
-    color: #b2b2b2 !important;
-    background: #ffffff !important;
+
+  .form-warp {
+    margin: 0 62rpx;
+    button[disabled] {
+      color: #b2b2b2 !important;
+      background: #ffffff !important;
+    }
+    .register-box {
+      margin-top: 32rpx;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 32rpx;
+      font-weight: 400;
+      color: #3f69ff;
+    }
+    .password_flex {
+      display: flex;
+      u-input {
+        flex: 1;
+      }
+      .wjmm {
+        margin-left: 40rpx;
+        color: rgb(144, 147, 153);
+        font-size: 28rpx;
+      }
+    }
+    .d_flex {
+      display: flex;
+    }
   }
-  .register-box {
-    margin-top: 32rpx;
-    display: flex;
-    justify-content: flex-end;
-    font-size: 32rpx;
-    font-weight: 400;
-    color: #3f69ff;
+
+  .sjmima-button {
+    margin: 120rpx 62rpx 0rpx;
+    text-align: center;
+    .login-wxfont {
+      margin-left: 12rpx;
+    }
   }
-}
-.sjmima-button {
-  margin: 120rpx 62rpx 0rpx;
-  text-align: center;
-  .qt-font {
-    font-size: 32rpx;
+  .sjmima-checkbox {
+    font-size: 24rpx;
     font-weight: 400;
     color: #333333;
-    line-height: 38rpx;
-    margin-top: 58rpx;
-  }
-  .login-wxfont {
-    margin-left: 12rpx;
-  }
-}
-.wjmm {
-  margin-left: 40rpx;
-  color: rgb(144, 147, 153);
-  font-size: 28rpx;
-}
-.sjmima-checkbox {
-  font-size: 24rpx;
-  font-weight: 400;
-  color: #333333;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 32rpx 0rpx;
-  ::v-deep .u-checkbox {
-    margin-right: -12rpx;
-  }
-  ::v-deep .uni-label-pointer {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    padding: 32rpx 0rpx;
+    ::v-deep .u-checkbox {
+      margin-right: -12rpx;
+    }
+    ::v-deep .uni-label-pointer {
+      display: flex;
+      align-items: center;
+    }
+    .blue {
+      color: #3f69ff;
+    }
   }
-  .link {
-    color: #3f69ff;
+
+  // 复选框
+  ::v-deep uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
+    border-color: rgba(51, 51, 51, 0.6);
   }
-}
 
-// 提示确认弹框
-.slot-content {
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: normal;
-  color: rgba(51, 51, 51, 0.3);
-  padding: 50rpx;
-  line-height: 60rpx;
-}
-
-// 复选框
-::v-deep uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
-  border-color: rgba(51, 51, 51, 0.6);
-}
-
-::v-deep uni-checkbox .uni-checkbox-input {
-  margin-right: 5px;
-  -webkit-appearance: none;
-  appearance: none;
-  outline: 0;
-  border: 1px solid rgba(51, 51, 51, 0.6);
-  background-color: #fff;
-  border-radius: 3px;
-  width: 22px;
-  height: 22px;
-  position: relative;
-}
-
-//隐私政策
-.privacy {
-  margin-top: 20rpx;
-}
-//切换
-.loginWay {
-  margin-top: 30rpx;
-  display: flex;
-  justify-content: center;
-  color: rgb(144, 147, 153);
-  font-size: 26rpx;
-  & > view {
-    text-align: center;
+  ::v-deep uni-checkbox .uni-checkbox-input {
+    margin-right: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: 0;
+    border: 1px solid rgba(51, 51, 51, 0.6);
+    background-color: #fff;
+    border-radius: 3px;
+    width: 22px;
+    height: 22px;
+    position: relative;
   }
-  & > view:nth-child(2) {
-    margin-left: 60rpx;
-  }
-  image {
-    width: 68rpx;
-    height: 68rpx;
-  }
-}
-.otherLogin {
-  position: fixed;
-  bottom: 20rpx;
-  left: 0;
-  right: 0;
-}
 
+  //切换
+  .otherLogin {
+    position: fixed;
+    bottom: 20rpx;
+    left: 0;
+    right: 0;
+    .loginWay {
+      margin-top: 30rpx;
+      display: flex;
+      justify-content: center;
+      color: rgb(144, 147, 153);
+      font-size: 26rpx;
+      & > view {
+        text-align: center;
+      }
+      & > view:nth-child(2) {
+        margin-left: 60rpx;
+      }
+      image {
+        width: 68rpx;
+        height: 68rpx;
+      }
+    }
+  }
 </style>
