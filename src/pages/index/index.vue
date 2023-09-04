@@ -28,7 +28,7 @@
         upgradeOptions: {
           downloads: '', // 下载地址
           task: null, // 下载进度监控用来做 进度展示
-          popupShow: true, // 显示新版本升级
+          popupShow: false, // 显示新版本升级
           upgradeContent: '',
           popupCloseBtnShow: false, // 显示关闭按钮
           popupAfterShow: false, // 是否显示升级加载进度条

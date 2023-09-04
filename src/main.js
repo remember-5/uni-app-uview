@@ -18,7 +18,6 @@ import App from '@/App'
 import { router, RouterMount } from '@/router/index.js'
 import LoadingPlugin from '@/plugins/loading.js'
 
-
 // eslint-disable-next-line
 import Mock from '@/mock'
 

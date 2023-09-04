@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const files = require.context('./apis', false, /\.js$/)
+import Mock from 'better-mock/dist/mock.mp.js'
 
-files.keys().forEach((key) => {
-  const module = files(key)
-  for (const exportKey in module) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (module.hasOwnProperty(exportKey)) {
-      const exported = module[exportKey]
-      // 将导出内容添加到index.js中
-      Object.assign(exports, exported)
+Mock.mock('/api/test', {
+  'list|1-10': [
+    {
+      // 属性 id 是一个自增数，起始值为 1，每次增 1
+      'id|+1': 1,
+      email: '@EMAIL'
     }
-  }
+  ]
 })

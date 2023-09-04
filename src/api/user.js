@@ -102,4 +102,4 @@ export const captchaByResetPassword = (data) => http.get(`/user/captchaByResetPa
  */
 export const resetPassword = (data) => http.post(`/user/resetPassword`, data)
 
-export const testMockRequest = () => http.get('api/test')
+export const testMockRequest = () => http.get('/api/test')

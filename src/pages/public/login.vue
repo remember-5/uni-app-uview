@@ -17,7 +17,7 @@
     <view v-if="loginType !== 0">
       <view class="sms-code-header title_font">欢迎使用！</view>
       <!-- 账号密码登录 -->
-      <view class="form-warp" v-if="loginType === 1">
+      <view ref="uForm" class="form-warp" v-if="loginType === 1">
         <u-form :model="form">
           <u-form-item label-width="130" label="账号：" prop="name">
             <u-input v-model="form.phone" placeholder="请输入手机号或邮箱" :border="false" type="text" />
@@ -257,43 +257,6 @@
             clearInterval(timer)
           }
         }, 1000)
-      },
-      // 返回页面
-      callbackUrl() {
-        if (this.vuex_login_page_back_url) {
-          // 存在back_url
-          switch (
-            this.vuex_login_page_back_biz_type // 判断业务场景
-          ) {
-            case 'A01': // Webview H5详情页跳转小程序登录页面
-              //   if (this.vuex_login_page_back_is_webview) {
-              //     // 是否是webview
-              //     const backJson = urlToToObj(this.vuex_login_page_back_url)
-              //     backJson['token'] = this.vuex_access_token
-              //     const prefixUrl = this.vuex_login_page_back_url.split('?')[0]
-              //     const backUrl = objToUrl(backJson, prefixUrl)
-              //     this.$u.route({
-              //       url: 'pages/index/webview/index',
-              //       type: this.vuex_login_page_back_is_webview === '' ? 'navigateTo' : this.vuex_login_page_back_is_webview,
-              //       params: {
-              //         url: encodeURIComponent(backUrl),
-              //         backUrl: 'pages/index/login/index'
-              //       }
-              //     })
-              //   } else {
-              //     this.$u.route({
-              //       url: decodeURIComponent(this.vuex_login_page_back_url),
-              //       type: this.vuex_login_page_back_is_webview === '' ? 'navigateTo' : this.vuex_login_page_back_is_webview
-              //     })
-              //   }
-              break
-            default:
-              this.toIndexPage()
-              break
-          }
-        } else {
-          this.toIndexPage()
-        }
       },
       /**
        * 去首页
