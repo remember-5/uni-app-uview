@@ -31,7 +31,7 @@ npm i && npm run serve
 - [x] 使用 luch-request https://www.quanzhan.co/luch-request/
 - [x] 热更模块集成 参考 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPUpdate
 - [ ] 微信小程序分享模块/公众号分享模块 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPshare
-- [ ] 增加默认页面【登录，注册，忘记密码，绑定手机号，协议页面，商品海报生成，推广海报生成】
+- [x] 增加默认页面【登录，注册，忘记密码，绑定手机号，协议页面，商品海报生成，推广海报生成】
 - [ ] 续期 jwt，增加 request 的重试机制，和 404 等问题转发到指定页面
 - [ ] 导航栏到配置，参考 uniappDemo/#/pages/demo/navBarMemo/index
 - [ ] 启动界面 manifest.json -> 'App 启动界面配置' https://ask.dcloud.net.cn/article/37474

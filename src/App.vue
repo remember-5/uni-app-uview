@@ -1,3 +1,6 @@
+<template>
+  <u-no-network></u-no-network>
+</template>
 <script>
   import { wxUpgrade } from '@/utils/upgrade.js'
   import { getSystemInfo } from '@/utils/device'

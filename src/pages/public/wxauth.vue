@@ -1,15 +1,15 @@
 <template>
-  <view>
-    <view>
+  <view class="u-skeleton">
+    <view class="u-skeleton-fillet" style="width:140rpx">
       <view>欢迎使用xxx</view>
       <view>授权登录</view>
     </view>
 
     <view>
-      <u-image style="margin: auto" src="@/static/images/wechat_icon.png" mode="widthFix" width="372" />
+      <u-image class="u-skeleton-circle" style="margin: auto" src="@/static/images/wechat_icon.png" mode="widthFix" width="100" />
     </view>
 
-    <view>
+    <view class="u-skeleton-fillet">
       <view>为提供优质服务，xxx需要获取你的以下信息：</view>
       <view>你的公开信息（头像、昵称等）</view>
     </view>
@@ -25,6 +25,8 @@
         >授权登录xxx</u-button
       >
     </view>
+    <!--引用组件-->
+    <u-skeleton :loading="loading" :animation="true" bgColor="#FFF"></u-skeleton>
   </view>
 </template>
 
@@ -35,6 +37,7 @@
     name: 'wxAuthPage',
     data() {
       return {
+        loading: false,
         wxCode: null,
         openId: null
       }
