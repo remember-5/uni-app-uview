@@ -286,7 +286,7 @@
     margin-left: 12rpx;
   }
 }
-.wjmm {
+.forget-password {
   margin-left: 40rpx;
   color: rgb(144, 147, 153);
   font-size: 28rpx;

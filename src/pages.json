@@ -11,7 +11,7 @@
       {
         "name": "test",
         //模式名称
-        "path": "/pages/public/register",
+        "path": "/pages/public/login",
         //启动页面，必选
         "query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d095e&__id__=1"
         //启动参数，在页面的onLoad函数里面得到

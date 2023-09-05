@@ -1,7 +1,7 @@
 <template>
   <view>
     <view>
-      <view>欢迎使用翼企购</view>
+      <view>欢迎使用xxx</view>
       <view>授权登录</view>
     </view>
 
@@ -58,55 +58,6 @@
       // #endif
       // 授权
       getphonenumberWx(loginInfo) {
-        // wxMiniAppCode2OpenId(this, { wxCode: this.wxCode }).then((e) => {
-        //   console.log(e)
-        //   if (e.code === '00000') {
-        //     this.openId = e.data
-        //     this.$u.toast('授权成功！')
-        //     setTimeout(() => {
-        //       if (this.vuex_login_page_back_url) {
-        //         // 存在back_url
-        //         switch (
-        //           this.vuex_login_page_back_biz_type // 判断业务场景
-        //         ) {
-        //           case 'A01': // Webview H5详情页跳转小程序登录页面
-        //             if (this.vuex_login_page_back_is_webview) {
-        //               // 是否是webview
-        //               const backJson = urlToToObj(this.vuex_login_page_back_url)
-        //               backJson['token'] = this.vuex_access_token
-        //               const prefixUrl = this.vuex_login_page_back_url.split('?')[0]
-        //               const backUrl = objToUrl(backJson, prefixUrl)
-        //               this.$u.route({
-        //                 url: 'pages/index/webview/index',
-        //                 type: this.vuex_login_page_back_is_webview === '' ? 'navigateTo' : this.vuex_login_page_back_is_webview,
-        //                 params: {
-        //                   url: encodeURIComponent(backUrl),
-        //                   backUrl: 'pages/index/login/index'
-        //                 }
-        //               })
-        //             } else {
-        //               this.$u.route({
-        //                 url: decodeURIComponent(this.vuex_login_page_back_url),
-        //                 type: this.vuex_login_page_back_is_webview === '' ? 'navigateTo' : this.vuex_login_page_back_is_webview
-        //               })
-        //             }
-        //             break
-        //           default:
-        //             uni.switchTab({
-        //               url: '/pages/tabbar/index'
-        //             })
-        //             break
-        //         }
-        //       } else {
-        //         uni.switchTab({
-        //           url: '/pages/tabbar/index'
-        //         })
-        //       }
-        //     }, 800)
-        //   } else {
-        //     this.$u.toast('获取openId失败！')
-        //   }
-        // })
       }
     }
   }

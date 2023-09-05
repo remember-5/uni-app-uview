@@ -6,7 +6,7 @@
       </view>
       <view class="form-warp">
         <u-form ref="uForm" :model="form">
-          <u-form-item label-width="180" label="手机号：" prop="name">
+          <u-form-item label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
               type="text"
@@ -14,7 +14,7 @@
               :border="false"
             />
           </u-form-item>
-          <u-form-item label-width="180" label="短信验证码：" prop="code">
+          <u-form-item label-width="180" label="短信验证码：" prop="smsCode">
             <u-input
               v-model="form.smsCode"
               type="text"
@@ -35,22 +35,22 @@
               {{ form.codeText }}
             </u-button>
           </u-form-item>
-          <u-form-item label-width="180" label="密码：" prop="code">
+          <u-form-item label-width="180" label="密码：" prop="password">
             <u-input
               v-model="form.password"
+              type="password"
               placeholder="请输入您的密码"
               :border="false"
-              type="password"
               :clearable="true"
               :password-icon="true"
             />
           </u-form-item>
-          <u-form-item label-width="180" label="确认密码：" prop="code">
+          <u-form-item label-width="180" label="确认密码：" prop="passwordTrue">
             <u-input
               v-model="form.passwordTrue"
+              type="password"
               placeholder="请确认您的密码"
               :border="false"
-              type="password"
               :clearable="true"
               :password-icon="true"
             />
@@ -58,11 +58,9 @@
         </u-form>
       </view>
       <view class="sjmima-button">
-        <view class="wxbuton">
-          <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="toRegisterUser">
-            <text class="login-wxfont">注册</text>
-          </u-button>
-        </view>
+        <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="toRegisterUser">
+          <text class="login-wxfont">注册</text>
+        </u-button>
       </view>
     </view>
     <!-- 隐私政策 -->
@@ -112,15 +110,6 @@
               trigger: ['blur']
             }
           ],
-          email: [
-            {
-              type: 'email',
-              required: true,
-              message: '请输入正确的邮箱',
-              // 可以单个或者同时写两个触发验证方式
-              trigger: ['blur']
-            }
-          ],
           password: [
             {
               pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
@@ -147,11 +136,9 @@
               trigger: ['blur']
             }
           ],
-
-          captcha: [
+          smsCode: [
             {
               required: true,
-              len: 4,
               message: '请输入验证码',
               // 可以单个或者同时写两个触发验证方式
               trigger: ['blur']
@@ -348,7 +335,7 @@
     margin-left: 12rpx;
   }
 }
-.wjmm {
+.forget-password {
   margin-left: 40rpx;
   color: rgb(144, 147, 153);
   font-size: 28rpx;

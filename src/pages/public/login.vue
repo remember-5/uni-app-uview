@@ -17,18 +17,18 @@
     <view v-if="loginType !== 0">
       <view class="sms-code-header title_font">欢迎使用！</view>
       <!-- 账号密码登录 -->
-      <view ref="uForm" class="form-warp" v-if="loginType === 1">
-        <u-form :model="form">
-          <u-form-item label-width="130" label="账号：" prop="name">
-            <u-input v-model="form.phone" placeholder="请输入手机号或邮箱" :border="false" type="text" />
+      <view class="form-warp" v-if="loginType === 1">
+        <u-form ref="passwordForm" :model="form">
+          <u-form-item label-width="130" label="账号：" prop="phone">
+            <u-input v-model="form.phone" placeholder="请输入账号" type="text" />
           </u-form-item>
-          <u-form-item label-width="130" label="密码：" prop="code">
+          <u-form-item label-width="130" label="密码：" prop="password">
             <view class="password_flex">
               <u-input v-model="form.password" placeholder="请输入您的密码" :border="false" type="password" :clearable="true" :password-icon="true" />
-              <view class="wjmm" @click="doRouter('/pages/public/forgotPassword')">忘记密码</view>
+              <view class="forget-password" @click="doRouter('/pages/public/forgotPassword')">忘记密码</view>
             </view>
           </u-form-item>
-          <u-form-item label-width="130" label="验证码：" prop="code">
+          <u-form-item label-width="130" label="验证码：" prop="captcha">
             <view class="d_flex">
               <u-input v-model="form.captcha" placeholder="请输入您的验证码" :border="false" maxlength="6" type="text" />
               <u-image width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />
@@ -39,24 +39,24 @@
       </view>
       <!-- 短信验证码登录 -->
       <view class="form-warp" v-if="loginType === 2">
-        <u-form :model="form">
-          <u-form-item :label-style="labelStyle[1]" label-width="180" label="手机号：" prop="name">
+        <u-form ref="smsForm" :model="form">
+          <u-form-item :label-style="labelStyle[1]" label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
+              type="text"
               placeholder="请输入您的手机号"
               :border="false"
-              type="text"
               :custom-style="labelStyle[0]"
               :placeholder-style="placeholder_style"
             />
           </u-form-item>
-          <u-form-item :label-style="labelStyle[1]" label-width="180" label="短信验证码：" prop="code">
+          <u-form-item :label-style="labelStyle[1]" label-width="180" label="短信验证码：" prop="smsCode">
             <u-input
               v-model="form.smsCode"
-              placeholder="请输入您的验证码"
-              :border="false"
-              maxlength="6"
               type="text"
+              placeholder="请输入您的验证码"
+              maxlength="6"
+              :border="false"
               :custom-style="labelStyle[0]"
               :placeholder-style="placeholder_style"
             />
@@ -74,7 +74,9 @@
             </u-button>
           </u-form-item>
         </u-form>
-        <view class="register-box" @click="doRouter('/pages/public/register')">注册账号</view>
+        <view class="register-box" @click="doRouter('/pages/public/register')">
+          注册账号
+        </view>
       </view>
 
       <view class="sjmima-button">
@@ -144,6 +146,53 @@
 
           btnBool: false
         },
+        passwordRules: {
+          phone: [
+            {
+              pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              required: true,
+              message: '请输入手机号',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ],
+          password: [
+            {
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
+              required: true,
+              message: '密码是8为以上包含大小写字母和数字和特殊字符',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ],
+          captcha: [
+            {
+              required: true,
+              message: '请输入验证码',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ]
+        },
+        smsRules: {
+          phone: [
+            {
+              pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              required: true,
+              message: '请输入手机号',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ],
+          smsCode: [
+            {
+              required: true,
+              message: '请输入验证码',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ]
+        },
         labelStyle: [
           { color: '#494949', fontSize: '28rpx' },
           { color: '#494949', fontSize: '28rpx', height: '30rpx' },
@@ -162,6 +211,11 @@
       // this.$u.vuex('vuex_login_page_back_type', options.callbackType) // 返回类型
       // this.$u.vuex('vuex_login_page_back_is_webview', options.isWebview) // 是否是webview
       // 如果是微信的话，就去获取登录的wxcode
+    },
+    // 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+    onReady() {
+      this.$refs.passwordForm.setRules(this.passwordRules)
+      this.$refs.smsForm.setRules(this.smsRules)
     },
     async onShow() {
       try {
@@ -223,22 +277,13 @@
           this.$u.toast('请输入手机号!')
           return
         }
-        // if (!this.form.captcha) {
-        //   this.$u.toast('请输入图形验证码!')
-        //   return
-        // }
         const smsParams = {
           phone: this.form.phone
-          // code: this.form.captcha,
-          // uuid: this.form.imgCaptcha.uuid
         }
         const isSuccess = await sendSmsCode(smsParams)
         if (isSuccess) {
           this.countdown()
         }
-        // else {
-        //   this.initImgCaptcha()
-        // }
       },
       /**
        * 短信验证码倒计时
@@ -273,68 +318,35 @@
        * @returns {Promise<void>}
        */
       async otherLogins() {
-        const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
-        const emailReg = /^[a-zA-Z0-9]+([-_.][A-Za-zd]+)*@([a-zA-Z0-9]+[-.])+[A-Za-zd]{2,5}$/
+        if (!this.iAgree) {
+          this.$u.toast('请阅读协议!')
+          return
+        }
+
         // 密码登录提交
         if (this.loginType === 1) {
-          if (!this.form.phone) {
-            this.$u.toast('请输入手机号或邮箱!')
-            return
-          }
-          if (!strTemp.test(this.form.phone) && !emailReg.test(this.form.phone)) {
-            this.$u.toast('请输入正确手机号或邮箱!')
-            return
-          }
-          if (!this.form.captcha) {
-            this.$u.toast('请输入图形验证码!')
-            return
-          }
-          if (!this.form.password) {
-            this.$u.toast('请输入您的密码!')
-            return
-          }
-          if (!this.iAgree) {
-            this.$u.toast('请阅读协议!')
-            return
-          }
-          const user = {
-            phone: this.form.phone,
-            // todo 密码加密传输
-            // password: encrypt(this.form.password),
-            password: this.form.password,
-            code: this.form.captcha,
-            uuid: this.form.imgCaptcha.uuid
-          }
-          await this.toLogin(user)
+          this.$refs.passwordForm.validate(async (valid) => {
+            const user = {
+              phone: this.form.phone,
+              // todo 密码加密传输
+              // password: encrypt(this.form.password),
+              password: this.form.password,
+              code: this.form.captcha,
+              uuid: this.form.imgCaptcha.uuid
+            }
+            await this.toLogin(user)
+          })
+
         } else if (this.loginType === 2) {
-          // 手机验证码登录
-          if (!this.form.phone) {
-            this.$u.toast('请输入手机号!')
-            return
-          }
-          if (!strTemp.test(this.form.phone)) {
-            this.$u.toast('请输入正确手机号!')
-            return
-          }
-          //   if (!this.form.captcha) {
-          //     this.$u.toast('请输入图形验证码!')
-          //     return
-          //   }
-          if (!this.form.smsCode) {
-            this.$u.toast('请输入您的验证码!')
-            return
-          }
-          if (!this.iAgree) {
-            this.$u.toast('请阅读协议!')
-            return
-          }
-          const user = {
-            phone: this.form.phone,
-            // code: this.form.captcha,
-            // uuid: this.form.imgCaptcha.uuid,
-            smsCode: this.form.smsCode
-          }
-          await this.toLogin(user)
+          this.$refs.passwordForm.validate(async (valid) => {
+            const user = {
+              phone: this.form.phone,
+              // code: this.form.captcha,
+              // uuid: this.form.imgCaptcha.uuid,
+              smsCode: this.form.smsCode
+            }
+            await this.toLogin(user)
+          })
         }
       },
       /**
@@ -417,7 +429,7 @@
     }
     .register-box {
       margin-top: 32rpx;
-      display: flex;
+      float: right;
       justify-content: flex-end;
       font-size: 32rpx;
       font-weight: 400;
@@ -428,7 +440,7 @@
       u-input {
         flex: 1;
       }
-      .wjmm {
+      .forget-password {
         margin-left: 40rpx;
         color: rgb(144, 147, 153);
         font-size: 28rpx;
