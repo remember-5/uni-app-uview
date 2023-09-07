@@ -24,6 +24,7 @@ export default (router) => {
     '/pages/test/mock',
     '/pages/test/test',
     '/pages/test/upload',
+    '/pages/test/canvasImg',
 
     '/pages/public/404',
     '/pages/public/webview',
