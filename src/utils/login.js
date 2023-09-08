@@ -2,7 +2,7 @@
  * Copyright [2022] [remember5]
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * you may not use Vue file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { wxMiniAppLogin, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/user'
-
+import { wxMiniAppLogin, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/auth'
+import Vue from '@/main.js'
 /**
  * 获取微信登录的code
  * @returns {Promise<unknown>}
@@ -64,7 +64,7 @@ export const login = async (params, type) => {
       // save token
       saveToken(data)
     } else {
-      this.$u.toast(result.message)
+      Vue.$u.toast(result.message)
       return false
     }
     return true
@@ -83,9 +83,10 @@ export const registerUser = async (params) => {
   try {
     const result = await register(params)
     if (result.code === '00000') {
-      this.$u.toast('注册成功！')
+      Vue.$u.toast('注册成功！')
+      Vue.$u.vuex('vuex_access_token', result?.data)
     } else {
-      this.$u.toast(result.message)
+      Vue.$u.toast(result.message)
       return false
     }
     return true
@@ -101,7 +102,7 @@ export const registerUser = async (params) => {
  */
 export const getImgCaptcha = async () => {
   const result = await code()
-  return result.data
+  return result
 }
 
 /**
@@ -112,10 +113,10 @@ export const sendSmsCode = async (params) => {
   try {
     const result = await smsCode(params)
     if (result.code === '00000') {
-      this.$u.toast('短信发送成功，请注意查看')
+      Vue.$u.toast('短信发送成功，请注意查看')
       return true
     } else {
-      this.$u.toast(result.message)
+      Vue.$u.toast(result.message)
       return false
     }
   } catch (err) {
@@ -128,10 +129,10 @@ export const sendSmsCode = async (params) => {
  * 保存token
  */
 export const saveToken = (data) => {
-  this.$u.vuex('vuex_access_token', data.access_token)
-  this.$u.vuex('vuex_refresh_token', data.refresh_token)
-  this.$u.vuex('vuex_user_info', data.user_info)
-  this.$u.toast('登录成功！')
+  Vue.$u.vuex('vuex_access_token', data.access_token)
+  Vue.$u.vuex('vuex_refresh_token', data.refresh_token)
+  Vue.$u.vuex('vuex_user_info', data.user_info)
+  Vue.$u.toast('登录成功！')
 }
 
 /**
@@ -142,10 +143,10 @@ export const resetUserPassword = async (params) => {
   try {
     const result = await resetPassword(params)
     if (result.code === '00000') {
-      this.$u.toast('修改密码成功，请登录')
+      Vue.$u.toast('修改密码成功，请登录')
       return true
     } else {
-      this.$u.toast(result.message)
+      Vue.$u.toast(result.message)
       return false
     }
   } catch (err) {
@@ -162,10 +163,10 @@ export const captchaByResetUserPassword = async (params) => {
   try {
     const result = await captchaByResetPassword(params)
     if (result.code === '00000') {
-      this.$u.toast('短信发送成功，请注意查看')
+      Vue.$u.toast('短信发送成功，请注意查看')
       return true
     } else {
-      this.$u.toast(result.message)
+      Vue.$u.toast(result.message)
       return false
     }
   } catch (err) {

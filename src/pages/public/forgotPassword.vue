@@ -1,4 +1,4 @@
-99<template>
+<template>
   <view>
     <view>
       <view class="sjmima-header">
@@ -9,7 +9,7 @@
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
-              placeholder="请输入您的手机号"
+              placeholder="请输入手机号"
               :border="false"
               type="number"
               maxlength="11"
@@ -20,7 +20,7 @@
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="短信验证码：" prop="smsCode">
             <u-input
               v-model="form.smsCode"
-              placeholder="请输入您的验证码"
+              placeholder="请输入验证码"
               :border="false"
               maxlength="6"
               type="text"
@@ -43,7 +43,7 @@
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="password">
             <u-input
               v-model="form.password"
-              placeholder="请输入您的密码"
+              placeholder="请输入密码"
               :border="false"
               type="password"
               :custom-style="{ color: '#494949', fontSize: '28rpx' }"
@@ -55,7 +55,7 @@
           <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="passwordTrue">
             <u-input
               v-model="form.passwordTrue"
-              placeholder="请确认您的密码"
+              placeholder="请确认密码"
               :border="false"
               type="password"
               :custom-style="{ color: '#494949', fontSize: '28rpx' }"

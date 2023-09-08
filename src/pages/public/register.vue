@@ -5,12 +5,12 @@
         <view class="title-font">欢迎使用！</view>
       </view>
       <view class="form-warp">
-        <u-form ref="uForm" :model="form" :role="rules">
+        <u-form ref="uForm" :model="form">
           <u-form-item label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
               type="number"
-              placeholder="请输入您的手机号"
+              placeholder="请输入手机号"
               maxlength="11"
               :border="false"
             />
@@ -19,7 +19,7 @@
             <u-input
               v-model="form.smsCode"
               type="text"
-              placeholder="请输入您的验证码"
+              placeholder="请输入短信验证码"
               :border="false"
               maxlength="6"
             />
@@ -40,7 +40,7 @@
             <u-input
               v-model="form.password"
               type="password"
-              placeholder="请输入您的密码"
+              placeholder="请输入密码"
               :border="false"
               :clearable="true"
               :password-icon="true"
@@ -50,7 +50,7 @@
             <u-input
               v-model="form.passwordTrue"
               type="password"
-              placeholder="请确认您的密码"
+              placeholder="请确认密码"
               :border="false"
               :clearable="true"
               :password-icon="true"
@@ -246,11 +246,11 @@
             if (isSuccess) {
               // 注册成功跳转路径
               setTimeout(() => {
-                this.$Router.push({ path: '/pages/public/login' })
+                this.$Router.pushTab({ path: '/pages/index/index' })
               }, 500)
             } else {
               this.$u.toast('验证码错误或超时,请重新获取短信验证码')
-              // await this.initImgCaptcha()
+              await this.initImgCaptcha()
             }
           } else {
             console.log('验证失败');

@@ -24,13 +24,13 @@
           </u-form-item>
           <u-form-item label-width="130" label="密码：" prop="password">
             <view class="password_flex">
-              <u-input v-model="form.password" placeholder="请输入您的密码" :border="false" type="password" :clearable="true" :password-icon="true" />
+              <u-input v-model="form.password" placeholder="请输入密码" :border="false" type="password" :clearable="true" :password-icon="true" />
               <view class="forget-password" @click="doRouter('/pages/public/forgotPassword')">忘记密码</view>
             </view>
           </u-form-item>
           <u-form-item label-width="130" label="验证码：" prop="captcha">
             <view class="d_flex">
-              <u-input v-model="form.captcha" placeholder="请输入您的验证码" :border="false" maxlength="6" type="text" />
+              <u-input v-model="form.captcha" placeholder="请输入验证码" :border="false" maxlength="6" type="text" />
               <u-image width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />
             </view>
           </u-form-item>
@@ -44,7 +44,7 @@
             <u-input
               v-model="form.phone"
               type="number"
-              placeholder="请输入您的手机号"
+              placeholder="请输入手机号"
               maxlength="11"
               :border="false"
               :custom-style="labelStyle[0]"
@@ -55,7 +55,7 @@
             <u-input
               v-model="form.smsCode"
               type="text"
-              placeholder="请输入您的验证码"
+              placeholder="请输入短信验证码"
               maxlength="6"
               :border="false"
               :custom-style="labelStyle[0]"
@@ -150,7 +150,6 @@
         passwordRules: {
           phone: [
             {
-              // pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
               required: true,
               type: 'number',
               message: '请输入手机号',
@@ -170,10 +169,8 @@
           ],
           password: [
             {
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,20}$/,
               required: true,
-              message: '请输入8~20位密码,包含大小写字母、数字和特殊字符',
-              // message: '请输入密码',
+              message: '请输入密码',
               // 可以单个或者同时写两个触发验证方式
               trigger: ['change', 'blur']
             }
@@ -383,9 +380,8 @@
         if (loginSuccess) {
           // 登录成功跳转路径
           setTimeout(() => {
-            this.$u.route('/pages/public/wxauth')
+            this.$Router.pushTab({ path: '/pages/index/index' })
           }, 500)
-          // this.callbackUrl()
         } else {
           // 登录失败，对应事件
           switch (this.loginType) {
