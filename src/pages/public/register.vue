@@ -5,12 +5,13 @@
         <view class="title-font">欢迎使用！</view>
       </view>
       <view class="form-warp">
-        <u-form ref="uForm" :model="form">
+        <u-form ref="uForm" :model="form" :role="rules">
           <u-form-item label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
-              type="text"
+              type="number"
               placeholder="请输入您的手机号"
+              maxlength="11"
               :border="false"
             />
           </u-form-item>
@@ -103,37 +104,46 @@
         rules: {
           phone: [
             {
-              pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              // pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
               required: true,
               message: '请输入手机号',
               // 可以单个或者同时写两个触发验证方式
               trigger: ['blur']
+            },
+            {
+              // 自定义验证函数
+              validator: (rule, value, callback) => {
+                // 返回true表示校验通过，返回false表示不通过
+                return this.$u.test.mobile(value);
+              },
+              message: '手机号码不正确',
+              // 触发器可以同时用blur和change
+              trigger: ['change','blur'],
             }
           ],
           password: [
             {
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,20}$/,
               required: true,
-              message: '密码是8为以上包含大小写字母和数字和特殊字符',
+              message: '请输入8~20位密码,包含大小写字母、数字和特殊字符',
               // 可以单个或者同时写两个触发验证方式
-              trigger: ['blur']
+              trigger: ['change', 'blur']
             }
           ],
           passwordTrue: [
             {
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,20}$/,
               required: true,
-              message: '密码不一致',
+              message: '请确认密码',
               // 可以单个或者同时写两个触发验证方式
               trigger: ['blur']
             },
             {
               validator: (rule, value, callback) => {
-                console.log(this.form.password === this.form.passwordTrue)
                 return this.form.password === this.form.passwordTrue
               },
               message: '密码不一致',
-              trigger: ['blur']
+              trigger: ['change', 'blur']
             }
           ],
           smsCode: [
@@ -216,12 +226,13 @@
       },
       // 注册
       async toRegisterUser() {
+        if (!this.iAgree) {
+          this.$u.toast('请阅读协议!')
+          return
+        }
+
         this.$refs.uForm.validate(async (valid) => {
           if (valid) {
-            if (!this.iAgree) {
-              this.$u.toast('请阅读协议!')
-              return
-            }
             const user = {
               phone: this.form.phone,
               // todo 密码加密传输
@@ -236,8 +247,9 @@
               // 注册成功跳转路径
               setTimeout(() => {
                 this.$Router.push({ path: '/pages/public/login' })
-              }, 800)
+              }, 500)
             } else {
+              this.$u.toast('验证码错误或超时,请重新获取短信验证码')
               // await this.initImgCaptcha()
             }
           } else {

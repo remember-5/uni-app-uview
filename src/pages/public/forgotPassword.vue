@@ -5,18 +5,19 @@
         <view class="title-font">欢迎使用！</view>
       </view>
       <view class="form-warp">
-        <u-form ref="uForm" :model="form">
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="手机号：" prop="name">
+        <u-form ref="uForm" :model="form" :role="rules">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
               placeholder="请输入您的手机号"
               :border="false"
-              type="text"
+              type="number"
+              maxlength="11"
               :custom-style="{ color: '#494949', fontSize: '28rpx' }"
               placeholder-style="color: #B2B2B2; font-size: 28rpx;"
             />
           </u-form-item>
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="短信验证码：" prop="code">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="短信验证码：" prop="smsCode">
             <u-input
               v-model="form.smsCode"
               placeholder="请输入您的验证码"
@@ -39,7 +40,7 @@
               {{ form.codeText }}
             </u-button>
           </u-form-item>
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="code">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="password">
             <u-input
               v-model="form.password"
               placeholder="请输入您的密码"
@@ -51,7 +52,7 @@
               :password-icon="true"
             />
           </u-form-item>
-          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="code">
+          <u-form-item :label-style="{ color: '#494949', fontSize: '28rpx', height: '30rpx' }" label-width="180" label="密码：" prop="passwordTrue">
             <u-input
               v-model="form.passwordTrue"
               placeholder="请确认您的密码"
@@ -94,7 +95,61 @@
           smsCode: '',
           codeText: '获取验证码',
           btnBool: false
-        }
+        },
+        rules: {
+          phone: [
+            {
+              // pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              required: true,
+              message: '请输入手机号',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            },
+            {
+              // 自定义验证函数
+              validator: (rule, value, callback) => {
+                // 返回true表示校验通过，返回false表示不通过
+                return this.$u.test.mobile(value);
+              },
+              message: '手机号码不正确',
+              // 触发器可以同时用blur和change
+              trigger: ['change','blur'],
+            }
+          ],
+          password: [
+            {
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,20}$/,
+              required: true,
+              message: '请输入8~20位密码,包含大小写字母、数字和特殊字符',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['change', 'blur']
+            }
+          ],
+          passwordTrue: [
+            {
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,20}$/,
+              required: true,
+              message: '请确认密码',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            },
+            {
+              validator: (rule, value, callback) => {
+                return this.form.password === this.form.passwordTrue
+              },
+              message: '密码不一致',
+              trigger: ['change', 'blur']
+            }
+          ],
+          smsCode: [
+            {
+              required: true,
+              message: '请输入验证码',
+              // 可以单个或者同时写两个触发验证方式
+              trigger: ['blur']
+            }
+          ]
+        },
       }
     },
     onLoad() {},
@@ -102,6 +157,10 @@
       // await this.initImgCaptcha()
     },
     created() {},
+    // 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+    onReady() {
+      this.$refs.uForm.setRules(this.rules)
+    },
     methods: {
       /**
        * 获取图片验证码
@@ -155,46 +214,31 @@
       },
       // 其他登录
       async toForgotUserPassword() {
-        const strTemp = /^1[3|4|5|6|7|8|9][0-9]{9}$/
-        // 密码登录提交
-        if (!this.form.phone) {
-          this.$u.toast('请输入手机号!')
-          return
-        }
-        if (!strTemp.test(this.form.phone)) {
-          this.$u.toast('请输入正确手机号!')
-          return
-        }
-        if (!this.form.smsCode) {
-          this.$u.toast('请输入您的验证码!')
-          return
-        }
-        if (!this.form.password) {
-          this.$u.toast('请输入您的密码!')
-          return
-        }
-        if (this.form.password !== this.form.passwordTrue) {
-          this.$u.toast('两次密码不一致!')
-          return
-        }
-        const user = {
-          phone: this.form.phone,
-          // todo 密码加密传输
-          // password: encrypt(this.form.password),
-          password: this.form.password,
-          smsCode: this.form.smsCode
-          // code: this.form.captcha,
-          // uuid: this.form.imgCaptcha.uuid
-        }
-        const isSuccess = await resetUserPassword(user)
-        if (isSuccess) {
-          // 注册成功跳转路径
-          setTimeout(() => {
-            this.$Router.push({ path: '/pages/public/login' })
-          }, 800)
-        } else {
-          // await this.initImgCaptcha()
-        }
+        this.$refs.uForm.validate(async (valid) => {
+          if (valid) {
+            const user = {
+              phone: this.form.phone,
+              // todo 密码加密传输
+              // password: encrypt(this.form.password),
+              password: this.form.password,
+              smsCode: this.form.smsCode
+              // code: this.form.captcha,
+              // uuid: this.form.imgCaptcha.uuid
+            }
+            const isSuccess = await resetUserPassword(user)
+            if (isSuccess) {
+              // 修改密码成功跳转路径
+              setTimeout(() => {
+                this.$Router.push({ path: '/pages/public/login' })
+              }, 800)
+            } else {
+              this.$u.toast('验证码错误或超时,请重新获取短信验证码')
+              // await this.initImgCaptcha()
+            }
+          } else {
+            console.log('验证失败');
+          }
+        })
       }
     }
   }

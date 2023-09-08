@@ -1,7 +1,7 @@
 <template>
   <view>
     <!-- 微信登陆 -->
-    <view v-if="loginType === 0">
+    <view v-show="loginType === 0">
       <view class="login-header">
         <image class="bg-img" src="@/static/images/login_bg_img.png" mode="widthFix" />
         <view class="title-font">欢迎使用！</view>
@@ -14,13 +14,13 @@
       </view>
     </view>
     <!-- 其他方式登录 -->
-    <view v-if="loginType !== 0">
+    <view v-show="loginType !== 0">
       <view class="sms-code-header title_font">欢迎使用！</view>
-      <!-- 账号密码登录 -->
-      <view class="form-warp" v-if="loginType === 1">
-        <u-form ref="passwordForm" :model="form">
-          <u-form-item label-width="130" label="账号：" prop="phone">
-            <u-input v-model="form.phone" placeholder="请输入账号" type="text" />
+      <!-- 手机号密码登录 -->
+      <view class="form-warp" v-show="loginType === 1">
+        <u-form ref="passwordForm" :model="form" :role="passwordRules">
+          <u-form-item label-width="130" label="手机号：" prop="phone">
+            <u-input v-model="form.phone" placeholder="请输入手机号" type="number" maxlength="11" />
           </u-form-item>
           <u-form-item label-width="130" label="密码：" prop="password">
             <view class="password_flex">
@@ -38,13 +38,14 @@
         <view class="register-box" @click="doRouter('/pages/public/register')">注册账号</view>
       </view>
       <!-- 短信验证码登录 -->
-      <view class="form-warp" v-if="loginType === 2">
-        <u-form ref="smsForm" :model="form">
+      <view class="form-warp" v-show="loginType === 2">
+        <u-form ref="smsForm" :model="form" :role="smsRules">
           <u-form-item :label-style="labelStyle[1]" label-width="180" label="手机号：" prop="phone">
             <u-input
               v-model="form.phone"
-              type="text"
+              type="number"
               placeholder="请输入您的手机号"
+              maxlength="11"
               :border="false"
               :custom-style="labelStyle[0]"
               :placeholder-style="placeholder_style"
@@ -149,20 +150,32 @@
         passwordRules: {
           phone: [
             {
-              pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              // pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
               required: true,
+              type: 'number',
               message: '请输入手机号',
               // 可以单个或者同时写两个触发验证方式
-              trigger: ['blur']
+              trigger: ['change', 'blur']
+            },
+            {
+              // 自定义验证函数
+              validator: (rule, value, callback) => {
+                // 返回true表示校验通过，返回false表示不通过
+                return this.$u.test.mobile(value);
+              },
+              message: '手机号码不正确',
+              // 触发器可以同时用blur和change
+              trigger: ['change','blur'],
             }
           ],
           password: [
             {
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,}$/,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.!@#$%^&*()]).{8,20}$/,
               required: true,
-              message: '密码是8为以上包含大小写字母和数字和特殊字符',
+              message: '请输入8~20位密码,包含大小写字母、数字和特殊字符',
+              // message: '请输入密码',
               // 可以单个或者同时写两个触发验证方式
-              trigger: ['blur']
+              trigger: ['change', 'blur']
             }
           ],
           captcha: [
@@ -177,11 +190,22 @@
         smsRules: {
           phone: [
             {
-              pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+              // pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
               required: true,
+              type: 'number',
               message: '请输入手机号',
               // 可以单个或者同时写两个触发验证方式
-              trigger: ['blur']
+              trigger: ['change', 'blur']
+            },
+            {
+              // 自定义验证函数
+              validator: (rule, value, callback) => {
+                // 返回true表示校验通过，返回false表示不通过
+                return this.$u.test.mobile(value);
+              },
+              message: '手机号码不正确',
+              // 触发器可以同时用blur和change
+              trigger: ['change','blur'],
             }
           ],
           smsCode: [
@@ -338,7 +362,7 @@
           })
 
         } else if (this.loginType === 2) {
-          this.$refs.passwordForm.validate(async (valid) => {
+          this.$refs.smsForm.validate(async (valid) => {
             const user = {
               phone: this.form.phone,
               // code: this.form.captcha,
@@ -360,7 +384,7 @@
           // 登录成功跳转路径
           setTimeout(() => {
             this.$u.route('/pages/public/wxauth')
-          }, 800)
+          }, 500)
           // this.callbackUrl()
         } else {
           // 登录失败，对应事件
@@ -376,8 +400,10 @@
             case 2:
               // 短信登录
               // await this.initImgCaptcha()
+              this.$u.toast('验证码错误或超时,请重新获取短信验证码')
               break
             default:
+              this.$u.toast('登录异常，请刷新重试')
               break
           }
         }
