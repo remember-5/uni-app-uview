@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { wxMiniAppLogin, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/auth'
+import { wxMiniAppLogin, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/user'
 import Vue from '@/main.js'
 /**
  * 获取微信登录的code

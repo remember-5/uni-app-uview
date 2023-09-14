@@ -76,6 +76,8 @@
     "@dcloudio/uni-stat": "2.0.2-3081220230817001",
     "@vue/shared": "^3.2.34",
     "better-mock": "^0.3.6",
+    "dayjs": "^1.11.9",
+    "@qiun/ucharts": "2.5.0-20230101",
     "core-js": "^3.31.1",
     "crypto-js": "^4.1.1",
     "flyio": "^0.6.14",

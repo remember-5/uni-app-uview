@@ -25,6 +25,7 @@ export default (router) => {
     '/pages/test/test',
     '/pages/test/upload',
     '/pages/test/canvasImg',
+    '/pages/test/echarts',
 
     '/pages/public/404',
     '/pages/public/webview',

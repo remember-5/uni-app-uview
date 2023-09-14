@@ -3,6 +3,7 @@
     <u-button @click="doRouter('/pages/test/upload')"> 上传图片</u-button>
     <u-button @click="doRouter('/pages/test/mock')"> mock </u-button>
     <u-button @click="doRouter('/pages/test/canvasImg')"> canvasImg </u-button>
+    <u-button @click="doRouter('/pages/test/echarts')"> echarts </u-button>
     <u-button @click="toPdf"> pdf预览</u-button>
     <u-button @click="toWebView()"> webview</u-button>
     <u-button @click="jumpToSwitchTab('/pages/index/home')"> home</u-button>

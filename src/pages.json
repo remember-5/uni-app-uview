@@ -65,6 +65,13 @@
             "navigationBarTitleText": "canvas",
             "enablePullDownRefresh": false
           }
+        },
+        {
+          "path": "echarts",
+          "style": {
+            "navigationBarTitleText": "echarts",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     },
