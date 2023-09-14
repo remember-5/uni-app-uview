@@ -26,6 +26,7 @@ export default (router) => {
     '/pages/test/upload',
     '/pages/test/canvasImg',
     '/pages/test/echarts',
+    '/hybrid/html/pdf/web/viewer.html',
 
     '/pages/public/404',
     '/pages/public/webview',

@@ -1,7 +1,7 @@
 <template>
   <view>
     <view>其他</view>
-    <u-button @click="$Router.push({ path: '/pages/test/test'})">测试页面</u-button>
+    <u-button @click="$Router.push({ path: '/pages/test/test' })">{{ $t('index.testPage') }}</u-button>
     <upgrade-popup
       :show="upgradeOptions.popupShow"
       :update-content="upgradeOptions.upgradeContent"

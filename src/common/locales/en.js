@@ -31,6 +31,59 @@ export default {
   },
   common: {
     intro: 'UI framework for rapid development of multiple platforms',
-    title: 'uView UI'
+    title: 'uView UI',
+    language: '切换为中文',
+    switchLanguageSuccess: 'Switch English Success',
+    welcome: 'Welcome!',
+    forget: 'Forget Password',
+    register: 'Register',
+    login: 'Login'
+  },
+  tabBar: {
+    index: 'index',
+    home: 'home'
+  },
+  index: {
+    testPage: 'TestPage'
+  },
+  login: {
+    wxLogin: 'Wechat Login',
+    otherLogin: 'Other Login',
+    wx: 'Wechat Login',
+    account: 'Account Login',
+    sms: 'Sms Login',
+    form: {
+      phone: {
+        label: 'Phone：',
+        placeholder: 'Please input phone'
+      },
+      password: {
+        label: 'Password：',
+        placeholder: 'Please input password'
+      },
+      captcha: {
+        label: 'Captcha：',
+        placeholder: 'Please input captcha'
+      },
+      smsCode: {
+        label: 'Sms Code：',
+        placeholder: 'Please input Sms Code'
+      },
+      passwordTrue: {
+        label: 'Check Password：',
+        placeholder: 'Please input Password'
+      }
+    }
+  },
+  test: {
+    uploadPage: 'Upload Page',
+    mockPage: 'Mock Page',
+    canvasPage: 'Canvas Page',
+    echartsPage: 'Echarts Page',
+    pdfPage: 'PDF Page',
+    webviewPage: 'Webview Page',
+    homePage: 'Home Page',
+    loginPage: 'Login Page',
+    authPage: 'Auth Page'
   }
 }

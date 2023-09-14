@@ -1,22 +1,15 @@
 <template>
   <view>
-    <u-button @click="doRouter('/pages/test/upload')"> 上传图片</u-button>
-    <u-button @click="doRouter('/pages/test/mock')"> mock </u-button>
-    <u-button @click="doRouter('/pages/test/canvasImg')"> canvasImg </u-button>
-    <u-button @click="doRouter('/pages/test/echarts')"> echarts </u-button>
-    <u-button @click="toPdf"> pdf预览</u-button>
-    <u-button @click="toWebView()"> webview</u-button>
-    <u-button @click="jumpToSwitchTab('/pages/index/home')"> home</u-button>
+    <u-button @click="doRouter('/pages/test/upload')"> {{ $t('test.uploadPage') }} </u-button>
+    <u-button @click="doRouter('/pages/test/mock')"> {{ $t('test.mockPage') }} </u-button>
+    <u-button @click="doRouter('/pages/test/canvasImg')"> {{ $t('test.canvasPage') }} </u-button>
+    <u-button @click="doRouter('/pages/test/echarts')"> {{ $t('test.echartsPage') }} </u-button>
+    <u-button @click="toPdf"> {{ $t('test.pdfPage') }}</u-button>
+    <u-button @click="toWebView()"> {{ $t('test.webviewPage') }}</u-button>
+    <u-button @click="jumpToSwitchTab('/pages/index/home')"> {{ $t('test.homePage') }}</u-button>
+    <u-button @click="doRouter('/pages/public/login')"> {{ $t('test.loginPage') }}</u-button>
+    <u-button @click="doRouter('/pages/public/wxauth')"> {{ $t('test.authPage') }}</u-button>
     <view>
-      <view>i18n</view>
-      <u-button @click="switchLang" :throttle-time="0">切换语言</u-button>
-      {{ $t('common.intro') }}
-    </view>
-    <view>登录界面</view>
-    <u-button @click="doRouter('/pages/public/login')"> 登录</u-button>
-    <u-button @click="doRouter('/pages/public/wxauth')"> 微信授权</u-button>
-    <view>
-      <view>uview演示</view>
       <u-rate v-model="value" :count="count" />
     </view>
   </view>
@@ -39,13 +32,6 @@
     },
     onShow() {},
     methods: {
-      /**
-       * 切换中英文
-       * @param language
-       */
-      switchLang() {
-        this.$i18n.locale = this.$i18n.locale === 'en' ? 'zh' : 'en'
-      },
       /**
        * 做路由跳转
        * @param url

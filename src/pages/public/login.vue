@@ -4,58 +4,65 @@
     <view v-show="loginType === 0">
       <view class="login-header">
         <image class="bg-img" src="@/static/images/login_bg_img.png" mode="widthFix" />
-        <view class="title-font">欢迎使用！</view>
+        <view class="title-font">{{ $t('common.welcome') }}</view>
       </view>
       <view class="login-button">
-        <u-button v-show="!iAgree" key="1" shape="circle" hover-class="none" @click="notClickedAgree()"> 微信用户一键登录 </u-button>
+        <u-button v-show="!iAgree" key="1" shape="circle" hover-class="none" @click="notClickedAgree()"> {{ $t('login.wxLogin') }} </u-button>
         <u-button v-show="iAgree" key="2" type="success" shape="circle" hover-class="none" open-type="getPhoneNumber" @getphonenumber="toWxLogin">
-          微信用户一键登录
+          {{ $t('login.wxLogin') }}
         </u-button>
       </view>
     </view>
     <!-- 其他方式登录 -->
     <view v-show="loginType !== 0">
-      <view class="sms-code-header title_font">欢迎使用！</view>
+      <view class="sms-code-header title_font">{{ $t('common.welcome') }}</view>
       <!-- 手机号密码登录 -->
       <view class="form-warp" v-show="loginType === 1">
         <u-form ref="passwordForm" :model="form" :role="passwordRules">
-          <u-form-item label-width="130" label="手机号：" prop="phone">
-            <u-input v-model="form.phone" placeholder="请输入手机号" type="number" maxlength="11" />
+          <u-form-item label-width="130" :label="$t('login.form.phone.label')" prop="phone">
+            <u-input v-model="form.phone" :placeholder="$t('login.form.phone.placeholder')" type="number" maxlength="11" />
           </u-form-item>
-          <u-form-item label-width="130" label="密码：" prop="password">
+          <u-form-item label-width="130" :label="$t('login.form.password.label')" prop="password">
             <view class="password_flex">
-              <u-input v-model="form.password" placeholder="请输入密码" :border="false" type="password" :clearable="true" :password-icon="true" />
-              <view class="forget-password" @click="doRouter('/pages/public/forgotPassword')">忘记密码</view>
+              <u-input
+                v-model="form.password"
+                :placeholder="$t('login.form.password.placeholder')"
+                :border="false"
+                type="password"
+                :clearable="true"
+                :password-icon="true"
+              />
+              <view class="forget-password" @click="doRouter('/pages/public/forgotPassword')">{{ $t('common.forget') }}</view>
             </view>
           </u-form-item>
-          <u-form-item label-width="130" label="验证码：" prop="captcha">
+          <u-form-item label-width="130" :label="$t('login.form.captcha.label')" prop="captcha">
             <view class="d_flex">
-              <u-input v-model="form.captcha" placeholder="请输入验证码" :border="false" maxlength="6" type="text" />
+              <u-input v-model="form.captcha" :placeholder="$t('login.form.captcha.placeholder')" :border="false" maxlength="6" type="text" />
               <u-image width="240rpx" height="72rpx" :fade="false" :src="form.imgCaptcha.img" @click="initImgCaptcha()" />
             </view>
           </u-form-item>
         </u-form>
-        <view class="register-box" @click="doRouter('/pages/public/register')">注册账号</view>
+        <view class="register-box" @click="doRouter('/pages/public/register')">{{ $t('common.register') }}</view>
       </view>
       <!-- 短信验证码登录 -->
       <view class="form-warp" v-show="loginType === 2">
         <u-form ref="smsForm" :model="form" :role="smsRules">
-          <u-form-item :label-style="labelStyle[1]" label-width="180" label="手机号：" prop="phone">
+          <u-form-item :label-style="labelStyle[1]" label-width="180" :label="$t('login.form.phone.label')" prop="phone">
             <u-input
               v-model="form.phone"
               type="number"
-              placeholder="请输入手机号"
+              :placeholder="$t('login.form.phone.placeholder')"
               maxlength="11"
               :border="false"
               :custom-style="labelStyle[0]"
               :placeholder-style="placeholder_style"
             />
           </u-form-item>
-          <u-form-item :label-style="labelStyle[1]" label-width="180" label="短信验证码：" prop="smsCode">
+          <u-form-item :label-style="labelStyle[1]" label-width="180" :label="$t('login.form.smsCode.label')" prop="smsCode">
             <u-input
               v-model="form.smsCode"
               type="text"
-              placeholder="请输入短信验证码"
+              :placeholder="$t('login.form.smsCode.placeholder')"
               maxlength="6"
               :border="false"
               :custom-style="labelStyle[0]"
@@ -76,12 +83,15 @@
           </u-form-item>
         </u-form>
         <view class="register-box" @click="doRouter('/pages/public/register')">
-          注册账号
+          {{ $t('common.register') }}
         </view>
       </view>
 
       <view class="sjmima-button">
-        <u-button class="login-wxfont" type="primary" shape="circle" :custom-style="custom_style" hover-class="none" @click="otherLogins">登录</u-button>
+        <u-button class="login-wxfont" type="primary" shape="circle" :custom-style="custom_style" hover-class="none" @click="otherLogins">
+          {{$t('common.login')}}
+        </u-button
+        >
       </view>
     </view>
     <!-- 隐私政策 -->
@@ -97,20 +107,20 @@
       </checkbox-group>
     </view>
     <view class="otherLogin">
-      <u-divider>其他登陆方式</u-divider>
+      <u-divider>{{$t('login.otherLogin')}}</u-divider>
       <!-- 切换按钮 -->
       <view class="loginWay">
         <view v-if="loginType !== 0" @click="loginType = 0">
           <image src="@/static/images/login_wx_icon.png" />
-          <view>微信登陆</view>
+          <view>{{$t('login.wx')}}</view>
         </view>
         <view v-if="loginType !== 1" @click="loginType = 1">
           <image src="@/static/images/login_account_icon.png" />
-          <view>账户登录</view>
+          <view>{{$t('login.account')}}</view>
         </view>
         <view v-if="loginType !== 2" @click="loginType = 2">
           <image src="@/static/images/login_sms_icon.png" />
-          <view>短信验证</view>
+          <view>{{$t('login.sms')}}</view>
         </view>
       </view>
     </view>
@@ -160,11 +170,11 @@
               // 自定义验证函数
               validator: (rule, value, callback) => {
                 // 返回true表示校验通过，返回false表示不通过
-                return this.$u.test.mobile(value);
+                return this.$u.test.mobile(value)
               },
               message: '手机号码不正确',
               // 触发器可以同时用blur和change
-              trigger: ['change','blur'],
+              trigger: ['change', 'blur']
             }
           ],
           password: [
@@ -198,11 +208,11 @@
               // 自定义验证函数
               validator: (rule, value, callback) => {
                 // 返回true表示校验通过，返回false表示不通过
-                return this.$u.test.mobile(value);
+                return this.$u.test.mobile(value)
               },
               message: '手机号码不正确',
               // 触发器可以同时用blur和change
-              trigger: ['change','blur'],
+              trigger: ['change', 'blur']
             }
           ],
           smsCode: [
@@ -220,7 +230,7 @@
           { background: '#FFFFFF', color: '#3F69FF', fontSize: '28rpx', width: '200rpx', height: '50rpx' }
         ],
         placeholder_style: 'color: #B2B2B2; font-size: 28rpx;',
-        custom_style: {height: '88rpx'}
+        custom_style: { height: '88rpx' }
       }
     },
     onLoad() {
@@ -357,7 +367,6 @@
             }
             await this.toLogin(user)
           })
-
         } else if (this.loginType === 2) {
           this.$refs.smsForm.validate(async (valid) => {
             const user = {

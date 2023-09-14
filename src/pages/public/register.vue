@@ -2,24 +2,24 @@
   <view>
     <view>
       <view class="sjmima-header">
-        <view class="title-font">欢迎使用！</view>
+        <view class="title-font">{{ $t('common.welcome') }}</view>
       </view>
       <view class="form-warp">
         <u-form ref="uForm" :model="form">
-          <u-form-item label-width="180" label="手机号：" prop="phone">
+          <u-form-item label-width="180" :label="$t('login.form.phone.label')" prop="phone">
             <u-input
               v-model="form.phone"
               type="number"
-              placeholder="请输入手机号"
+              :placeholder="$t('login.form.phone.placeholder')"
               maxlength="11"
               :border="false"
             />
           </u-form-item>
-          <u-form-item label-width="180" label="短信验证码：" prop="smsCode">
+          <u-form-item label-width="180" :label="$t('login.form.smsCode.label')" prop="smsCode">
             <u-input
               v-model="form.smsCode"
               type="text"
-              placeholder="请输入短信验证码"
+              :placeholder="$t('login.form.smsCode.placeholder')"
               :border="false"
               maxlength="6"
             />
@@ -36,21 +36,21 @@
               {{ form.codeText }}
             </u-button>
           </u-form-item>
-          <u-form-item label-width="180" label="密码：" prop="password">
+          <u-form-item label-width="180" :label="$t('login.form.password.label')" prop="password">
             <u-input
               v-model="form.password"
               type="password"
-              placeholder="请输入密码"
+              :placeholder="$t('login.form.password.placeholder')"
               :border="false"
               :clearable="true"
               :password-icon="true"
             />
           </u-form-item>
-          <u-form-item label-width="180" label="确认密码：" prop="passwordTrue">
+          <u-form-item label-width="180" :label="$t('login.form.passwordTrue.label')" prop="passwordTrue">
             <u-input
               v-model="form.passwordTrue"
               type="password"
-              placeholder="请确认密码"
+              :placeholder="$t('login.form.passwordTrue.placeholder')"
               :border="false"
               :clearable="true"
               :password-icon="true"
@@ -60,7 +60,7 @@
       </view>
       <view class="sjmima-button">
         <u-button type="primary" shape="circle" :custom-style="{ height: '88rpx' }" hover-class="none" @click="toRegisterUser">
-          <text class="login-wxfont">注册</text>
+          <text class="login-wxfont">{{ $t('common.register') }}</text>
         </u-button>
       </view>
     </view>

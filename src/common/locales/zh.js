@@ -31,6 +31,59 @@ export default {
   },
   common: {
     intro: '多平台快速开发的UI框架',
-    title: 'uView UI'
+    title: 'uView UI',
+    language: 'Switch English',
+    switchLanguageSuccess: '切换为中文成功',
+    welcome: '欢迎使用!',
+    forget: '忘记密码',
+    register: '注册账号',
+    login: '登录'
+  },
+  tabBar: {
+    index: '首页',
+    home: '我的'
+  },
+  index: {
+    testPage: '测试页面'
+  },
+  login: {
+    wxLogin: '微信用户一键登录',
+    otherLogin: '其他登陆方式',
+    wx: '微信登陆',
+    account: '账户登录',
+    sms: '短信验证',
+    form: {
+      phone: {
+        label: '手机号：',
+        placeholder: '请输入手机号'
+      },
+      password: {
+        label: '密码：',
+        placeholder: '请输入密码'
+      },
+      captcha: {
+        label: '验证码：',
+        placeholder: '请输入验证码'
+      },
+      smsCode: {
+        label: '短信验证码：',
+        placeholder: '请输入短信验证码'
+      },
+      passwordTrue: {
+        label: '确认密码：',
+        placeholder: '请确认密码'
+      }
+    }
+  },
+  test: {
+    uploadPage: '上传页面',
+    mockPage: 'Mock页面',
+    canvasPage: 'Canvas页面',
+    echartsPage: 'Echarts页面',
+    pdfPage: 'pdf页面',
+    webviewPage: 'webview页面',
+    homePage: 'Home页面',
+    loginPage: '登录页面',
+    authPage: '授权页面'
   }
 }
