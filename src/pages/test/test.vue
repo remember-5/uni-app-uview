@@ -12,6 +12,7 @@
     <view>
       <u-rate v-model="value" :count="count" />
     </view>
+    <u-image src="/pages/test/static/images/1.jpg" width="100%" height="100rpx"></u-image>
   </view>
 </template>
 
