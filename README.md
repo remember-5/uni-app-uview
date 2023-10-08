@@ -1,6 +1,6 @@
 # 介绍
 
-使用`uniapp`框架，使用`cli`方式运行， ui 使用`uview: 1.8.8`
+基于`uniapp`框架`cli`方式运行， ui 使用`uview: 1.8.8`
 
 `terminal`运行 npm, 国内建议改为 `taobao` 源
 
@@ -10,11 +10,12 @@ npm i && npm run serve
 ```
 
 `hbuliderx` 中运行问题
+
 1. 拖入 hbuliderx 中后，需要右键选择"重新识别项目类型"
 
 `webstorm`中运行问题
-1. rpx 插件`wechat-mini-program-support`,开启微信小程序的支持,在设置里面配置 wechat... 点击开启
 
+1. rpx 插件`wechat-mini-program-support`,开启微信小程序的支持,在设置里面配置 wechat... 点击开启
 
 # 新特性
 
@@ -30,7 +31,8 @@ npm i && npm run serve
 - [x] 使用 uni-simple-router https://github.com/SilurianYang/uni-simple-router
 - [x] 使用 luch-request https://www.quanzhan.co/luch-request/
 - [x] 热更模块集成 参考 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPUpdate
-- [ ] 微信小程序分享模块/公众号分享模块 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPshare
+- [ ] 
+  微信小程序分享模块/公众号分享模块 https://github.com/zhouwei1994/uni-app-demo/tree/master/uni_modules/zhouWei-APPshare
 - [x] 增加默认页面【登录，注册，忘记密码，绑定手机号，协议页面，商品海报生成，推广海报生成】
 - [ ] 续期 jwt，增加 request 的重试机制，和 404 等问题转发到指定页面
 - [ ] 导航栏到配置，参考 uniappDemo/#/pages/demo/navBarMemo/index
@@ -41,17 +43,17 @@ npm i && npm run serve
 
 ```js
 import Qs from 'qs'
+
 let url = 'method=query_sql_dataset_data&projectId=85&appToken=7d22e38e-5717-11e7-907b-a6006ad3dba0'
 Qs.parse(url)
 console.log(Qs.parse(url))
 ```
 
-
 # 使用说明
 
 ## 普通项目改造成 cli 项目
-参考官网的教程 https://uniapp.dcloud.net.cn/quickstart-cli.html
 
+参考官网的教程 https://uniapp.dcloud.net.cn/quickstart-cli.html
 
 ## 组件开发注意事项
 
@@ -71,26 +73,49 @@ this.$Router.push({ path: url, query: { name: 'wang' } })
 ```javascript
 // #ifdef APP-PLUS
 {
-    "path": "pages/signature/index",
-    "style": {
-        "navigationBarTitleText": "手写板",
-        "enablePullDownRefresh": false
-    }
+  "path"
+:
+  "pages/signature/index",
+    "style"
+:
+  {
+    "navigationBarTitleText"
+  :
+    "手写板",
+      "enablePullDownRefresh"
+  :
+    false
+  }
 }
 // !!!!注意这里，上面的括号后不可以有 `,` 否则会报错!!!!
 // #endif
 // #ifdef H5
 {
-  "path": "pages/h5/jump",
-  "style": {
-      "navigationStyle": "custom",
-       "navigationBarTitleText": "上海电信翼企购"
+  "path"
+:
+  "pages/h5/jump",
+    "style"
+:
+  {
+    "navigationStyle"
+  :
+    "custom",
+      "navigationBarTitleText"
+  :
+    "上海电信翼企购"
   }
 }
 // #endif
 
 ``` 
 
+6. 分包加载静态资源路径,可在每个分包下创建static路径  https://juejin.cn/post/7167197165960298527
+
+```html
+
+<image src="/分包名称/static/images/bg-black.png"></image>
+<image src="/pageA/static/images/bg-black.png"></image>
+```
 
 ## 预览 pdf
 
@@ -112,6 +137,7 @@ pdf.js 不支持跨域请求 https://blog.csdn.net/xinlingdexueba/article/detail
 创建 preview-pdf.vue，参考https://github.com/Eveveen/uni-app-pdf
 
 ```vue
+
 <template>
   <view class="content">
     <web-view :src="url"></web-view>
@@ -172,7 +198,6 @@ this.$u.route({
 })
 ```
 
-
 ## 热更方案
 
 待完善
@@ -180,6 +205,7 @@ this.$u.route({
 使用插件 [https://excalidraw.com/](https://excalidraw.com/) 打开`docs/app-upgrade.excalidraw`
 
 ## 使用 less(不建议使用)
+
 添加以下依赖,
 
 ```json lines
@@ -224,10 +250,10 @@ pnpm 可能会造成打包无法使用的情况，所以还是老老实实用 np
 
 ```json
 "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": ["adbkit","jimp","node-simctl","puppeteer","webpack"],
-    }
-  }
+"peerDependencyRules": {
+"ignoreMissing": ["adbkit", "jimp", "node-simctl", "puppeteer", "webpack"],
+}
+}
 ```
 
 出现以下代码
@@ -242,12 +268,12 @@ pnpm 可能会造成打包无法使用的情况，所以还是老老实实用 np
 
 ```json
 "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "vue": "2.6.14"
-      }
-    }
-  }
+"peerDependencyRules": {
+"allowedVersions": {
+"vue": "2.6.14"
+}
+}
+}
 ```
 
 # 打包
@@ -273,9 +299,9 @@ git 上传的时候格式化
 
 ```json
   "husky": {
-    "hooks": {
-    "pre-commit": "lint-staged"
-    }
+"hooks": {
+"pre-commit": "lint-staged"
+}
 },
 "lint-staged": {
 "src/**/*.{js,vue}": [
@@ -336,10 +362,6 @@ alert('foo') // eslint-disable-line no-alert, quotes, semi
 // eslint-disable-next-line no-alert, quotes, semi
 alert('foo')
 ```
-
-
-
-
 
 # 不错的插件
 
