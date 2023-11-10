@@ -9,7 +9,7 @@
  */
 
 import Request from 'luch-request'
-import Vue from '@/main'
+import store from '@/store'
 const getTokenStorage = () => {
   // console.log('getTokenStorage', Vue.vuex_version)
   let token = ''
@@ -119,11 +119,10 @@ http.interceptors.request.use(
     /* 请求之前拦截器。可以使用async await 做异步操作 */
     config.header = {
       ...config.header,
-      // token: getTokenStorage()
-      version: Vue.vuex_version,
-      versionCode: Vue.vuex_version_code,
-      platform: Vue.platform,
-      Authorization: `Bearer ${Vue.vuex_access_token}`
+      version: store.state.vuex_version,
+      versionCode: store.state.vuex_version_code,
+      platform: store.state.platform,
+      Authorization: `Bearer ${store.state.vuex_access_token}`
     }
     /*
        if (!token) { // 如果token不存在，return Promise.reject(config) 会取消本次请求
@@ -149,18 +148,23 @@ http.interceptors.response.use(
       return response.data
     }
     if (response.statusCode === 401) {
-      Vue.$u.vuex('vuex_access_token', '')
-      Vue.$u.vuex('vuex_refresh_token', '')
-      Vue.$u.vuex('vuex_user_info', {})
-      Vue.$u.toast('登陆过期')
-      Vue.$u.route({
-        url: 'pages/login/login'
+      store.state.vuex_access_token = ''
+      store.state.vuex_refresh_token = ''
+      store.state.vuex_user_info = {}
+      uni.navigateTo({
+        url: 'pages/public/login'
       })
     } else if (response.statusCode === 500) {
       if (response.data.message) {
-        Vue.$u.toast(response.data.message)
+        uni.showToast({
+          title: response.data.message,
+          icon: 'error'
+        })
       } else {
-        Vue.$u.toast('请求异常')
+        uni.showToast({
+          title: '请求异常',
+          icon: 'error'
+        })
       }
     }
     return response

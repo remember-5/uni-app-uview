@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { wxMiniAppLogin, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/user'
-import Vue from '@/main.js'
+import store from '@/store'
 /**
  * 获取微信登录的code
  * @returns {Promise<unknown>}
@@ -64,7 +64,10 @@ export const login = async (params, type) => {
       // save token
       saveToken(data)
     } else {
-      Vue.$u.toast(result.message)
+      uni.showToast({
+        title: result.message,
+        icon: 'error'
+      })
       return false
     }
     return true
@@ -83,10 +86,15 @@ export const registerUser = async (params) => {
   try {
     const result = await register(params)
     if (result.code === '00000') {
-      Vue.$u.toast('注册成功！')
-      Vue.$u.vuex('vuex_access_token', result?.data)
+      uni.showToast({
+        title: '注册成功！'
+      })
+      store.state.vuex_access_token = result?.data
     } else {
-      Vue.$u.toast(result.message)
+      uni.showToast({
+        title: result.message,
+        icon: 'error'
+      })
       return false
     }
     return true
@@ -113,10 +121,15 @@ export const sendSmsCode = async (params) => {
   try {
     const result = await smsCode(params)
     if (result.code === '00000') {
-      Vue.$u.toast('短信发送成功，请注意查看')
+      uni.showToast({
+        title: '短信发送成功，请注意查看',
+      })
       return true
     } else {
-      Vue.$u.toast(result.message)
+      uni.showToast({
+        title: result.message,
+        icon: 'error'
+      })
       return false
     }
   } catch (err) {
@@ -129,10 +142,12 @@ export const sendSmsCode = async (params) => {
  * 保存token
  */
 export const saveToken = (data) => {
-  Vue.$u.vuex('vuex_access_token', data.access_token)
-  Vue.$u.vuex('vuex_refresh_token', data.refresh_token)
-  Vue.$u.vuex('vuex_user_info', data.user_info)
-  Vue.$u.toast('登录成功！')
+  store.state.vuex_access_token = data.access_token
+  store.state.vuex_refresh_token = data.refresh_token
+  store.state.vuex_user_info = data.user_info
+  uni.showToast({
+    title: '登录成功！'
+  })
 }
 
 /**
@@ -143,10 +158,15 @@ export const resetUserPassword = async (params) => {
   try {
     const result = await resetPassword(params)
     if (result.code === '00000') {
-      Vue.$u.toast('修改密码成功，请登录')
+      uni.showToast({
+        title: '修改密码成功，请登录'
+      })
       return true
     } else {
-      Vue.$u.toast(result.message)
+      uni.showToast({
+        title: result.message,
+        icon: 'error'
+      })
       return false
     }
   } catch (err) {
@@ -163,10 +183,15 @@ export const captchaByResetUserPassword = async (params) => {
   try {
     const result = await captchaByResetPassword(params)
     if (result.code === '00000') {
-      Vue.$u.toast('短信发送成功，请注意查看')
+      uni.showToast({
+        title: '短信发送成功，请注意查看。'
+      })
       return true
     } else {
-      Vue.$u.toast(result.message)
+      uni.showToast({
+        title: result.message,
+        icon: 'error'
+      })
       return false
     }
   } catch (err) {
