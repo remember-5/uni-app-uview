@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 export default {
-  install(Vue, options) {
-    Vue.prototype.$showLoading = function (title = '加载中') {
+  install(app) {
+    app.prototype.$showLoading = function (title = '加载中') {
       uni.showLoading({
         title: title,
         mask: true
       })
     }
 
-    Vue.prototype.$hideLoading = function () {
+    app.prototype.$hideLoading = function () {
       uni.hideLoading()
     }
   }

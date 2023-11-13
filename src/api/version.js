@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { http } from '@/service/request.js'
+import { http } from '@/plugins/request.js'
 export const getVersion = () => http.get('/api/appVersion/getwgtversion')
 export const isnew = () => http.get('/api/appVersion/open/isnew')

@@ -16,14 +16,12 @@
 import Vue from 'vue'
 import App from '@/App'
 import { router, RouterMount } from '@/router/index.js'
-import LoadingPlugin from '@/plugins/loading.js'
-
+import plugins from '@/plugins'
 // eslint-disable-next-line
 import Mock from '@/mock'
 
 // // 引入并使用vue-i18n
 import VueI18n from 'vue-i18n'
-import uView from 'uview-ui'
 
 // 此处为演示vuex使用，非uView的功能部分
 import store from '@/store'
@@ -41,10 +39,9 @@ Vue.mixin(vuexStore)
 Vue.mixin(mpShare)
 
 Vue.use(router)
-Vue.use(uView)
+Vue.use(plugins)
 // VueI18n
 Vue.use(VueI18n)
-Vue.use(LoadingPlugin)
 const i18n = new VueI18n({
   // 默认语言，这里的local属性，对应message中的zh、en属性
   locale: 'zh',
@@ -79,5 +76,3 @@ RouterMount(app, router, '#app')
 // #ifndef H5
 app.$mount() //为了兼容小程序及app端必须这样写才有效果
 // #endif
-
-Vue.prototype.$vueInstance = new Vue()

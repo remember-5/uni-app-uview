@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { http } from '@/service/request.js'
+import { http } from '@/plugins/request.js'
 
 /**
  * 注册
@@ -92,7 +92,7 @@ export const captchaByRegister = (data) => http.get(`/user/captchaByRegister`, {
 /**
  * 忘记密码获取短信验证码
  * @param data
- * @returns {HttpPromise<any>}
+ * @returns {HttpPromise<any>} /
  */
 export const captchaByResetPassword = (data) => http.get(`/user/captchaByResetPassword`, { params: data })
 /**

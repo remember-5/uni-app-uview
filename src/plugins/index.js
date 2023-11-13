@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import store from '@/store'
+import uView from './uview'
+import loading from './loading'
 
-/**
- *  获取设备信息
- */
-export const getSystemInfo = () => {
-  store.state.vuex_system_info = uni.getSystemInfoSync()
+export default function install(app) {
+  app.use(uView)
+  app.use(loading)
 }

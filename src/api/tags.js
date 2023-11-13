@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { http } from '@/service/request.js'
+import { http } from '@/plugins/request.js'
 export const mPushInfoPut = (data) => http.get('/api/mPushInfo', { params: data })
 export const mPushInfoDel = (params) => http.delete('/api/mPushInfo', params)
 export const mPushInfoDelAll = (params) => http.delete('/api/mPushInfo/all', params)
