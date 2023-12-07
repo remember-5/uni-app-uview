@@ -54,7 +54,7 @@ export const wxMiniAppCode2Sessions = (params) => http.post(`/user/wxMiniAppCode
  * @param params
  * @returns {HttpPromise<any>} /
  */
-export const wxMiniAppLogin = (params) => http.post(`/user/wxMiniAppLogin`, params)
+export const loginByWechat = (params) => http.post(`/auth/loginByWechat`, params)
 /**
  * 支付宝一键登录
  * @param data /
@@ -71,7 +71,7 @@ export const refToken = (data) => http.post('/user/refToken', data)
  * 获取图形验证码
  * @returns {HttpPromise<any>} /
  */
-export const code = () => http.get('/user/code')
+export const code = () => http.get('/auth/code')
 /**
  * 发送短信验证码
  * @returns {HttpPromise<any>} /

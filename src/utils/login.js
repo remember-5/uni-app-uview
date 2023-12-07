@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { wxMiniAppLogin, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/user'
+import { loginByWechat, code, smsCode, loginByAccount, loginByPhoneCaptcha, register, resetPassword, captchaByResetPassword } from '@/api/user'
 import store from '@/store'
 /**
  * 获取微信登录的code
@@ -48,7 +48,7 @@ export const login = async (params, type) => {
     let result
     switch (type) {
       case 0:
-        result = await wxMiniAppLogin(params)
+        result = await loginByWechat(params)
         break
       case 1:
         result = await loginByAccount(params)

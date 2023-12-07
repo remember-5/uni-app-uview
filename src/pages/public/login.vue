@@ -251,12 +251,16 @@
     async onShow() {
       try {
         await this.initImgCaptcha()
-        // #ifdef MP-WEIXIN
-        await this.getWxCode()
-        // #endif
       } catch (e) {
-        this.$u.toast(e)
+        this.$u.toast('获取图片验证码失败')
       }
+      // #ifdef MP-WEIXIN
+      try {
+        await this.getWxCode()
+      } catch (e) {
+        this.$u.toast('获取微信code失败')
+      }
+      // #endif
     },
     methods: {
       /**
@@ -280,8 +284,9 @@
        */
       async toWxLogin(wxLoginInfo) {
         const params = {
-          wxCode: this.wxCode,
-          ...wxLoginInfo.detail
+          code: this.wxCode,
+          encryptedData: wxLoginInfo.detail.encryptedData,
+          iv: wxLoginInfo.detail.iv
         }
         await this.toLogin(params)
       },
