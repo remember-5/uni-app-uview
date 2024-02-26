@@ -54,31 +54,27 @@ http.interceptors.response.use(
       // 如果把originalData设置为了true，这里return回什么，this.$u.post的then回调中就会得到什么
       return response.data
     }
-    if (response.statusCode === 401) {
-      store.state.vuex_access_token = ''
-      store.state.vuex_refresh_token = ''
-      store.state.vuex_user_info = {}
-      router.push({
-        path: '/pages/public/login'
-      })
-    } else if (response.statusCode === 500) {
-      if (response.data.message) {
-        Vue.prototype.$u.toast({
-          title: response.data.message,
-          type: 'error'
-        })
-      } else {
-        Vue.prototype.$u.toast({
-          title: '请求异常',
-          type: 'error'
-        })
-      }
-    }
-    return response
   },
   (response) => {
     // 请求错误做点什么。可以使用async await 做异步操作
     console.error(response)
+    if (response.statusCode === 401) {
+      Vue.prototype.$u.toast('认证过期,请重新登录')
+      store.state.vuex_access_token = ''
+      store.state.vuex_refresh_token = ''
+      store.state.vuex_user_info = {}
+      setTimeout(() => {
+        router.push({
+          path: '/pages/public/login'
+        })
+      }, 1500)
+    } else if (response.statusCode === 500) {
+      if (response.data.message) {
+        Vue.prototype.$u.toast(response.data.message)
+      } else {
+        Vue.prototype.$u.toast('请求异常')
+      }
+    }
     return Promise.reject(response)
   }
 )
